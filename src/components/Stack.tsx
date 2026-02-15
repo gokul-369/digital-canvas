@@ -21,6 +21,7 @@ function Stack() {
               <img
                 src={skill.imagePath}
                 alt={skill.name}
+                loading="lazy"
                 className={`w-8 h-8 inline-block`}
               />
             </span>

@@ -1,5 +1,23 @@
 import type { experience, formField, skill, bio as BioType } from "../types";
 
+import javascriptLogo from "../assets/javascript.svg";
+import typescriptLogo from "../assets/typescript.svg";
+import htmlLogo from "../assets/html.svg";
+import cssLogo from "../assets/css.svg";
+import tailwindLogo from "../assets/tailwindcss.svg";
+import reactLogo from "../assets/react.svg";
+import nextLogo from "../assets/nextjs.svg";
+import reduxLogo from "../assets/redux.svg";
+import reduxSagaLogo from "../assets/reduxsaga.svg";
+import jestLogo from "../assets/jest.svg";
+import gitLogo from "../assets/git.svg";
+import githubLogo from "../assets/github.svg";
+import githubActionsLogo from "../assets/githubactions.svg";
+import jenkinsLogo from "../assets/jenkins.svg";
+import dockerLogo from "../assets/docker.svg";
+import googleCloudLogo from "../assets/googlecloud.svg";
+import vercelLogo from "../assets/vercel.svg";
+
 export const bio: BioType = {
   name: "Gokul",
   title: "Software Engineer",
@@ -102,84 +120,84 @@ export const skills: skill[] = [
   // Languages
   {
     name: "JavaScript",
-    imagePath: "src/assets/javascript.svg",
+    imagePath: javascriptLogo,
   },
   {
     name: "TypeScript",
-    imagePath: "src/assets/typescript.svg",
+    imagePath: typescriptLogo,
   },
 
   // Markup & Styling
   {
     name: "HTML",
-    imagePath: "src/assets/html.svg",
+    imagePath: htmlLogo,
   },
   {
     name: "CSS",
-    imagePath: "src/assets/css.svg",
+    imagePath: cssLogo,
   },
   {
     name: "Tailwind CSS",
-    imagePath: "src/assets/tailwindcss.svg",
+    imagePath: tailwindLogo,
   },
 
   // Frontend Frameworks
   {
     name: "React",
-    imagePath: "src/assets/react.svg",
+    imagePath: reactLogo,
   },
   {
     name: "Next.js",
-    imagePath: "src/assets/nextjs.svg",
+    imagePath: nextLogo,
   },
 
   // State Management
   {
     name: "Redux",
-    imagePath: "src/assets/redux.svg",
+    imagePath: reduxLogo,
   },
   {
     name: "Redux-Saga",
-    imagePath: "src/assets/reduxsaga.svg",
+    imagePath: reduxSagaLogo,
   },
 
   // Testing
   {
     name: "Jest",
-    imagePath: "src/assets/jest.svg",
+    imagePath: jestLogo,
   },
 
   // Version Control & Platforms
   {
     name: "Git",
-    imagePath: "src/assets/git.svg",
+    imagePath: gitLogo,
   },
   {
     name: "GitHub",
-    imagePath: "src/assets/github.svg",
+    imagePath: githubLogo,
   },
 
   // CI/CD & DevOps
   {
     name: "GitHub Actions",
-    imagePath: "src/assets/githubactions.svg",
+    imagePath: githubActionsLogo,
   },
   {
     name: "Jenkins",
-    imagePath: "src/assets/jenkins.svg",
+    imagePath: jenkinsLogo,
   },
   {
     name: "Docker",
-    imagePath: "src/assets/docker.svg",
+    imagePath: dockerLogo,
   },
   {
     name: "Google Cloud",
-    imagePath: "src/assets/googlecloud.svg",
+    imagePath: googleCloudLogo,
   },
 
   // Hosting / Edge
   {
     name: "Vercel",
-    imagePath: "src/assets/vercel.svg",
+    imagePath: vercelLogo,
   },
 ];
