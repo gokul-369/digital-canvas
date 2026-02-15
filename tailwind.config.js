@@ -7,11 +7,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // semantic color names used in your CSS
+        // light mode colors
         bgprimary: colors.neutral[950],
         bgSecondary: colors.neutral[900],
+        bgTertiary: colors.neutral[800],
         textprimary: colors.white,
         textSecondary: colors.gray[400],
+
+        //dark mode colors
+        darkBgPrimary: colors.neutral[100],
+        darkBgSecondary: colors.neutral[200],
+        darkBgTertiary: colors.neutral[300],
+        darkTextPrimary: colors.black,
+        darkTextSecondary: colors.gray[600],
       },
     },
     fontFamily: {

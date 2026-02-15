@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-bgprimary bg-bgSecondary text-textprimary text-textSecondary antialiased;
+  @apply bg-bgprimary bg-bgSecondary text-textprimary text-textSecondary bg-darkBgPrimary bg-darkBgSecondary text-darkTextSecondary text-darkTextPrimary border-darkTextSecondary bg-bgTertiary bg-darkBgTertiary;
   scrollbar-width: none;
 }
 html::-webkit-scrollbar,
