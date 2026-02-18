@@ -42,3 +42,8 @@ export interface hero {
   shortDescription: string | ReactNode;
   longDescription: string | TrustedHTML;
 }
+
+export interface education {
+  title: string;
+  subTitle: string;
+}

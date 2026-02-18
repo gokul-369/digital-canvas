@@ -4,6 +4,7 @@ import type {
   skill,
   bio as BioType,
   hero as heroType,
+  education,
 } from "../types";
 
 import javascriptLogo from "../assets/javascript.svg";
@@ -235,4 +236,36 @@ export const skills: skill[] = [
     name: "Vercel",
     imagePath: vercelLogo,
   },
+];
+
+export const educationItems: education[] = [
+  {
+    title: "B.Sc. Computer Science · RKM Vivekananda College",
+    subTitle: "2018 – 2021 · First Class with Distinction",
+  },
+  {
+    title: "High School · SBMHSS",
+    subTitle: "2017 – 2018 · First Class with Distinction",
+  },
+  {
+    title: "Beyond the classroom",
+    subTitle:
+      "Placement coordinator in college, top scorer in my department, and district physics symposium medalist.",
+  },
+];
+
+export const interests: string[] = [
+  "Automation",
+  "Editing",
+  "F1",
+  "Frontend development",
+  "Fitness and Health",
+  "Football",
+  "Gaming",
+  "Gen AI",
+  "Movies and TV shows",
+  "Physics",
+  "Photography",
+  "Travel",
+  "UI-UX",
 ];

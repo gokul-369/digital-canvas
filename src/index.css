@@ -73,3 +73,44 @@ body::-webkit-scrollbar,
     }
   }
 }
+
+.aboutMenu {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: var(--underline-left, 0);
+    width: var(--underline-width, 20px);
+    background-color: oklch(58.5% 0.233 277.117);
+    height: 2px;
+    transition:
+      left 0.4s ease,
+      width 0.4s ease;
+  }
+  & .aboutMenu-item {
+    position: relative;
+  }
+}
+
+.list {
+  & li:not(:last-child) {
+    position: relative;
+
+    &::before {
+      position: absolute;
+      height: 100%;
+      width: 1px;
+      content: "";
+      background: linear-gradient(
+        to bottom,
+        rgba(56, 189, 248, 0),
+        rgba(79, 70, 229, 0.9),
+        rgba(0, 0, 0, 0)
+      );
+      opacity: 0.5;
+      left: 3.5px;
+      top: 30px;
+    }
+  }
+}

@@ -2,22 +2,55 @@ import BlurText from "../../animations/Text/BlurText";
 import type { ThemeClassSet } from "../../types";
 import ProfileCard from "../ProfileCard/ProfileCard";
 import ProfilePicture from "../../assets/profile.png";
-import { bio } from "../../data";
+import { bio, educationItems, interests } from "../../data";
 import TextType from "../../animations/Text/TypeWriter";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 function About({ theme }: { theme: ThemeClassSet }) {
   const [startTyping, setStartTyping] = useState(false);
+  const aboutSectionItems = {
+    ME: "Me",
+    EDUCATION: "Eductation",
+    INTERESTS: "Interests",
+  };
+  const [currentMenu, setCurrentMenu] = useState(aboutSectionItems.ME);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.06,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const chipVariants = {
+    hidden: { opacity: 0, y: 12, scale: 0.96 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.45,
+        ease: [0.22, 1, 0.36, 1] as const,
+      },
+    },
+  };
+
   return (
     <section
       id="about"
-      className={`h-screen lg:py-32 px-8 lg:px-40 ${theme.bgPrimary}`}
+      className={`h-full pt-32 lg:py-32 px-8 lg:px-40 ${theme.bgPrimary}`}
     >
       <main className="relative flex flex-col items-center justify-start">
         <p className={`${theme.textPrimary} uppercase tracking-widest`}>
           {" "}
           It’s time to get to{" "}
-          <span className={`text-indigo-500`}>know me </span>
+          <span className={theme.textMainAccent1}>know me </span>
         </p>
         <div
           className={`grid grid-cols-2 lg:grid-cols-3 h-full lg:gap-96 justify-between items-center mt-10 gap-8`}
@@ -36,58 +69,157 @@ function About({ theme }: { theme: ThemeClassSet }) {
             onContactClick={() => console.log("Contact clicked")}
             behindGlowColor="hsla(173, 100%, 70%, 0.6)"
             behindGlowEnabled
-            // innerGradient="linear-gradient(145deg,hsla(280, 40%, 45%, 0.55) 0%,hsla(193, 60%, 70%, 0.27) 100%)"
-            // innerGradient="linear-gradient(145deg,hsla(230, 40%, 45%, 0.55) 0%,hsla(228, 60%, 70%, 0.27) 100%)"
             innerGradient="linear-gradient(145deg, rgba(56,189,248,0.15) 0%, rgba(99,102,241,0.22) 40%, rgba(251,191,36,0.18) 100%)"
           />
-
           <div
-            className={`${theme.textPrimary} flex flex-col justify-start  col-span-2  lg:text-lg text-md  text-md px-8 lg:px-0`}
+            className={`${theme.textPrimary} flex h-full flex-col justify-start  col-span-2 py-8  lg:text-lg text-md  text-md px-8 lg:px-0`}
           >
-            <BlurText
-              delay={200}
-              animateBy="tags"
-              direction="top"
-              onAnimationComplete={() => setStartTyping(true)}
-              className={`text-3xl lg:text-5xl font-bold mb-8 ${theme.textPrimary}  tracking-wide`}
+            <div
+              ref={menuRef}
+              className={`inline-flex gap-8 mb-12 aboutMenu ${currentMenu}`}
             >
-              <h1 className={`${theme.textPrimary}`}>{"Hi, I am "}</h1>
-              <h1 className="ml-3 text-indigo-500">Gokul</h1>
-            </BlurText>
-            <div className="h-8 mb-8 flex items-center">
-              {startTyping && (
-                <h1
-                  className={`${theme.textPrimary} text-xl lg:text-2xl font-thin tracking-widest`}
-                >
-                  I am also{" "}
-                  <TextType
-                    text={[
-                      "An Engineer",
-                      "A Photographer",
-                      "An F1 enthusiast",
-                      "A Gym rat",
-                    ]}
-                    typingSpeed={75}
-                    pauseDuration={1500}
-                    showCursor
-                    cursorCharacter="_"
-                    deletingSpeed={50}
-                    textColors={[
-                      "oklch(62.3% 0.214 259.815)",
-                      "oklch(58.5% 0.233 277.117)",
-                      "oklch(76.9% 0.188 70.08)",
-                    ]}
-                    cursorBlinkDuration={0.5}
-                  />
-                </h1>
-              )}
+              {Object.entries(aboutSectionItems).map(([key, label]) => {
+                const isActive = label === currentMenu;
+                return (
+                  <span
+                    key={key}
+                    className={`aboutMenu-item cursor-pointer ${isActive ? theme.textMainAccent1 : theme.textPrimary} hover:-translate-y-[2px] transition`}
+                    onClick={(e: React.MouseEvent) => {
+                      const el = e.currentTarget as HTMLButtonElement;
+                      const menu = menuRef.current;
+                      setCurrentMenu(label);
+                      if (!menu) return;
+                      const menuRect = menu.getBoundingClientRect();
+                      const elRect = el.getBoundingClientRect();
+                      if (label === aboutSectionItems.ME) setStartTyping(false);
+                      const left = elRect.left - menuRect.left;
+                      const width = elRect.width;
+                      menu.style.setProperty(
+                        "--accent-color",
+                        "oklch(58.5% 0.233 277.117)",
+                      );
+                      menu.style.setProperty("--underline-left", `${left}px`);
+                      menu.style.setProperty("--underline-width", `${width}px`);
+                    }}
+                  >
+                    {label}
+                  </span>
+                );
+              })}
             </div>
-            {bio.description}
+            {currentMenu === aboutSectionItems.ME && (
+              <>
+                <BlurText
+                  delay={200}
+                  animateBy="tags"
+                  direction="top"
+                  onAnimationComplete={() => setStartTyping(true)}
+                  className={`text-3xl lg:text-5xl font-bold mb-8 ${theme.textPrimary}  tracking-wide`}
+                >
+                  <h1 className={`${theme.textPrimary}`}>{"Hi, I am "}</h1>
+                  <h1 className="ml-3 text-indigo-500">Gokul</h1>
+                </BlurText>
+                <div className="h-8 mb-8 flex items-center">
+                  {startTyping && (
+                    <h1
+                      className={`${theme.textPrimary} text-xl lg:text-2xl font-thin tracking-widest`}
+                    >
+                      I am also{" "}
+                      <TextType
+                        text={[
+                          "An Engineer",
+                          "A Photographer",
+                          "An F1 enthusiast",
+                          "A Gym rat",
+                        ]}
+                        typingSpeed={75}
+                        pauseDuration={1500}
+                        showCursor
+                        cursorCharacter="_"
+                        deletingSpeed={50}
+                        textColors={[
+                          "oklch(62.3% 0.214 259.815)",
+                          "oklch(58.5% 0.233 277.117)",
+                          "oklch(76.9% 0.188 70.08)",
+                        ]}
+                        cursorBlinkDuration={0.5}
+                      />
+                    </h1>
+                  )}
+                </div>
+                {bio.description}
+              </>
+            )}
+            {currentMenu === aboutSectionItems.EDUCATION && (
+              <motion.ul
+                className="mt-4 space-y-3 text-sm list text-slate-300"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.12,
+                    },
+                  },
+                }}
+              >
+                {educationItems.map((item, idx) => (
+                  <motion.li
+                    key={idx}
+                    className="flex gap-3 py-4"
+                    variants={{
+                      hidden: { opacity: 0, y: -8 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  >
+                    <span className="mt-1 h-2 w-2 rounded-full bg-indigo-400" />
+                    <div>
+                      <p className="font-medium text-slate-100">{item.title}</p>
+                      <p className="text-xs text-slate-400">{item.subTitle}</p>
+                    </div>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            )}
+            {currentMenu === aboutSectionItems.INTERESTS && (
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="flex flex-wrap gap-3"
+              >
+                {interests.map((item) => (
+                  <motion.span
+                    key={item}
+                    variants={chipVariants}
+                    whileHover={{ y: -2, scale: 1.03 }}
+                    whileTap={{ scale: 0.96 }}
+                    className="
+                      inline-flex flex-wrap items-center gap-2
+                      px-4 py-1.5
+                      rounded-full
+                      backdrop-blur-md
+                      bg-white/5
+                      border border-white/10
+                      text-xs sm:text-sm
+                      text-white/70
+                      hover:bg-white/10
+                      hover:text-white
+                      cursor-pointer
+                      transition-colors"
+                  >
+                    {item}
+                  </motion.span>
+                ))}
+              </motion.div>
+            )}
           </div>
         </div>
       </main>
     </section>
   );
 }
-
 export default About;
