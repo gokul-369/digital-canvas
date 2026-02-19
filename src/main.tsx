@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router";
 import { AppRoutes } from "./routes/index.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter basename="/digital-canvas/">
+  <BrowserRouter basename="/">
     <ThemeProvider>
       <AppRoutes />
     </ThemeProvider>
