@@ -2,7 +2,7 @@ import BlurText from "../../animations/Text/BlurText";
 import { awards } from "../../data";
 import type { ThemeClassSet } from "../../types";
 import CertificateCard from "../CertificateCards";
-import { motion, type Variants } from "framer-motion";
+import { motion, type Variants } from "motion/react";
 
 function Awards({ theme }: { theme: ThemeClassSet }) {
   const containerVariants = {
@@ -30,7 +30,7 @@ function Awards({ theme }: { theme: ThemeClassSet }) {
   };
   return (
     <section
-      className={`lg:px-20 px-8 py-32 h-dvh items-center w-full flex flex-col`}
+      className={`lg:px-40 px-8 py-32 h-dvh items-center w-full flex flex-col`}
       id={"awards"}
     >
       <BlurText
@@ -43,7 +43,7 @@ function Awards({ theme }: { theme: ThemeClassSet }) {
         <span className={`${theme.textMainAccent1} ml-3`}>Honors</span>
       </BlurText>
       <motion.div
-        className="grid h-full gird-cols-2 lg:grid-cols-3 p-5 gap-4 mt-10"
+        className="grid w-full h-full gird-cols-2 gap-10 lg:grid-cols-3 mt-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="show"

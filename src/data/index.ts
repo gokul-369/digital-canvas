@@ -137,7 +137,7 @@ export const workExperiences: experience[] = [
     role: "Senior Software Engineer",
     duration: "July 2022 - April 2024",
     description: [
-      "Actively involved in a team in developing various modules like Customer Portal, Admin Portal,Core business Application for Shriram Chits ,with payment gateways,Reports,and other finance related logics",
+      "Actively involved in a team in developing various modules like Customer Portal, Admin Portal,Core business Application for Shriram Chits,  with payment gateways,Reports,and other finance related logics",
       "Did various R&Ds on React and React libraries for Pdf generation,Charts, Payment gateways and so on",
       "Worked on Reusable and scalable components in React",
       "Assisted team members on various stages of SDLC",

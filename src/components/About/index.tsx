@@ -5,7 +5,7 @@ import ProfilePicture from "../../assets/profile.png";
 import { bio, educationItems, interests } from "../../data";
 import TextType from "../../animations/Text/TypeWriter";
 import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 function About({ theme }: { theme: ThemeClassSet }) {
   const [startTyping, setStartTyping] = useState(false);
