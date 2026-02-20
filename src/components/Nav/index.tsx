@@ -30,7 +30,7 @@ function Nav({ theme: themeClass }: pageProp) {
           </li>
         ))}
       </ul>
-      {themeName === "light" ? (
+      {themeName === "dark" ? (
         <SunIcon
           onClick={toggleTheme}
           className={`${theme.textPrimary} transition-transform duration-300 ease-in-out transform hover:rotate-90`}

@@ -7,6 +7,7 @@ import { IoCameraOutline } from "react-icons/io5";
 import { HiOutlineBriefcase, HiOutlineSparkles } from "react-icons/hi";
 import { HiOutlineCommandLine } from "react-icons/hi2";
 import { HashLink } from "react-router-hash-link";
+import { FiAward } from "react-icons/fi";
 
 function Dashboard({ theme }: { theme: ThemeClassSet }) {
   return (
@@ -129,7 +130,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
           </SpotlightCard>
         </div>
 
-        <div className="lg:row-span-4 row-span-2 col-span-2 lg:col-span-1">
+        <div className="lg:row-span-2 row-span-2 col-span-2 lg:col-span-1">
           <SpotlightCard
             className="h-full justify-between  flex flex-col"
             spotlightColor={spotlight.WORKS}
@@ -186,6 +187,38 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
             </a>
             <HiOutlineSparkles
               className={`h-24 w-24 absolute bottom-1 right-3 text-white/5 group-hover:text-green-500/25 transition`}
+            />
+          </SpotlightCard>
+        </div>
+
+        <div className="lg:row-span-2 row-span-2 col-span-2 lg:col-span-1">
+          <SpotlightCard
+            className="h-full justify-between  flex flex-col"
+            spotlightColor={spotlight.AWARDS}
+          >
+            <div>
+              <h2
+                className="text-lg font-semibold tracking-tight mb-2 text-white/80
+                    group-hover:text-white-500/90
+          "
+              >
+                Achievements & Milestones
+              </h2>
+              <p className="text-sm  mt-4 text-slate-300">
+                Moments of recognition that mark my growth, discipline, and
+                pursuit of excellence.
+              </p>
+            </div>
+            <HashLink
+              to={"/experience/#awards"}
+              className={`text-white/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
+              smooth
+            >
+              View my award gallery
+              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
+            </HashLink>
+            <FiAward
+              className={`h-24 w-24 absolute bottom-1 right-3 text-white/5 group-hover:text-white/25 transition`}
             />
           </SpotlightCard>
         </div>

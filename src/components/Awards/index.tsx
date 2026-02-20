@@ -1,0 +1,69 @@
+import BlurText from "../../animations/Text/BlurText";
+import { awards } from "../../data";
+import type { ThemeClassSet } from "../../types";
+import CertificateCard from "../CertificateCards";
+import { motion, type Variants } from "framer-motion";
+
+function Awards({ theme }: { theme: ThemeClassSet }) {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20, scale: 0.96 },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+  };
+  return (
+    <section
+      className={`lg:px-20 px-8 py-32 h-dvh items-center w-full flex flex-col`}
+      id={"awards"}
+    >
+      <BlurText
+        className="uppercase tracking-widest"
+        delay={200}
+        animateBy="tags"
+        direction="top"
+      >
+        <p className={`${theme.textPrimary}`}> Highlights and </p>
+        <span className={`${theme.textMainAccent1} ml-3`}>Honors</span>
+      </BlurText>
+      <motion.div
+        className="grid h-full gird-cols-2 lg:grid-cols-3 p-5 gap-4 mt-10"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        {awards.map((item, index) => (
+          <motion.div key={index} variants={itemVariants}>
+            <CertificateCard
+              title={item.title}
+              company={item.company}
+              subTitle={item.subTitle}
+              year={item.year}
+              icon={item.icon}
+              type={item.type}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
+    </section>
+  );
+}
+
+export default Awards;

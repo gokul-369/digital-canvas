@@ -12,12 +12,12 @@ function TestimonialCard({ testimonial }: { testimonial: testimonial }) {
 
   return (
     <SpotlightCard
-      className="h-[350px] w-[300px] flex flex-col justify-between"
+      className="lg:h-[350px] lg:w-[300px] flex flex-col justify-between h-[300px] w-[250px]"
       spotlightColor="rgba(99,102,241,0.45)"
     >
       <RiDoubleQuotesL className="text-4xl text-blue-400/40 mb-4" />
 
-      <p className="text-sm leading-relaxed text-slate-200 max-h-36 overflow-auto">
+      <p className="text-xs lg:text-sm leading-relaxed text-slate-200 max-h-28 lg:max-h-36 overflow-auto">
         {testimonial.testimonial}
       </p>
 
@@ -28,12 +28,14 @@ function TestimonialCard({ testimonial }: { testimonial: testimonial }) {
             className="h-12 w-12 object-cover rounded-full border border-white/10"
           />
         ) : (
-          <div className="flex aspect-square h-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-indigo-500 backdrop-blur-md shadow-lg">
+          <div className="flex aspect-square h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-indigo-500 backdrop-blur-md shadow-lg">
             {initials}
           </div>
         )}
         <div>
-          <p className="text-sm font-medium text-white">{testimonial.name}</p>
+          <p className="text-xs lg:text-sm font-medium text-white">
+            {testimonial.name}
+          </p>
           <p className="text-xs mt-1 text-slate-400">
             {testimonial.jobTitle} · {testimonial.company} ·{" "}
             {testimonial.location}

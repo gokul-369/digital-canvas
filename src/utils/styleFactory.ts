@@ -2,7 +2,7 @@ import type { ThemeClassSet } from "../types";
 
 export const themeFactory = (theme: "light" | "dark"): ThemeClassSet => {
   const themeFactory: Record<"light" | "dark", ThemeClassSet> = {
-    light: {
+    dark: {
       bgPrimaryAccent: "bg-bgPrimaryAccent",
       bgSecondaryAccent: "bg-bgSecondaryAccent",
       bgPrimary: "bg-bgprimary",
@@ -17,7 +17,7 @@ export const themeFactory = (theme: "light" | "dark"): ThemeClassSet => {
       textMainAccent2: "text-textMainAccent2",
       textMainAccent3: "text-textMainAccent3",
     },
-    dark: {
+    light: {
       bgPrimaryAccent: "bg-darkBgPrimaryAccent",
       bgSecondaryAccent: "bg-darkBgSecondaryAccent",
       bgPrimary: "bg-darkBgPrimary",

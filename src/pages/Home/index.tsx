@@ -7,7 +7,7 @@ import { themeFactory } from "../../utils/styleFactory";
 function Home({ theme }: pageProp) {
   const themeClass = themeFactory(theme);
   const colors =
-    theme === "light"
+    theme === "dark"
       ? ["#9383d2", "#8998e1", "#aba7b9"]
       : // : ["#E5F5FF", "#ffffff", "#", "#FBE8FF", "#D9F7FF"]
         ["#F8F0E5", "#FFFFFF", "#9383d2", "#aba7b9"];

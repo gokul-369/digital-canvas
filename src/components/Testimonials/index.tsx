@@ -11,10 +11,10 @@ function Testimonials({ theme }: { theme: ThemeClassSet }) {
   return (
     <section
       id="testimonials"
-      className="relative flex flex-col items-center justify-start min-h-dvh w-full lg:px-20 py-32 overflow-x-hidden"
+      className="relative flex flex-col items-center justify-start min-h-dvh w-full lg:px-20 px-8 py-32 overflow-x-hidden"
     >
       <BlurText
-        className="uppercase tracking-widest"
+        className="uppercase text-center tracking-widest"
         delay={200}
         animateBy="tags"
         direction="top"
@@ -22,24 +22,15 @@ function Testimonials({ theme }: { theme: ThemeClassSet }) {
         <p className={`${theme.textPrimary}`}> Voices from people </p>
         <span className={`${theme.textMainAccent1} ml-3`}>I’ve built with</span>
       </BlurText>
-      <section className="mt-5 p-5 w-full flex-col flex flex-wrap gap-4">
-        <div
-          className="pointer-events-none absolute inset-y-0 left-0 w-24 
-    bg-gradient-to-r from-black via-black/60 to-transparent z-10"
-        />
-
-        <div
-          className="pointer-events-none absolute inset-y-0 right-0 w-24 
-    bg-gradient-to-l from-black via-black/60 to-transparent z-10"
-        />
+      <section className="mt-10 p-5 w-full flex-col flex flex-wrap gap-4">
         <ScrollingRow direction="left">
-          {left.map((item) => (
-            <TestimonialCard testimonial={item} />
+          {left.map((item, index) => (
+            <TestimonialCard key={index} testimonial={item} />
           ))}
         </ScrollingRow>
         <ScrollingRow direction="right">
-          {right.map((item) => (
-            <TestimonialCard testimonial={item} />
+          {right.map((item, index) => (
+            <TestimonialCard key={index} testimonial={item} />
           ))}
         </ScrollingRow>
       </section>

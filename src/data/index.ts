@@ -6,7 +6,18 @@ import type {
   hero as heroType,
   education,
   testimonial,
+  achievement,
 } from "../types";
+
+import {
+  HiOutlineUsers,
+  HiOutlineStar,
+  HiOutlineCodeBracketSquare,
+  HiOutlineFlag,
+  HiOutlineTrophy,
+  HiOutlineAcademicCap,
+  HiOutlineUserGroup,
+} from "react-icons/hi2";
 
 import javascriptLogo from "../assets/javascript.svg";
 import typescriptLogo from "../assets/typescript.svg";
@@ -28,6 +39,9 @@ import vercelLogo from "../assets/vercel.svg";
 import bharathiImage from "../assets/bharathi.png";
 import lavanyaImage from "../assets/lavanya.png";
 import Akimage from "../assets/Ak.png";
+import steephenImage from "../assets/steephen.png";
+import { IoLogoElectron } from "react-icons/io5";
+import { HiOutlineBadgeCheck } from "react-icons/hi";
 
 export const navLinks: formField[] = [
   {
@@ -62,23 +76,8 @@ export const bio: BioType = {
   name: "Gokul",
   title: "Software Engineer",
   description:
-    "A Chennai based engineer, working at the intersection of engineering and design. I build frontends that are predictable for developers, intuitive for users, and fast in production. I care deeply about structure, motion, and performance refactoring component trees, fine-tuning micro-interactions, and obsessing over how systems behave under real-world traffic.",
+    "Working at the intersection of engineering and design. I build frontends that are predictable for developers, intuitive for users, and fast in production. I care deeply about structure, motion, and performance refactoring component trees, fine-tuning micro-interactions, and obsessing over how systems behave under real-world traffic.",
 };
-
-export const fields: formField[] = [
-  {
-    name: "Email",
-    value: "gokul369@outlook.com",
-  },
-  {
-    name: "Phone",
-    value: "+91 6381315837",
-  },
-  {
-    name: "Location",
-    value: "Chennai, India",
-  },
-];
 
 export const socialLinks: formField[] = [
   {
@@ -307,7 +306,7 @@ export const testimonials: testimonial[] = [
     location: "Edinburg, Scotland",
     company: "Lloyds Bank",
     testimonial:
-      "I worked with Gokul and what stood out immediately was his genuine passion for coding. He enjoys digging into problems, understanding how things work, and finding clean solutions rather than just getting something to “work.” He’s reliable, easy to collaborate with, and takes real ownership of his work. Any team that values curiosity and solid engineering would benefit from having him.",
+      "It was a pleasure working with Gokul. He consistently demonstarted a strong desire to learn and took initiative in addressing key challenges. His technical expertise was evident across various tasks and readily provided thoughtful support. As the team lead. I value his his collaborative spirit, effective problem solving and the positive impact he had on our deliverables.",
   },
   {
     name: "JM Mcghee",
@@ -315,7 +314,17 @@ export const testimonials: testimonial[] = [
     location: "Edinburg, Scotland",
     company: "Lloyds Bank",
     testimonial:
-      "I worked with Gokul and what stood out immediately was his genuine passion for coding. He enjoys digging into problems, understanding how things work, and finding clean solutions rather than just getting something to “work.” He’s reliable, easy to collaborate with, and takes real ownership of his work. Any team that values curiosity and solid engineering would benefit from having him.",
+      "It’s rare to come across an engineer who combines such eagerness to learn, strong attention to detail, and a genuine willingness to go the extra mile to find solutions. Gokul is one of those engineers",
+  },
+  {
+    name: "Steephen Kingslein",
+    jobTitle: "Software Engineer",
+    location: "Chennai, India",
+    company: "TCS",
+    testimonial: `I had the opportunity to work closely with Gokul on our project, and his front-end expertise consistently stood out. He has a strong eye for detail and a deep understanding of building responsive, user friendly interfaces.
+    What impressed me most was his ability to translate complex backend requirements into clean, intuitive UI experiences. He is highly collaborative, proactive in communication, and always focused on performance and maintainability.
+    Any team would benefit from his technical skill, ownership mindset, and commitment to delivering high-quality work.`,
+    image: steephenImage,
   },
   {
     name: "Ajay Karthick",
@@ -325,5 +334,88 @@ export const testimonials: testimonial[] = [
     testimonial:
       "I worked with Gokul and what stood out immediately was his genuine passion for coding. He enjoys digging into problems, understanding how things work, and finding clean solutions rather than just getting something to “work.” He’s reliable, easy to collaborate with, and takes real ownership of his work. Any team that values curiosity and solid engineering would benefit from having him.",
     image: Akimage,
+  },
+];
+
+export const awards: achievement[] = [
+  {
+    title: "Physics Symposium Medalist",
+    subTitle: "Won district‑level bronze medals in school physics symposium.",
+    year: "2017",
+    company: "SBMHSS",
+    icon: IoLogoElectron,
+    type: "award",
+  },
+  {
+    title: "Placement Coordinator",
+    company: "RKM Vivekananda College",
+    year: "2020–2021",
+    subTitle:
+      "Led placement activities and helped peers navigate hiring processes and opportunities.",
+    icon: HiOutlineUsers,
+    type: "highlight",
+  },
+  {
+    title: "Student Representative",
+    company: "RKM Vivekananda College",
+    year: "2020–2021",
+    subTitle:
+      "Served as class representative for a year, coordinating between students and faculty and helping resolve academic and administrative issues.",
+    icon: HiOutlineUserGroup,
+    type: "highlight",
+  },
+  {
+    title: "Ranked 1st in Department",
+    company: "RKM Vivekananda College",
+    year: "2018–2021",
+    subTitle:
+      "Graduated as the top-ranked student in my Computer Science department, with a consistent track record of academic excellence and leadership.",
+    icon: HiOutlineAcademicCap,
+    type: "highlight",
+  },
+  {
+    title: "Star of the Quarter",
+    company: "Noac Technology Solutions",
+    year: "2024",
+    subTitle:
+      "Got recognised for outstanding performance for the quarter Q1 2023 - 2024",
+    icon: HiOutlineStar,
+    type: "award",
+  },
+  {
+    title: "AI Hackathon · Paperflite",
+    company: "Paperflite",
+    year: "2024",
+    subTitle:
+      "Co‑created a CLI tool for front end that auto generated unit tests using Gemini 3.1.",
+    icon: HiOutlineCodeBracketSquare,
+    type: "award",
+  },
+  {
+    title: "Milestone Achiever · TCS AI Hackathon",
+    company: "Tata Consultancy Services",
+    year: "2025",
+    subTitle:
+      "Built AI-driven workflows for the Lloyds Banking Group project, integrating MCP servers and tools.",
+    icon: HiOutlineFlag,
+    type: "award",
+  },
+  {
+    title: "Award for being a significant contributor",
+    company: "Tata Consultancy Services",
+    year: "2025",
+    subTitle:
+      "Got appreciation from the manager for making signifnificant impact on a short span of time, contrinuting to various deliverables",
+    icon: HiOutlineBadgeCheck,
+    type: "award",
+  },
+  {
+    title: "Winner in Beyond the stack hackathon challenge",
+    year: "2026",
+    company: "Tata Consultancy Services",
+    subTitle:
+      "Winner in Fortnightly challenge in beyond the stack hackathon series",
+    icon: HiOutlineTrophy,
+    type: "award",
   },
 ];
