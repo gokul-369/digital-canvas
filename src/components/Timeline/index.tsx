@@ -24,26 +24,31 @@ export function TimelineItem({
           {company}
         </h3>
       </div>
+      <h3 className="text-lg font-medium text-left ml-2 mb-4 lg:hidden text-white/90">
+        {company}
+      </h3>
       {roles.map((experience: experience, index) => (
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative mb-10 ml-4"
+          className="relative mb-10 lg:ml-4 ml-2"
           key={index}
         >
           <p
-            className={`text-lg ${theme.textMainAccent1} uppercase tracking-wide mt-1`}
+            className={`lg:text-lg text-base ${theme.textMainAccent1} uppercase tracking-wide mt-1`}
           >
             {experience.role}
           </p>
-          <p className="text-sm text-slate-300 mt-1">{experience.duration}</p>
+          <p className="lg:text-sm text-xs text-slate-300 mt-1">
+            {experience.duration}
+          </p>
           <ul>
             {experience.description.map((item, i) => (
               <li
                 key={i}
-                className={`text-sm my-8 lg:max-w-2xl ${theme.textPrimary}`}
+                className={`lg:text-sm text-xs my-8 max-w-80 lg:max-w-2xl ${theme.textPrimary}`}
               >
                 {item}
               </li>
@@ -116,7 +121,7 @@ export function Timeline({ children }: any) {
         }}
       />
 
-      <div className="space-y-32 pl-20">{children}</div>
+      <div className="space-y-32 lg:pl-20 pl-10">{children}</div>
     </section>
   );
 }
