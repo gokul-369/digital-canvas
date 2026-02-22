@@ -11,7 +11,7 @@ function Testimonials({ theme }: { theme: ThemeClassSet }) {
   return (
     <section
       id="testimonials"
-      className="relative flex flex-col items-center justify-start min-h-dvh w-full lg:px-20 px-8 py-32 overflow-x-hidden"
+      className="relative flex flex-col items-center justify-start min-h-dvh w-full lg:px-20 px-8 py-10 md:py-32 overflow-x-hidden"
     >
       <BlurText
         className="uppercase text-center tracking-widest"

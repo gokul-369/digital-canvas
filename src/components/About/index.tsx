@@ -117,12 +117,12 @@ function About({ theme }: { theme: ThemeClassSet }) {
                   className={`text-3xl lg:text-5xl font-bold mb-8 ${theme.textPrimary}  tracking-wide`}
                 >
                   <h1 className={`${theme.textPrimary}`}>{"Hi, I am "}</h1>
-                  <h1 className="ml-3 text-indigo-500">Gokul</h1>
+                  <h1 className="ml-4 text-indigo-500">Gokul</h1>
                 </BlurText>
                 <div className="h-8 mb-8 flex items-center">
                   {startTyping && (
                     <h1
-                      className={`${theme.textPrimary} text-lg lg:text-2xl font-thin lg:tracking-widest tracking-wide`}
+                      className={`${theme.textPrimary} text-lg lg:text-2xl font-thin font-mono lg:tracking-widest tracking-wide`}
                     >
                       I am also{" "}
                       <TextType

@@ -30,7 +30,7 @@ function Awards({ theme }: { theme: ThemeClassSet }) {
   };
   return (
     <section
-      className={`lg:px-40 px-8 py-32 h-dvh items-center w-full flex flex-col`}
+      className={`lg:px-40 px-8 md:py-32 py-10 md:h-dvh h-full items-center w-full flex flex-col`}
       id={"awards"}
     >
       <BlurText

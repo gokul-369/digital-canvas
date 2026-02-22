@@ -19,23 +19,12 @@ import {
   HiOutlineUserGroup,
 } from "react-icons/hi2";
 
-import javascriptLogo from "../assets/javascript.svg";
-import typescriptLogo from "../assets/typescript.svg";
-import htmlLogo from "../assets/html.svg";
-import cssLogo from "../assets/css.svg";
-import tailwindLogo from "../assets/tailwindcss.svg";
-import reactLogo from "../assets/react.svg";
-import nextLogo from "../assets/nextjs.svg";
-import reduxLogo from "../assets/redux.svg";
 import reduxSagaLogo from "../assets/reduxsaga.svg";
-import jestLogo from "../assets/jest.svg";
-import gitLogo from "../assets/git.svg";
-import githubLogo from "../assets/github.svg";
-import githubActionsLogo from "../assets/githubactions.svg";
-import jenkinsLogo from "../assets/jenkins.svg";
-import dockerLogo from "../assets/docker.svg";
-import googleCloudLogo from "../assets/googlecloud.svg";
-import vercelLogo from "../assets/vercel.svg";
+import mcpLogo from "../assets/mcp.svg";
+import ollamaLogo from "../assets/ollama.svg";
+import huggingFaceLogo from "../assets/huggingface.svg";
+import expressLogo from "../assets/express.svg";
+
 import bharathiImage from "../assets/bharathi.png";
 import lavanyaImage from "../assets/lavanya.png";
 import Akimage from "../assets/Ak.png";
@@ -155,90 +144,199 @@ export const workExperiences: experience[] = [
   },
 ];
 
-export const skills: skill[] = [
-  // Languages
-  {
-    name: "JavaScript",
-    imagePath: javascriptLogo,
-  },
-  {
-    name: "TypeScript",
-    imagePath: typescriptLogo,
-  },
+export const skills: skill[][] = [
+  // Row 1 — Core Languages & Runtime (7)
+  [
+    {
+      name: "JavaScript",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
+    },
+    {
+      name: "TypeScript",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg",
+    },
+    {
+      name: "Node.js",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg",
+    },
+    {
+      name: "HTML",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
+    },
+    {
+      name: "CSS",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg",
+    },
+    {
+      name: "SCSS",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sass/sass-original.svg",
+    },
+    {
+      name: "Vite",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg",
+    },
+  ],
 
-  // Markup & Styling
-  {
-    name: "HTML",
-    imagePath: htmlLogo,
-  },
-  {
-    name: "CSS",
-    imagePath: cssLogo,
-  },
-  {
-    name: "Tailwind CSS",
-    imagePath: tailwindLogo,
-  },
+  // Row 2 — Frontend Frameworks & Styling (8)
+  [
+    {
+      name: "React",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
+    },
+    {
+      name: "Next.js",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg",
+    },
+    {
+      name: "Redux",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redux/redux-original.svg",
+    },
+    { name: "Redux Saga", imagePath: reduxSagaLogo },
+    {
+      name: "Tailwind",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
+    },
+    {
+      name: "Styled Components",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/styledcomponents/styledcomponents-original.svg",
+    },
+    {
+      name: "jQuery",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jquery/jquery-original.svg",
+    },
+    {
+      name: "Zod",
+      imagePath:
+        "	https://zod.dev/_next/image?url=%2Flogo%2Flogo-glow.png&w=256&q=100", // your imported logo
+    },
+  ],
 
-  // Frontend Frameworks
-  {
-    name: "React",
-    imagePath: reactLogo,
-  },
-  {
-    name: "Next.js",
-    imagePath: nextLogo,
-  },
+  // Row 3 — Tooling, Package Managers, Editor & API (8)
+  [
+    {
+      name: "Git",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg",
+    },
+    {
+      name: "GitHub",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg",
+    },
+    {
+      name: "GitHub Actions",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/githubactions/githubactions-original.svg",
+    },
+    {
+      name: "VS Code",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg",
+    },
+    {
+      name: "NPM",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/npm/npm-original-wordmark.svg",
+    },
+    {
+      name: "Bun",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bun/bun-original.svg",
+    },
+    {
+      name: "Jest",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jest/jest-plain.svg",
+    },
+    {
+      name: "Postman",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg", // import this
+    },
+  ],
 
-  // State Management
-  {
-    name: "Redux",
-    imagePath: reduxLogo,
-  },
-  {
-    name: "Redux-Saga",
-    imagePath: reduxSagaLogo,
-  },
+  // Row 4 — DevOps, Cloud & Backend Infra (8)
+  [
+    {
+      name: "Docker",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg",
+    },
+    {
+      name: "Vercel",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg",
+    },
+    {
+      name: "Jenkins",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jenkins/jenkins-original.svg",
+    },
+    {
+      name: "GCP",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg",
+    },
+    {
+      name: "Nginx",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg",
+    },
+    {
+      name: "IIS",
+      imagePath:
+        "https://images.seeklogo.com/logo-png/48/1/microsoft-iis-logo-png_seeklogo-484624.png", // your imported logo
+    },
+    {
+      name: "Express",
+      imagePath: expressLogo,
+    },
+    {
+      name: "SignalR",
+      imagePath:
+        "	https://dotnet.microsoft.com/blob-assets/images/illustrations/swimlane-azure-signalr-logo.svg", // your imported logo
+    },
+  ],
 
-  // Testing
-  {
-    name: "Jest",
-    imagePath: jestLogo,
-  },
-
-  // Version Control & Platforms
-  {
-    name: "Git",
-    imagePath: gitLogo,
-  },
-  {
-    name: "GitHub",
-    imagePath: githubLogo,
-  },
-
-  // CI/CD & DevOps
-  {
-    name: "GitHub Actions",
-    imagePath: githubActionsLogo,
-  },
-  {
-    name: "Jenkins",
-    imagePath: jenkinsLogo,
-  },
-  {
-    name: "Docker",
-    imagePath: dockerLogo,
-  },
-  {
-    name: "Google Cloud",
-    imagePath: googleCloudLogo,
-  },
-
-  // Hosting / Edge
-  {
-    name: "Vercel",
-    imagePath: vercelLogo,
-  },
+  // Row 5 — Databases & AI / LLM Stack (7)
+  [
+    {
+      name: "MongoDB",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg",
+    },
+    {
+      name: "Mongoose",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongoose/mongoose-original.svg",
+    },
+    { name: "MCP", imagePath: mcpLogo },
+    { name: "Ollama", imagePath: ollamaLogo },
+    { name: "Hugging Face", imagePath: huggingFaceLogo },
+    {
+      name: "linux",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg",
+    },
+    {
+      name: "mac OS",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apple/apple-original.svg",
+    },
+  ],
 ];
 
 export const educationItems: education[] = [
@@ -331,8 +429,7 @@ export const testimonials: testimonial[] = [
     jobTitle: "Software Engineer",
     location: "Chennai, India",
     company: "Agilysis",
-    testimonial:
-      "I worked with Gokul and what stood out immediately was his genuine passion for coding. He enjoys digging into problems, understanding how things work, and finding clean solutions rather than just getting something to “work.” He’s reliable, easy to collaborate with, and takes real ownership of his work. Any team that values curiosity and solid engineering would benefit from having him.",
+    testimonial: `I’ve had the pleasure of working with him and can confidently say he is both highly professional and genuinely easy to collaborate with. He approaches every project with a strong sense of responsibility and consistently delivers quality work.What stands out most is his open-minded attitude, he welcomes feedback. He works collaboratively and  communicates clearly`,
     image: Akimage,
   },
 ];

@@ -15,6 +15,9 @@ body {
     text-textMainAccent1 text-textMainAccent2 text-textMainAccent3;
   scrollbar-width: none;
   background: #000;
+  font-feature-settings:
+    "liga" 1,
+    "calt" 1;
 }
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
@@ -130,4 +133,46 @@ body::-webkit-scrollbar,
 
 .animate-gradient {
   animation: gradient 18s ease infinite;
+}
+
+.techitem {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+
+  & img {
+    object-fit: contain;
+    filter: grayscale(100%) contrast(1.2) brightness(1.5);
+    opacity: 0.85;
+    transition: filter 0.3s ease opacity 0.3s ease;
+  }
+
+  &:hover {
+    background: #c2a4ff1a;
+    border-color: oklch(58.5% 0.233 277.117);
+    box-shadow: 0 8px 30px #c2a4ff40;
+
+    & img {
+      filter: none;
+      opacity: 1;
+    }
+  }
+}
+.techitem::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(79, 70, 229, 0.3),
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.techitem:hover::before {
+  opacity: 1;
 }
