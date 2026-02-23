@@ -1,6 +1,7 @@
-import type { pageProp } from "../../types";
+import useTheme from "../../hooks/useTheme";
 
-export default function MovingGradient({ theme }: pageProp) {
+export default function MovingGradient({ className }: { className?: string }) {
+  const { theme } = useTheme();
   const gradient =
     theme === "light"
       ? `bg-white`
@@ -10,7 +11,7 @@ export default function MovingGradient({ theme }: pageProp) {
     <div
       className={`
     fixed inset-0 -z-10 w-full
-    ${gradient}
+    ${gradient} ${className}
   `}
     />
   );

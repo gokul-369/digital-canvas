@@ -91,3 +91,15 @@ export type achievement = {
   type: highlightType;
   company: string;
 };
+
+export type Album = {
+  img: string;
+  title: string;
+};
+
+export type prcocessedimages = {
+  title: string;
+  thumb: string;
+  medium: string;
+  full: string;
+};

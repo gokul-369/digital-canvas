@@ -7,6 +7,8 @@ import type {
   education,
   testimonial,
   achievement,
+  Album,
+  prcocessedimages,
 } from "../types";
 
 import {
@@ -527,3 +529,156 @@ export const awards: achievement[] = [
     type: "award",
   },
 ];
+
+export const album: Album[] = [
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/beachset.jpeg",
+    title: "Sunset and Beaches",
+  },
+
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/brinjal.jpeg",
+    title: "Brinjal",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/building.jpg",
+    title: "Building",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/candle.jpg",
+    title: "Candle",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/clip.jpg",
+    title: "Clip",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/cyan.jpeg",
+    title: "Cyan",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/dawn.jpeg",
+    title: "dawn",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/dusk.jpeg",
+    title: "dusk",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/hills.jpg",
+    title: "hills",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/indigo.jpeg",
+    title: "indigo",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/jet.jpeg",
+    title: "Jet",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/joker.jpg",
+    title: "Jocker",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/keralalake.jpeg",
+    title: "Kerala",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/lamp.jpeg",
+    title: "Lamp",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/mailbox.jpeg",
+    title: "Mail",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/mall.jpg",
+    title: "Mall",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/money.jpg",
+    title: "Money",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/park.jpg",
+    title: "park",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/potato.jpg",
+    title: "potato",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/py.jpeg",
+    title: "PY",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/skydance.jpeg",
+    title: "Sky dance",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/solosight.jpeg",
+    title: "solo sight",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/solobird.jpeg",
+    title: "solo bird",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/stack.jpg",
+    title: "stack",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/symmetribuilding.jpeg",
+    title: "building",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/templetown.jpeg",
+    title: "temple town",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/traincrowd.jpeg",
+    title: "temple crowd",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/trainman.jpg",
+    title: "train man",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/tray.jpeg",
+    title: "tray",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/white-town-2.jpeg",
+    title: "WT",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/whitedoor.jpg",
+    title: "WT",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/whitetown.jpeg",
+    title: "WT",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/window.jpeg",
+    title: "Window",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/yellow.jpg",
+    title: "Yellow",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/zoho.jpeg",
+    title: "Zoho",
+  },
+];
+
+import { getImageSet } from "../utils/getImageSrc";
+
+export const processedAlbum: prcocessedimages[] = album.map((item) => ({
+  title: item.title,
+  ...getImageSet(item.img),
+}));
+
+console.log(processedAlbum);
