@@ -19,16 +19,6 @@ import {
   HiOutlineUserGroup,
 } from "react-icons/hi2";
 
-import reduxSagaLogo from "../assets/reduxsaga.svg";
-import mcpLogo from "../assets/mcp.svg";
-import ollamaLogo from "../assets/ollama.svg";
-import huggingFaceLogo from "../assets/huggingface.svg";
-import expressLogo from "../assets/express.svg";
-
-import bharathiImage from "../assets/bharathi.png";
-import lavanyaImage from "../assets/lavanya.png";
-import Akimage from "../assets/Ak.png";
-import steephenImage from "../assets/steephen.png";
 import { IoLogoElectron } from "react-icons/io5";
 import { HiOutlineBadgeCheck } from "react-icons/hi";
 
@@ -201,7 +191,11 @@ export const skills: skill[][] = [
       imagePath:
         "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redux/redux-original.svg",
     },
-    { name: "Redux Saga", imagePath: reduxSagaLogo },
+    {
+      name: "Redux Saga",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/reduxsaga.svg",
+    },
     {
       name: "Tailwind",
       imagePath:
@@ -302,7 +296,8 @@ export const skills: skill[][] = [
     },
     {
       name: "Express",
-      imagePath: expressLogo,
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/express.svg",
     },
     {
       name: "SignalR",
@@ -323,9 +318,21 @@ export const skills: skill[][] = [
       imagePath:
         "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongoose/mongoose-original.svg",
     },
-    { name: "MCP", imagePath: mcpLogo },
-    { name: "Ollama", imagePath: ollamaLogo },
-    { name: "Hugging Face", imagePath: huggingFaceLogo },
+    {
+      name: "MCP",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/express.svg",
+    },
+    {
+      name: "Ollama",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/ollama.svg",
+    },
+    {
+      name: "Hugging Face",
+      imagePath:
+        "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/huggingface.svg",
+    },
     {
       name: "linux",
       imagePath:
@@ -387,7 +394,8 @@ export const testimonials: testimonial[] = [
     company: "Infosys",
     testimonial:
       "I’ve collaborated with him and exchanged technical ideas, and he consistently stands out for his quick learning ability and strong coding skills. He writes clean and optimized code, grasps new technologies and approaches challenges with clarity and confidence. It’s impressive to see such focus and growth at this stage of his career.",
-    image: bharathiImage,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/bharathi.png",
   },
   {
     name: "Lavanya Srinivasan",
@@ -396,7 +404,8 @@ export const testimonials: testimonial[] = [
     company: "Inovyne",
     testimonial:
       "I worked with Gokul and what stood out immediately was his genuine passion for coding. He enjoys digging into problems, understanding how things work, and finding clean solutions rather than just getting something to “work.” He’s reliable, easy to collaborate with, and takes real ownership of his work. Any team that values curiosity and solid engineering would benefit from having him.",
-    image: lavanyaImage,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/lavanya.png",
   },
   {
     name: "Nabeel Ahmed",
@@ -422,7 +431,8 @@ export const testimonials: testimonial[] = [
     testimonial: `I had the opportunity to work closely with Gokul on our project, and his front-end expertise consistently stood out. He has a strong eye for detail and a deep understanding of building responsive, user friendly interfaces.
     What impressed me most was his ability to translate complex backend requirements into clean, intuitive UI experiences. He is highly collaborative, proactive in communication, and always focused on performance and maintainability.
     Any team would benefit from his technical skill, ownership mindset, and commitment to delivering high-quality work.`,
-    image: steephenImage,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/steephen.png",
   },
   {
     name: "Ajay Karthick",
@@ -430,7 +440,8 @@ export const testimonials: testimonial[] = [
     location: "Chennai, India",
     company: "Agilysis",
     testimonial: `I’ve had the pleasure of working with him and can confidently say he is both highly professional and genuinely easy to collaborate with. He approaches every project with a strong sense of responsibility and consistently delivers quality work.What stands out most is his open-minded attitude, he welcomes feedback. He works collaboratively and  communicates clearly`,
-    image: Akimage,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/Ak.png",
   },
 ];
 
