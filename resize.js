@@ -8,7 +8,7 @@ const output = "./src/assets";
 const sizes = [
   { name: "thumb", width: 400 },
   { name: "medium", width: 1200 },
-  { name: "large", width: 1800 },
+  { name: "full", width: 1800 },
 ];
 
 sizes.forEach(({ name, width }) => {

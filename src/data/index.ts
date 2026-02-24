@@ -11,6 +11,8 @@ import type {
   prcocessedimages,
 } from "../types";
 
+import { getImageSet } from "../utils/getImageSrc";
+
 import {
   HiOutlineUsers,
   HiOutlineStar,
@@ -532,152 +534,171 @@ export const awards: achievement[] = [
 
 export const album: Album[] = [
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/beachset.jpeg",
-    title: "Sunset and Beaches",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image1.webp",
+    title: "image1",
   },
 
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/brinjal.jpeg",
-    title: "Brinjal",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image2.webp",
+    title: "image2",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/building.jpg",
-    title: "Building",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image3.webp",
+    title: "image3",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/candle.jpg",
-    title: "Candle",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image4.webp",
+    title: "image4",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/clip.jpg",
-    title: "Clip",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image5.webp",
+    title: "image5",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/cyan.jpeg",
-    title: "Cyan",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image6.webp",
+    title: "image6",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/dawn.jpeg",
-    title: "dawn",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image7.webp",
+    title: "image7",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/dusk.jpeg",
-    title: "dusk",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image8.webp",
+    title: "image8",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/hills.jpg",
-    title: "hills",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image9.webp",
+    title: "image9",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/indigo.jpeg",
-    title: "indigo",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image10.webp",
+    title: "image10",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/jet.jpeg",
-    title: "Jet",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image11.webp",
+    title: "image11",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/joker.jpg",
-    title: "Jocker",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image12.webp",
+    title: "image12",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/keralalake.jpeg",
-    title: "Kerala",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image13.webp",
+    title: "image13",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/lamp.jpeg",
-    title: "Lamp",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image14.webp",
+    title: "image14",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/mailbox.jpeg",
-    title: "Mail",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image15.webp",
+    title: "image15",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/mall.jpg",
-    title: "Mall",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image16.webp",
+    title: "image16",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/money.jpg",
-    title: "Money",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image17.webp",
+    title: "image17",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/park.jpg",
-    title: "park",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image18.webp",
+    title: "image18",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/potato.jpg",
-    title: "potato",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image19.webp",
+    title: "image19",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/py.jpeg",
-    title: "PY",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image20.webp",
+    title: "image20",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/skydance.jpeg",
-    title: "Sky dance",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image21.webp",
+    title: "image21",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/solosight.jpeg",
-    title: "solo sight",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image22.webp",
+    title: "image22",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/solobird.jpeg",
-    title: "solo bird",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image23.webp",
+    title: "image23",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/stack.jpg",
-    title: "stack",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image24.webp",
+    title: "image24",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/symmetribuilding.jpeg",
-    title: "building",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image25.webp",
+    title: "image25",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/templetown.jpeg",
-    title: "temple town",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image26.webp",
+    title: "image26",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/traincrowd.jpeg",
-    title: "temple crowd",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image27.webp",
+    title: "image27",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/trainman.jpg",
-    title: "train man",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image28.webp",
+    title: "image28",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/tray.jpeg",
-    title: "tray",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image29.webp",
+    title: "image29",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/white-town-2.jpeg",
-    title: "WT",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image30.webp",
+    title: "image30",
+    orientation: "portrait",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/whitedoor.jpg",
-    title: "WT",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image31.webp",
+    title: "image31",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/whitetown.jpeg",
-    title: "WT",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image32.webp",
+    title: "image32",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/window.jpeg",
-    title: "Window",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image33.webp",
+    title: "image33",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/yellow.jpg",
-    title: "Yellow",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image34.webp",
+    title: "image34",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/zoho.jpeg",
-    title: "Zoho",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image35.webp",
+    title: "image35",
+    orientation: "portrait",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image36.webp",
+    title: "image36",
+    orientation: "portrait",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image37.webp",
+    title: "image37",
+    orientation: "portrait",
   },
 ];
 
-import { getImageSet } from "../utils/getImageSrc";
-
 export const processedAlbum: prcocessedimages[] = album.map((item) => ({
   title: item.title,
+  orientation: item.orientation,
   ...getImageSet(item.img),
 }));
 

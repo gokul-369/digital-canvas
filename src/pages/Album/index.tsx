@@ -7,7 +7,8 @@ import Gallery from "./Gallery";
 import MovingGradient from "../../components/Backgrounds/MovingGradient";
 import BlurText from "../../animations/Text/BlurText";
 import useTheme from "../../hooks/useTheme";
-import { album as images } from "../../data";
+import { processedAlbum as images } from "../../data";
+import type { prcocessedimages } from "../../types";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -82,7 +83,7 @@ export default function Album() {
     return () => ctx.revert();
   }, [fullScreen]);
 
-  const [bgImage, setBgImage] = useState(images[0].img);
+  const [bgImage, setBgImage] = useState<prcocessedimages>(images[0]);
   console.log(bgImage);
 
   const [showBg, setShowBg] = useState(false);
@@ -106,7 +107,7 @@ export default function Album() {
         <motion.div
           className="absolute inset-0 h-dvh  bg-cover bg-center"
           style={{
-            backgroundImage: `url(${bgImage})`,
+            backgroundImage: `url(${bgImage.thumb})`,
             filter: "blur(30px) brightness(0.6) saturate(1.2)",
           }}
           initial={{ opacity: 0, scale: 1.05 }}
@@ -121,7 +122,7 @@ export default function Album() {
           </div>
           {!fullScreen && (
             <motion.div
-              className="md:h-[700px] md:w-[1200px] h-[500px] w-[400px]"
+              className={`md:h-[700px] md:w-[1200px] h-[600px] w-[400px]`}
               layoutId="gallery"
             >
               <Gallery
@@ -138,7 +139,7 @@ export default function Album() {
 
                   setFullScreen(true);
                 }}
-                onImageChange={(i) => setBgImage(images[i].img)}
+                onImageChange={(i) => setBgImage(images[i])}
               />
             </motion.div>
           )}
@@ -177,7 +178,7 @@ export default function Album() {
               {/* Gallery content */}
               <div className="relative z-10 h-dvh w-dvw flex items-center justify-center">
                 <Gallery
-                  onImageChange={(i) => setBgImage(images[i].img)}
+                  onImageChange={(i) => setBgImage(images[i])}
                   images={images}
                   fullscreen
                   width="100%"

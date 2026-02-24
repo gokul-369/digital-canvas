@@ -95,6 +95,7 @@ export type achievement = {
 export type Album = {
   img: string;
   title: string;
+  orientation?: "portrait" | "landscape";
 };
 
 export type prcocessedimages = {
@@ -102,4 +103,5 @@ export type prcocessedimages = {
   thumb: string;
   medium: string;
   full: string;
+  orientation?: "portrait" | "landscape";
 };

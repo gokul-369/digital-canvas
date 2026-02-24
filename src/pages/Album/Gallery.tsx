@@ -6,6 +6,7 @@ import cx from "clsx";
 import styles from "./gallery.module.css";
 import { FiMaximize, FiMinimize } from "react-icons/fi";
 import { IoChevronBack, IoChevronForwardOutline } from "react-icons/io5";
+import type { prcocessedimages } from "../../types";
 
 if (!CustomEase.get("hop")) {
   CustomEase.create(
@@ -29,7 +30,7 @@ function Gallery({
 }: {
   height?: number | string;
   width?: number | string;
-  images: { img: string; title: string }[];
+  images: prcocessedimages[];
   fullscreen?: boolean;
   onFullScreenToggle: () => void;
   className?: string;
@@ -267,7 +268,17 @@ function Gallery({
               }}
               className={cx(styles.img)}
             >
-              <img src={item.img} alt={item.title} />
+              <img
+                src={fullscreen ? item.full : item.medium}
+                alt={item.title}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                style={{
+                  objectFit:
+                    item.orientation === "portrait" ? "contain" : "cover",
+                }}
+              />
             </div>
           ))}
         </div>
@@ -306,7 +317,12 @@ function Gallery({
                 index === currentIndex && styles.active,
               )}
             >
-              <img src={item.img} loading="lazy" />
+              <img
+                src={item.thumb}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+              />
             </div>
           ))}
         </div>
