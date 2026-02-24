@@ -591,10 +591,6 @@ export const album: Album[] = [
     title: "image13",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image14.webp",
-    title: "image14",
-  },
-  {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image15.webp",
     title: "image15",
   },

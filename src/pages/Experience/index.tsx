@@ -5,17 +5,20 @@ import { themeFactory } from "../../utils/styleFactory";
 import Awards from "../../components/Awards";
 import WorkExperience from "../../components/WorkExperience/WorkExperience";
 import Skills from "../../components/Skills";
+import useNavigateTop from "../../hooks/useNavigateToTop";
 
 function Experience({ theme }: pageProp) {
   const themeClassSet = themeFactory(theme);
+  useNavigateTop();
+
   return (
-    <div className={`relative`}>
+    <section className={`relative overflow-auto`}>
       <MovingGradient />
       <WorkExperience />
       <Testimonials theme={themeClassSet} />
       <Awards theme={themeClassSet} />
       <Skills />
-    </div>
+    </section>
   );
 }
 

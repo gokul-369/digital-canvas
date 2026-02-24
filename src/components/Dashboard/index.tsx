@@ -88,13 +88,14 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               Moments, moods, and stories I choose to freeze in time. And yet at
               some times I just don't click
             </span>
-            <a
-              href={"https://dev.to/gokul369"}
+            <HashLink
+              to={"/gallery/#album"}
+              smooth
               className={`text-amber-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
               View my photo grid
               <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </a>
+            </HashLink>
             <IoCameraOutline
               className={`h-24 w-24 absolute bottom-1 right-3 text-white/5 group-hover:text-amber-500/25 transition`}
             />
@@ -117,13 +118,14 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               From curiosity to craft and one step, one lesson, one breakthrough
               at a time. Check out my experience in the world of tech
             </span>
-            <a
-              href={"https://dev.to/gokul369"}
+            <HashLink
+              to={"/experience/#experience"}
+              smooth
               className={`text-sky-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
               View my work experience
               <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </a>
+            </HashLink>
             <HiOutlineBriefcase
               className={`h-24 w-24 absolute bottom-1 right-3 text-white/5 group-hover:text-sky-500/25 transition`}
             />
@@ -149,13 +151,14 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
                 experiences, powered by the tools and technologies I love.
               </p>
             </div>
-            <a
-              href={"https://dev.to/gokul369"}
+            <HashLink
+              to={"/experience/#skills"}
+              smooth
               className={`text-cyan-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
               View my tech stack
               <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </a>
+            </HashLink>
             <HiOutlineCommandLine
               className={`h-24 w-24 absolute bottom-1 right-3 text-white/5 group-hover:text-cyan-500/25 transition`}
             />

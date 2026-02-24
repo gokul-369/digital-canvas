@@ -5,7 +5,7 @@ import useTheme from "../hooks/useTheme";
 import Fade from "../animations/Fade";
 import Nav from "../components/Nav";
 import ReactLenis from "lenis/react";
-import Album from "../pages/Album";
+import ImageGallery from "../pages/ImageGallery";
 
 export function AppRoutes() {
   const { theme } = useTheme();
@@ -29,7 +29,7 @@ export function AppRoutes() {
       <Routes>
         <Route path="/" element={<Home theme={theme} />} />
         <Route path="/experience" element={<Experience theme={theme} />} />
-        <Route path="/album" element={<Album />} />
+        <Route path="/gallery" element={<ImageGallery />} />
       </Routes>
     </ReactLenis>
   );

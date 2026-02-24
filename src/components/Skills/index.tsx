@@ -6,7 +6,7 @@ function Skills() {
   const { themeClassSet: theme } = useTheme();
   return (
     <section
-      id="#skills"
+      id="skills"
       className=" flex flex-col items-center justify-center lg:px-40 md:py-32 py-8 md:h-dvh w-full"
     >
       <BlurText
