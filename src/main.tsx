@@ -1,13 +1,13 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
-import { BrowserRouter } from "react-router";
+import { HashRouter } from "react-router-dom";
 import { AppRoutes } from "./routes/index.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter basename="/">
+  <HashRouter basename="/">
     <ThemeProvider>
       <AppRoutes />
     </ThemeProvider>
-  </BrowserRouter>,
+  </HashRouter>,
 );
