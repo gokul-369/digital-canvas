@@ -4,6 +4,8 @@ import { hero } from "../../data";
 import Fade from "../../animations/Fade";
 import Button from "../Button";
 import BlurText from "../../animations/Text/BlurText";
+import { HashLink } from "react-router-hash-link";
+
 import { IoChevronDownOutline } from "react-icons/io5";
 
 type HeroProps = {
@@ -64,11 +66,11 @@ function Hero({ theme, colors }: HeroProps) {
           </Fade>
         </main>
 
-        <a href="/#about">
+        <HashLink to={"/#about"} smooth>
           <IoChevronDownOutline
             className={`absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce ${theme.textPrimary}`}
           />
-        </a>
+        </HashLink>
       </div>
     </section>
   );
