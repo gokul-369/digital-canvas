@@ -19,67 +19,6 @@ export default function Album() {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollYRef = useRef(0);
 
-  // GSAP Scroll Reveal
-  // useLayoutEffect(() => {
-  //   if (fullScreen) {
-  //     scrollYRef.current = window.scrollY;
-
-  //     document.body.style.position = "fixed";
-  //     document.body.style.top = `-${scrollYRef.current}px`;
-  //     document.body.style.width = "100%";
-  //     document.body.style.overflow = "hidden";
-  //   } else {
-  //     const y = Math.abs(parseInt(document.body.style.top || "0", 10));
-
-  //     document.body.style.position = "";
-  //     document.body.style.top = "";
-  //     document.body.style.width = "";
-  //     document.body.style.overflow = "";
-
-  //     window.scrollTo(0, y);
-
-  //     requestAnimationFrame(() => {
-  //       ScrollTrigger.refresh();
-  //     });
-  //   }
-  // }, [fullScreen]);
-
-  // useLayoutEffect(() => {
-  //   if (!containerRef.current || !revealRef.current || fullScreen) return;
-
-  //   const ctx = gsap.context(() => {
-  //     gsap.fromTo(
-  //       revealRef.current,
-  //       {
-  //         scale: 0.92,
-  //         borderRadius: 24,
-  //       },
-  //       {
-  //         scale: 1,
-  //         borderRadius: 24,
-  //         ease: "none",
-  //         scrollTrigger: {
-  //           trigger: containerRef.current,
-  //           start: "top top",
-  //           end: "+=120%",
-  //           scrub: 0.2,
-  //           pin: true,
-  //           pinSpacing: true,
-  //           onUpdate: (self) => {
-  //             if (self.progress > 0.85) setShowBg(true);
-  //             else setShowBg(false);
-  //           },
-  //         },
-  //       },
-  //     );
-  //   }, containerRef);
-
-  //   return () => {
-  //     ctx.revert();
-  //     // ScrollTrigger.getAll().forEach((t) => t.kill());
-  //   };
-  // }, [fullScreen]);
-
   // Scroll freeze + restore (fullscreen lifecycle)
   useLayoutEffect(() => {
     if (fullScreen) {
@@ -209,29 +148,45 @@ export default function Album() {
           {fullScreen && (
             <motion.div
               layoutId="gallery"
-              style={{ transformOrigin: "top left" }}
-              className="fixed inset-0 z-[999] bg-black flex items-center justify-center h-dvh w-dvw overflow-hidden"
+              className="fixed inset-0 z-[999] flex items-center justify-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{
-                duration: 0.45,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Gallery
-                onImageChange={(i) => setBgImage(images[i].img)}
-                images={images}
-                fullscreen
-                width={"100%"}
-                height={"100%"}
-                setActiveIndex={setActiveIndex}
-                currentIndex={activeIndex}
-                onFullScreenToggle={() => {
-                  scrollYRef.current = window.scrollY;
-                  setFullScreen(false);
+              {/* Background image layer */}
+              <div
+                className="absolute inset-0 bg-cover bg-center scale-110"
+                style={{
+                  backgroundImage: `url(${bgImage})`,
                 }}
               />
+
+              {/* Glass blur overlay */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  backdropFilter: "blur(35px) brightness(0.6) saturate(1.2)",
+                  WebkitBackdropFilter:
+                    "blur(35px) brightness(0.6) saturate(1.2)",
+                  background:
+                    "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)), rgba(0,0,0,0.45)",
+                }}
+              />
+
+              {/* Gallery content */}
+              <div className="relative z-10 h-dvh w-dvw flex items-center justify-center">
+                <Gallery
+                  onImageChange={(i) => setBgImage(images[i].img)}
+                  images={images}
+                  fullscreen
+                  width="100%"
+                  height="100%"
+                  setActiveIndex={setActiveIndex}
+                  currentIndex={activeIndex}
+                  onFullScreenToggle={() => setFullScreen(false)}
+                />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

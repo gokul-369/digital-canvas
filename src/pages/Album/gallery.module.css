@@ -193,6 +193,14 @@ body {
       height: 100%;
       object-fit: contain;
     }
+
+    & .slidertitle {
+      & .slidertitlewrapper {
+        & p {
+          font-size: 30px;
+        }
+      }
+    }
   }
   .sliderindicators {
     width: 90%;
@@ -201,11 +209,5 @@ body {
   .sliderpreview {
     width: 90%;
     bottom: 5em;
-  }
-
-  .slidertitlewrapper {
-    & p {
-      font-size: 30px;
-    }
   }
 }
