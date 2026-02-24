@@ -10,7 +10,7 @@ function Experience({ theme }: pageProp) {
   const themeClassSet = themeFactory(theme);
   return (
     <div className={`relative`}>
-      <MovingGradient theme={theme} />
+      <MovingGradient />
       <WorkExperience />
       <Testimonials theme={themeClassSet} />
       <Awards theme={themeClassSet} />

@@ -1,9 +1,10 @@
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { navLinks } from "../../data";
 import useTheme from "../../hooks/useTheme";
 import type { pageProp } from "../../types";
 import { themeFactory } from "../../utils/styleFactory";
 import { HashLink } from "react-router-hash-link";
+import { PiMoonStarsLight } from "react-icons/pi";
+import { GoSun } from "react-icons/go";
 
 function Nav({ theme: themeClass }: pageProp) {
   const theme = themeFactory(themeClass);
@@ -31,14 +32,14 @@ function Nav({ theme: themeClass }: pageProp) {
         ))}
       </ul>
       {themeName === "dark" ? (
-        <SunIcon
+        <GoSun
           onClick={toggleTheme}
-          className={`${theme.textPrimary} transition-transform duration-300 ease-in-out transform hover:rotate-90`}
+          className={`${theme.textPrimary} font-bold transition-transform duration-300 ease-in-out transform hover:rotate-90 text-sm cursor-pointer`}
         />
       ) : (
-        <MoonIcon
+        <PiMoonStarsLight
           onClick={toggleTheme}
-          className={`${theme.textPrimary} transition-transform duration-300 ease-in-out transform hover:rotate-45`}
+          className={`${theme.textPrimary} font-bold text-center cursor-pointer text-sm transition-transform duration-300 ease-in-out transform hover:-rotate-45`}
         />
       )}
     </nav>
