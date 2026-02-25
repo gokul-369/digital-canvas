@@ -1,4 +1,4 @@
-# Gokul’s Digital Resume
+# Gokul’s Digital Canvas
 
 A minimal, fast, and slightly over‑engineered digital resume built with **React**, **TypeScript**, and **Vite**, wrapped in a minimal, theme‑toggled UI.
 
