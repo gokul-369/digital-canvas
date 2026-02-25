@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import useTheme from "../../hooks/useTheme";
 import { themeFactory } from "../../utils/styleFactory";
 
@@ -6,11 +7,15 @@ function Button({
   variant = "primary",
   rounded = true,
   className,
+  icon,
+  onClick,
 }: {
-  text: string;
+  text: string | ReactNode;
   rounded?: boolean;
   variant?: "primary" | "secondary" | "tertiary";
   className?: string;
+  icon?: ReactNode;
+  onClick: () => void;
 }) {
   const { theme: currentTheme } = useTheme();
   const theme = themeFactory(currentTheme);
@@ -21,9 +26,10 @@ function Button({
   };
   return (
     <button
-      className={`px-4 py-2 ${rounded ? "rounded-full" : "rounded"} hover:opacity-90 transition-colors duration-200 ${styles[variant] || styles.secondary} ${className || ""}`}
+      className={`px-4 py-2 flex gap-1 items-center justify-center ${rounded ? "rounded-full" : "rounded"} hover:opacity-90 transition-colors duration-200 ${styles[variant] || styles.secondary} ${className || ""}`}
+      onClick={onClick}
     >
-      {text}
+      {text} {icon && icon}
     </button>
   );
 }

@@ -7,6 +7,9 @@ import BlurText from "../../animations/Text/BlurText";
 import { HashLink } from "react-router-hash-link";
 
 import { IoChevronDownOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
+import { FaLinkedin } from "react-icons/fa";
+import { GoBriefcase } from "react-icons/go";
 
 type HeroProps = {
   theme: ThemeClassSet;
@@ -14,6 +17,7 @@ type HeroProps = {
 };
 
 function Hero({ theme, colors }: HeroProps) {
+  const navigate = useNavigate();
   return (
     <section id={"home"} className={`h-dvh relative w-full ${theme.bgPrimary}`}>
       <div className="fixed top-0 h-[100dvh] w-full left-0 right-0 -z-0">
@@ -60,8 +64,25 @@ function Hero({ theme, colors }: HeroProps) {
               dangerouslySetInnerHTML={{ __html: hero.longDescription }}
             />
             <div className="inline-flex gap-5 items-center justify-center mt-10">
-              <Button text="Know more" variant="primary" />
-              <Button text="Get in touch" variant="tertiary" />
+              <Button
+                text="View Experience"
+                variant="primary"
+                icon={<GoBriefcase className="ml-1" />}
+                onClick={() => navigate("/experience")}
+              />
+              <Button
+                text={
+                  <a
+                    href="https://linkedin.com/in/gokul-c-40773a1b6"
+                    target="blank"
+                  >
+                    Get in touch
+                  </a>
+                }
+                icon={<FaLinkedin className="ml-1 mb-[2px]" />}
+                variant="tertiary"
+                onClick={() => {}}
+              />
             </div>
           </Fade>
         </main>

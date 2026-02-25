@@ -6,6 +6,8 @@ import { bio, educationItems, interests } from "../../data";
 import TextType from "../../animations/Text/TypeWriter";
 import { useRef, useState } from "react";
 import { motion } from "motion/react";
+import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { MdOutlineMailOutline } from "react-icons/md";
 
 function About({ theme }: { theme: ThemeClassSet }) {
   const [startTyping, setStartTyping] = useState(false);
@@ -59,14 +61,16 @@ function About({ theme }: { theme: ThemeClassSet }) {
             className="h-full mx-auto col-span-2 lg:col-span-1 lg:mx-0 text-center lg:w-[330px] px-5 lg:px-0 w-full"
             name="Gokul"
             title="Software Engineer"
-            handle="gokul369"
-            status="Online"
-            contactText="Contact Me"
+            handle="gokul-369"
+            status="Github"
+            contactText="View"
             avatarUrl={ProfilePicture}
             showUserInfo={true}
             enableTilt={true}
             enableMobileTilt={true}
-            onContactClick={() => console.log("Contact clicked")}
+            onContactClick={() => {
+              window.location.href = "https://github.com/gokul-369";
+            }}
             behindGlowColor="hsla(173, 100%, 70%, 0.6)"
             behindGlowEnabled
             innerGradient="linear-gradient(145deg, rgba(56,189,248,0.15) 0%, rgba(99,102,241,0.22) 40%, rgba(251,191,36,0.18) 100%)"
@@ -216,6 +220,37 @@ function About({ theme }: { theme: ThemeClassSet }) {
                 ))}
               </motion.div>
             )}
+
+            <div className="flex mt-10 gap-10  text-white items-center justify-start">
+              <a
+                href="https://linkedin.com/in/gokul-c-40773a1b6"
+                target="blank"
+                className="hover:text-indigo-500"
+              >
+                <FaLinkedin />
+              </a>
+              <a
+                className="hover:text-indigo-500"
+                href="https://github.com/gokul-369"
+                target="blank"
+              >
+                <FaGithub />
+              </a>
+              <a
+                className="hover:text-indigo-500"
+                href="mailto:gokul369@outlook.com"
+                target="blank"
+              >
+                <MdOutlineMailOutline />
+              </a>
+              <a
+                className="hover:text-indigo-500"
+                href="https://www.instagram.com/gokul__369/"
+                target="blank"
+              >
+                <FaInstagram />
+              </a>
+            </div>
           </div>
         </div>
       </main>

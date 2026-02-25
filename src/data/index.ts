@@ -41,7 +41,7 @@ export const navLinks: formField[] = [
   },
   {
     name: "Skills",
-    value: "#skills",
+    value: "/experience#skills",
   },
 ];
 
@@ -59,7 +59,7 @@ export const bio: BioType = {
   name: "Gokul",
   title: "Software Engineer",
   description:
-    "Working at the intersection of engineering and design. I build frontends that are predictable for developers, intuitive for users, and fast in production. I care deeply about structure, motion, and performance refactoring component trees, fine-tuning micro-interactions, and obsessing over how systems behave under real-world traffic.",
+    "Working at the intersection of engineering and design, I build frontends that are predictable for developers, intuitive for users, and fast in production. I care deeply about structure, motion, and architecture, ensuring interfaces stay smooth and reliable under real-world traffic.",
 };
 
 export const socialLinks: formField[] = [
