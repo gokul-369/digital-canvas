@@ -91,7 +91,7 @@ export default function Album() {
   return (
     <section
       ref={containerRef}
-      className="relative h-dvh  pt-20 px-8 md:px-40 w-full flex-col flex justify-start items-center"
+      className="relative h-dvh  pt-24 px-8 md:px-40 w-full flex-col flex justify-start items-center"
       id="album"
     >
       <BlurText
@@ -100,8 +100,8 @@ export default function Album() {
         animateBy="tags"
         direction="top"
       >
-        <p className={`${theme.textPrimary}`}> Technical </p>
-        <span className={`${theme.textMainAccent1} ml-3`}>Wizardry</span>
+        <p className={`${theme.textPrimary}`}> Moments I chose to </p>
+        <span className={`${theme.textMainAccent1} ml-3`}>freeze in time</span>
       </BlurText>
       <motion.div
         className="absolute inset-0 h-dvh  bg-cover bg-center"
@@ -121,7 +121,7 @@ export default function Album() {
         </div>
         {!fullScreen && (
           <motion.div
-            className={`md:h-[700px] md:w-[1200px] h-[600px] w-[400px]`}
+            className={`md:h-[600px] md:w-[1000px] h-[600px] w-[400px]`}
             layoutId="gallery"
           >
             <Gallery

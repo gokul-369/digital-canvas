@@ -13,12 +13,6 @@ function ImageGallery() {
     <section className="relative" id="gallery">
       <MovingGradient />
       <Album />
-      <section
-        id="demo"
-        className="h-dvh flex items-center justify-center w-full"
-      >
-        hi
-      </section>
     </section>
   );
 }
