@@ -6,6 +6,8 @@ import Fade from "../animations/Fade";
 import Nav from "../components/Nav";
 import ReactLenis from "lenis/react";
 import { Loader } from "../components/Loader";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import { lazy, Suspense } from "react";
 
@@ -24,6 +26,8 @@ export function AppRoutes() {
         smoothWheel: true,
       }}
     >
+      <Analytics />
+      <SpeedInsights />
       <Fade
         className="fixed w-full flex items-center justify-center top-7 z-40"
         variant="fade-down"
