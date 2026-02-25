@@ -1,14 +1,19 @@
 import { Route, Routes } from "react-router";
 import Home from "../pages/Home";
-import Experience from "../pages/Experience";
+
 import useTheme from "../hooks/useTheme";
 import Fade from "../animations/Fade";
 import Nav from "../components/Nav";
 import ReactLenis from "lenis/react";
-import ImageGallery from "../pages/ImageGallery";
+import { Loader } from "../components/Loader";
+
+import { lazy, Suspense } from "react";
 
 export function AppRoutes() {
   const { theme } = useTheme();
+
+  const Experience = lazy(() => import("../pages/Experience"));
+  const ImageGallery = lazy(() => import("../pages/ImageGallery"));
 
   return (
     <ReactLenis
@@ -28,8 +33,22 @@ export function AppRoutes() {
       </Fade>
       <Routes>
         <Route path="/" element={<Home theme={theme} />} />
-        <Route path="/experience" element={<Experience theme={theme} />} />
-        <Route path="/gallery" element={<ImageGallery />} />
+        <Route
+          path="/experience"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Experience theme={theme} />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/gallery"
+          element={
+            <Suspense fallback={<Loader />}>
+              <ImageGallery />
+            </Suspense>
+          }
+        />
       </Routes>
     </ReactLenis>
   );
