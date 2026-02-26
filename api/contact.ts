@@ -16,7 +16,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const referer = req.headers.referer;
-  if (!referer?.startsWith("https://gokul.ink")) {
+  if (!referer?.startsWith("https://gokul.ink/")) {
     return res.status(403).json({ error: "Forbidden" });
   }
 
