@@ -12,7 +12,7 @@ function Button({
 }: {
   text: string | ReactNode;
   rounded?: boolean;
-  variant?: "primary" | "secondary" | "tertiary";
+  variant: "primary" | "secondary" | "tertiary";
   className?: string;
   icon?: ReactNode;
   onClick: () => void;
@@ -26,7 +26,7 @@ function Button({
   };
   return (
     <button
-      className={`px-4 py-2 flex gap-1 items-center justify-center ${rounded ? "rounded-full" : "rounded"} hover:opacity-90 transition-colors duration-200 ${styles[variant] || styles.secondary} ${className || ""}`}
+      className={`px-4 py-2 flex gap-1 text-sm items-center justify-center ${rounded ? "rounded-full" : "rounded"} hover:opacity-90 transition-colors duration-200 ${styles[variant] || styles.secondary} ${className || ""}`}
       onClick={onClick}
     >
       {text} {icon && icon}

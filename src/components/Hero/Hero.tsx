@@ -8,8 +8,9 @@ import { HashLink } from "react-router-hash-link";
 
 import { IoChevronDownOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import { FaLinkedin } from "react-icons/fa";
-import { GoBriefcase } from "react-icons/go";
+import { useAppContext } from "../../context/AppContext";
+import { LuMail } from "react-icons/lu";
+import { HiOutlineBriefcase } from "react-icons/hi2";
 
 type HeroProps = {
   theme: ThemeClassSet;
@@ -18,6 +19,7 @@ type HeroProps = {
 
 function Hero({ theme, colors }: HeroProps) {
   const navigate = useNavigate();
+  const { openCollaborate } = useAppContext();
   return (
     <section id={"home"} className={`h-dvh relative w-full ${theme.bgPrimary}`}>
       <div className="fixed top-0 h-[100dvh] w-full left-0 right-0 -z-0">
@@ -65,23 +67,18 @@ function Hero({ theme, colors }: HeroProps) {
             />
             <div className="inline-flex gap-5 items-center justify-center mt-10">
               <Button
-                text="View Experience"
+                text="Get in touch"
                 variant="primary"
-                icon={<GoBriefcase className="ml-1" />}
-                onClick={() => navigate("/experience")}
+                icon={<LuMail className="ml-1" />}
+                onClick={openCollaborate}
               />
               <Button
-                text={
-                  <a
-                    href="https://linkedin.com/in/gokul-c-40773a1b6"
-                    target="blank"
-                  >
-                    Get in touch
-                  </a>
-                }
-                icon={<FaLinkedin className="ml-1 mb-[2px]" />}
+                text="View Work"
+                icon={<HiOutlineBriefcase className="ml-1" />}
                 variant="tertiary"
-                onClick={() => {}}
+                onClick={() => {
+                  navigate("/experience");
+                }}
               />
             </div>
           </Fade>

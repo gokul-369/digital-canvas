@@ -50,7 +50,7 @@ export const hero: heroType = {
   punchLine: "Interfaces that breathe.",
   shortDescription:
     "A software engineer who is solving for scale. Building for users. Refining for impact.",
-  longDescription: ` Hi, I&apos;m <span class="text-white dark:text-black">Gokul</span>, a software
+  longDescription: ` Hi, I&apos;m <span class="text-white">Gokul</span>, a software
                           engineer with a passion for crafting seamless user interfaces that
                           blend form and function. I&apos;m keen on building products that
                           not only meet user needs but also delight them.`,

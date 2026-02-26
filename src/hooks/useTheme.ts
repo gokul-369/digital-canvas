@@ -1,7 +1,12 @@
-import { useThemeContext } from "../context/ThemeContext";
+import { useAppContext } from "../context/AppContext";
 
 function useTheme() {
-  return useThemeContext();
+  const { theme, themeClassSet, toggleTheme } = useAppContext();
+  return {
+    theme,
+    themeClassSet,
+    toggleTheme,
+  };
 }
 
 export default useTheme;
