@@ -15,6 +15,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
+  const referer = req.headers.referer;
+  if (!referer?.startsWith("https://gokul.ink")) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
+
   const { name, email, message, idea } = req.body as MailBody;
 
   if (!name || !email || !message || !idea) {
