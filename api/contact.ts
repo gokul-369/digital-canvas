@@ -15,9 +15,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const referer = req.headers.referer;
-  console.log(referer);
-
   const { name, email, message, idea } = req.body as MailBody;
 
   if (!name || !email || !message || !idea) {
