@@ -19,7 +19,9 @@ function CertificateCard({
       <article className="relative flex h-full min-h-[150px] flex-col justify-between gap-3">
         <div className="flex items-start justify-between gap-3">
           {
-            <Icon className="bottom-0 right-0 absolute text-green-500/25 h-20 w-20" />
+            <>
+              <Icon className="bottom-0 right-0 absolute text-green-500/25 h-20 w-20" />
+            </>
           }
           <div>
             <p className="lg:text-[12px] text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-400">

@@ -152,6 +152,36 @@ function About({ theme }: { theme: ThemeClassSet }) {
                   )}
                 </div>
                 {bio.description}
+                <div className="flex mt-10 gap-10  text-white items-center justify-start">
+                  <a
+                    href="https://linkedin.com/in/gokul-c-40773a1b6"
+                    target="blank"
+                    className="hover:text-indigo-500"
+                  >
+                    <FaLinkedin />
+                  </a>
+                  <a
+                    className="hover:text-indigo-500"
+                    href="https://github.com/gokul-369"
+                    target="blank"
+                  >
+                    <FaGithub />
+                  </a>
+                  <a
+                    className="hover:text-indigo-500"
+                    href="mailto:gokul369@outlook.com"
+                    target="blank"
+                  >
+                    <MdOutlineMailOutline />
+                  </a>
+                  <a
+                    className="hover:text-indigo-500"
+                    href="https://www.instagram.com/gokul__369/"
+                    target="blank"
+                  >
+                    <FaInstagram />
+                  </a>
+                </div>
               </>
             )}
             {currentMenu === aboutSectionItems.EDUCATION && (
@@ -220,37 +250,6 @@ function About({ theme }: { theme: ThemeClassSet }) {
                 ))}
               </motion.div>
             )}
-
-            <div className="flex mt-10 gap-10  text-white items-center justify-start">
-              <a
-                href="https://linkedin.com/in/gokul-c-40773a1b6"
-                target="blank"
-                className="hover:text-indigo-500"
-              >
-                <FaLinkedin />
-              </a>
-              <a
-                className="hover:text-indigo-500"
-                href="https://github.com/gokul-369"
-                target="blank"
-              >
-                <FaGithub />
-              </a>
-              <a
-                className="hover:text-indigo-500"
-                href="mailto:gokul369@outlook.com"
-                target="blank"
-              >
-                <MdOutlineMailOutline />
-              </a>
-              <a
-                className="hover:text-indigo-500"
-                href="https://www.instagram.com/gokul__369/"
-                target="blank"
-              >
-                <FaInstagram />
-              </a>
-            </div>
           </div>
         </div>
       </main>
