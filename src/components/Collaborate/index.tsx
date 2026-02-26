@@ -53,7 +53,7 @@ export default function CollaboratePanel({ isOpen, onClose }: Props) {
   const handleSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const response = await fetch("/api/contacts", {
+    const response = await fetch("/api/contact", {
       method: "POST",
       body: JSON.stringify(formData),
       headers: { "Content-Type": "application/json" },
