@@ -48,10 +48,14 @@ function Gallery({
   const slidesRef = useRef<HTMLDivElement[]>([]);
   const [showPreview, setShowPreview] = useState(false);
   const hideTimeout = useRef<number | null>(null);
+  const captionRef = useRef<HTMLDivElement | null>(null);
+  const [loadedSet, setLoadedSet] = useState<Set<number>>(
+    () => new Set([currentIndex]),
+  );
 
   const prevIndexRef = useRef(0);
   useLayoutEffect(() => {
-    prevIndexRef.current = currentIndex; // 🔥 sync internal state
+    prevIndexRef.current = currentIndex;
 
     if (!sliderRef.current) return;
 
@@ -132,7 +136,6 @@ function Gallery({
       ease: "power4.out",
     });
   };
-  console.log(fullscreen);
 
   const scrollPreviewToIndex = (index: number) => {
     if (!sliderPreviewRef.current) return;
@@ -229,6 +232,25 @@ function Gallery({
     };
   }, []);
 
+  useEffect(() => {
+    const preload = (i: number) => {
+      if (i < 0 || i >= totalImages) return;
+      setLoadedSet((prev) => new Set(prev).add(i));
+    };
+
+    preload(currentIndex);
+    preload(currentIndex + 1);
+    preload(currentIndex + 2);
+    preload(currentIndex - 1);
+  }, [currentIndex, totalImages]);
+
+  useEffect(() => {
+    if (!fullscreen) return;
+
+    const img = new Image();
+    img.src = images[currentIndex].full;
+  }, [fullscreen, currentIndex]);
+
   return (
     <div
       className={cx(
@@ -259,32 +281,64 @@ function Gallery({
         }}
         ref={sliderRef}
       >
+        {images[currentIndex].orientation !== "portrait" && (
+          <div
+            className={cx(
+              styles.vignette,
+              showPreview && styles.vignetteVisible,
+            )}
+          />
+        )}
+
+        <div
+          className={cx(styles.captionPanel, styles.previewHidden, {
+            [styles.previewVisible]: showPreview,
+          })}
+          ref={captionRef}
+        >
+          <h3>{images[currentIndex].title}</h3>
+          <p>{"lorem imirenjf v werj j wejfjw"}</p>
+        </div>
         <div className={styles.sliderimages}>
-          {images.map((item, index) => (
-            <div
-              key={index}
-              ref={(el) => {
-                slidesRef.current[index] = el!;
-              }}
-              className={cx(styles.img)}
-            >
-              <img
-                src={fullscreen ? item.full : item.medium}
-                alt={item.title}
-                loading="lazy"
-                decoding="async"
-                fetchPriority="low"
-                style={{
-                  objectFit:
-                    item.orientation === "portrait" ? "contain" : "cover",
+          <div className={styles.sliderimages}>
+            {images.map((item, index) => (
+              <div
+                key={index}
+                ref={(el) => {
+                  slidesRef.current[index] = el!;
                 }}
-              />
-            </div>
-          ))}
+                className={cx(styles.img, {
+                  ["flex items-center justify-center"]:
+                    item.orientation === "portrait",
+                })}
+              >
+                <img
+                  alt={item.title}
+                  src={
+                    loadedSet.has(index)
+                      ? fullscreen
+                        ? item.full
+                        : item.medium
+                      : undefined
+                  }
+                  loading={index === currentIndex ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchPriority={index === currentIndex ? "high" : "low"}
+                  style={{
+                    width: item.orientation === "portrait" ? "auto" : "100%",
+                    borderRadius:
+                      item.orientation === "portrait" && !fullscreen ? 20 : 0,
+                    objectFit:
+                      item.orientation === "portrait" ? "contain" : "cover",
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className={styles.slidertitle}>
-          <div className={styles.slidertitlewrapper} ref={titleRef}>
+        <div className={cx(styles.slidertitle)}>
+          <div className={cx(styles.slidertitlewrapper)} ref={titleRef}>
             {images.map((item, index) => (
               <p key={index}>{item.title}</p>
             ))}

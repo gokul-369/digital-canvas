@@ -574,10 +574,6 @@ export const album: Album[] = [
     title: "image9",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image10.webp",
-    title: "image10",
-  },
-  {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image11.webp",
     title: "image11",
     orientation: "portrait",
