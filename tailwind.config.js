@@ -32,6 +32,15 @@ module.exports = {
         textMainAccent2: colors.blue[500],
         textMainAccent3: colors.amber[500],
       },
+      animation: {
+        pulseSoft: "pulseSoft 2.5s ease-in-out infinite",
+      },
+      keyframes: {
+        pulseSoft: {
+          "0%, 100%": { opacity: 0.6, transform: "scale(1)" },
+          "50%": { opacity: 1, transform: "scale(1.15)" },
+        },
+      },
     },
     fontFamily: {
       sans: ["Inter", "system-ui", "sans-serif"],

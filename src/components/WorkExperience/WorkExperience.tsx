@@ -13,7 +13,7 @@ function WorkExperience() {
       id="experience"
     >
       <BlurText
-        className="uppercase text-center tracking-widest mb-10"
+        className="uppercase text-center tracking-widest mb-16"
         delay={200}
         animateBy="tags"
         direction="top"

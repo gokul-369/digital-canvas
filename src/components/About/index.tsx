@@ -55,7 +55,7 @@ function About({ theme }: { theme: ThemeClassSet }) {
           <span className={theme.textMainAccent1}>know me </span>
         </p>
         <div
-          className={`grid grid-cols-2 lg:grid-cols-3 h-full lg:gap-96 justify-between items-center mt-10 gap-8`}
+          className={`grid grid-cols-2 lg:grid-cols-3 h-full lg:gap-96 justify-between items-center mt-16 gap-8`}
         >
           <ProfileCard
             className="h-full mx-auto col-span-2 lg:col-span-1 lg:mx-0 text-center lg:w-[330px] px-5 lg:px-0 w-full"

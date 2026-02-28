@@ -22,7 +22,7 @@ function Testimonials({ theme }: { theme: ThemeClassSet }) {
         <p className={`${theme.textPrimary}`}> Voices from people </p>
         <span className={`${theme.textMainAccent1} ml-3`}>I’ve built with</span>
       </BlurText>
-      <section className="mt-10 p-5 w-full flex-col flex flex-wrap gap-4">
+      <section className="mt-16 p-5 w-full flex-col flex flex-wrap gap-4">
         <ScrollingRow direction="left">
           {left.map((item, index) => (
             <TestimonialCard key={index} testimonial={item} />
