@@ -98,6 +98,7 @@ export type Album = {
   img: string;
   title: string;
   orientation?: "portrait" | "landscape";
+  description?: string;
 };
 
 export type prcocessedimages = {
@@ -106,4 +107,5 @@ export type prcocessedimages = {
   medium: string;
   full: string;
   orientation?: "portrait" | "landscape";
+  description?: string;
 };

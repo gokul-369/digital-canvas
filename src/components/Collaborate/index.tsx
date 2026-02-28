@@ -91,7 +91,7 @@ export default function CollaboratePanel({ isOpen, onClose }: Props) {
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 120, damping: 18 }}
             className="fixed bottom-0 left-0 right-0 z-50
-                       bg-white/5 backdrop-blur-2xl
+                       bg-white/5 backdrop-blur-2xl md:backdrop-blur-3xl
                        border-t border-white/10
                        rounded-t-3xl
                        shadow-[0_-20px_60px_rgba(0,0,0,0.6)]
@@ -125,14 +125,15 @@ export default function CollaboratePanel({ isOpen, onClose }: Props) {
                   {!emailSent ? (
                     <motion.form
                       key="form"
-                      initial={{ y: 100, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: 100, opacity: 0 }}
+                      initial={{ transform: "translateY(40px)", opacity: 0 }}
+                      animate={{ transform: "translateY(0px)", opacity: 1 }}
+                      exit={{ transform: "translateY(40px)", opacity: 0 }}
                       transition={{
-                        type: "spring",
-                        stiffness: 120,
-                        damping: 20,
+                        type: "tween",
+                        ease: "easeOut",
+                        duration: 0.35,
                       }}
+                      style={{ willChange: "transform, opacity" }}
                       className="space-y-6"
                       onSubmit={handleSend}
                     >
@@ -186,15 +187,16 @@ export default function CollaboratePanel({ isOpen, onClose }: Props) {
                   ) : (
                     <motion.div
                       key="tick"
-                      initial={{ y: 100, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -100, opacity: 0 }}
+                      initial={{ transform: "translateY(40px)", opacity: 0 }}
+                      animate={{ transform: "translateY(0px)", opacity: 1 }}
+                      exit={{ transform: "translateY(-40px)", opacity: 0 }}
                       transition={{
-                        type: "spring",
-                        stiffness: 120,
-                        damping: 20,
+                        type: "tween",
+                        ease: "easeOut",
+                        duration: 0.35,
                       }}
-                      className="flex space-y-6 justify-center items-center py-20"
+                      style={{ willChange: "transform, opacity" }}
+                      className="flex justify-center items-center py-20"
                     >
                       <LuCircleCheckBig className="text-green-400 w-24 h-24" />
                     </motion.div>
