@@ -227,10 +227,13 @@ body {
     & .slidercounter {
       bottom: 5em;
     }
-
+    & .captionPanel {
+      left: 0;
+    }
     & .sliderimages {
       img {
         object-fit: cover !important;
+        width: 100% !important;
       }
     }
 
@@ -253,13 +256,17 @@ body {
         }
       }
     }
-  }
-  .sliderindicators {
-    width: 90%;
-  }
+    & .sliderindicators {
+      width: 90%;
+    }
 
-  .sliderpreview {
-    width: 90%;
-    bottom: 5em;
+    & .sliderpreview {
+      width: 90%;
+      bottom: 1em;
+    }
+
+    & .captionPanel {
+      top: 0;
+    }
   }
 }

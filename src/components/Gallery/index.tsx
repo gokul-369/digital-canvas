@@ -297,7 +297,7 @@ function Gallery({
           ref={captionRef}
         >
           <h3>{images[currentIndex].title}</h3>
-          <p>{"lorem imirenjf v werj j wejfjw"}</p>
+          <p>{images[currentIndex].description}</p>
         </div>
         <div className={styles.sliderimages}>
           <div className={styles.sliderimages}>
