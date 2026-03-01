@@ -174,7 +174,6 @@ export default function Album() {
               }}
             />
 
-            {/* Gallery content */}
             <div className="relative z-10 h-dvh w-dvw flex items-center justify-center">
               <Gallery
                 onImageChange={(i) => setBgImage(images[i])}

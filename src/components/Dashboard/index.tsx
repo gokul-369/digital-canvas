@@ -256,13 +256,13 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
                 ambition, and uncompromising standards for growth.
               </p>
             </div>
-            <a
-              href={"https://dev.to/gokul369"}
+            <HashLink
+              to={"/gallery#rolemodels"}
               className={`text-green-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
               These are the people I look up to
               <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </a>
+            </HashLink>
             <HiOutlineSparkles
               className={`h-24 w-24 absolute bottom-1 right-3 text-white/5 group-hover:text-green-500/25 transition`}
             />
