@@ -109,3 +109,10 @@ export type prcocessedimages = {
   orientation?: "portrait" | "landscape";
   description?: string;
 };
+
+export interface roleModels {
+  name: string;
+  title: string;
+  description: string;
+  image: string;
+}

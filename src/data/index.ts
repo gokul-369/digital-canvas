@@ -9,6 +9,7 @@ import type {
   achievement,
   Album,
   prcocessedimages,
+  roleModels,
 } from "../types";
 
 import { getImageSet } from "../utils/getImageSrc";
@@ -735,3 +736,48 @@ export const processedAlbum: prcocessedimages[] = album.map((item) => ({
   description: item.description,
   ...getImageSet(item.img),
 }));
+
+export const roleModelsData: roleModels[] = [
+  {
+    name: "Steve Jobs",
+    title: "Design thinking & minimalism",
+    description: `While others chased features, he focused on solving real user problems. His obsession with simplicity and design shaped the modern Apple experience.`,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/avatar/jobs.webp",
+  },
+  {
+    name: "Cristiano Ronaldo",
+    title: "Relentless under pressure",
+    description: `Counted out time and again, yet he responds with performance. When the moment demands belief, he delivers.`,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/avatar/cristiano.webp",
+  },
+  {
+    name: "Bruce Lee",
+    title: "Mastery through discipline",
+    description: `Relentless focus. Constant refinement. His philosophy of “be like water” teaches adaptability without losing strength.`,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/avatar/brucelee.webp",
+  },
+  {
+    name: "Peter McKinnon",
+    title: "Story-driven creativity",
+    description: `Believes that an image without story is just noise. Creates not for algorithms, but for emotion and narrative. I owe one to him for inspiring me to shoot`,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/avatar/mckinon.webp",
+  },
+  {
+    name: "Lewis Hamilton",
+    title: "Elite composure",
+    description: `Pressure reveals character. Precision sustains dominance. He taught me that losing with composure can demand more strength than winning.`,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/avatar/lewis.webp",
+  },
+  {
+    name: "Christopher Nolan",
+    title: "Structured creativity at scale",
+    description: `Often known for complexity and grandeur, yet at the heart of his films are human emotions like love, loyalty, betrayal. He uses scale not to impress, but to intensify feeling. That is mastery.`,
+    image:
+      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/avatar/nolan.webp",
+  },
+];
