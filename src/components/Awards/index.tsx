@@ -30,7 +30,7 @@ function Awards({ theme }: { theme: ThemeClassSet }) {
   };
   return (
     <section
-      className={`lg:px-40 px-8 md:py-32 py-10 md:h-dvh h-full items-center w-full flex flex-col`}
+      className={`lg:px-40 px-8 md:py-32 py-10  items-center w-full flex flex-col`}
       id={"awards"}
     >
       <BlurText
@@ -43,7 +43,7 @@ function Awards({ theme }: { theme: ThemeClassSet }) {
         <span className={`${theme.textMainAccent1} ml-3`}>Honors</span>
       </BlurText>
       <motion.div
-        className="grid w-full h-full gird-cols-2 gap-10 lg:grid-cols-3 mt-10"
+        className="grid w-full gird-cols-2 gap-10 lg:grid-cols-3 mt-16"
         variants={containerVariants}
         initial="hidden"
         whileInView="show"
