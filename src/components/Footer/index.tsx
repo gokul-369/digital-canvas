@@ -2,6 +2,7 @@ import { FaDev, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { MdOutlineMailOutline } from "react-icons/md";
 import avatar from "../../assets/profile.png";
 import { HashLink } from "react-router-hash-link";
+import { manifest } from "../../routes/manifest";
 
 function Footer() {
   return (
@@ -49,10 +50,10 @@ function Footer() {
                 Know Me
               </h4>
               <div className="flex flex-col gap-2 text-sm text-white/60">
-                <HashLink to="/">Home</HashLink>
-                <HashLink to="/about">About</HashLink>
-                <HashLink to="/experience">Experience</HashLink>
-                <HashLink to="/skills">Skills</HashLink>
+                <HashLink to={manifest.home}>Home</HashLink>
+                <HashLink to={manifest.about}>About</HashLink>
+                <HashLink to={manifest.experience}>Experience</HashLink>
+                <HashLink to={manifest.skills}>Skills</HashLink>
               </div>
             </div>
 
@@ -61,10 +62,10 @@ function Footer() {
                 Canvas
               </h4>
               <div className="flex flex-col gap-2 text-sm text-white/60">
-                <HashLink to="/gallery">Gallery</HashLink>
-                <HashLink to="/awards">Awards</HashLink>
-                <HashLink to="/testimonials">Testimonials</HashLink>
-                <HashLink to="/inspirations">Inspirations</HashLink>
+                <HashLink to={manifest.gallery}>Gallery</HashLink>
+                <HashLink to={manifest.awards}>Awards</HashLink>
+                <HashLink to={manifest.testimonials}>Testimonials</HashLink>
+                <HashLink to={manifest.testimonials}>Inspirations</HashLink>
               </div>
             </div>
           </div>

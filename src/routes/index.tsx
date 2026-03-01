@@ -14,6 +14,8 @@ import CollaboratePanel from "../components/Collaborate";
 import { useAppContext } from "../context/AppContext";
 import Footer from "../components/Footer";
 
+import { manifest } from "./manifest";
+
 export function AppRoutes() {
   const { theme } = useTheme();
   const { isCollaborateOpen, closeCollaborate } = useAppContext();
@@ -40,9 +42,9 @@ export function AppRoutes() {
         <Nav theme={theme} />
       </Fade>
       <Routes>
-        <Route path="/" element={<Home theme={theme} />} />
+        <Route path={manifest.home} element={<Home theme={theme} />} />
         <Route
-          path="/experience"
+          path={manifest.experience}
           element={
             <Suspense fallback={<Loader />}>
               <Experience theme={theme} />
@@ -50,7 +52,7 @@ export function AppRoutes() {
           }
         />
         <Route
-          path="/gallery"
+          path={manifest.gallery}
           element={
             <Suspense fallback={<Loader />}>
               <ImageGallery />

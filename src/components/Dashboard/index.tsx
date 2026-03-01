@@ -9,6 +9,7 @@ import { HiOutlineCommandLine, HiOutlineRocketLaunch } from "react-icons/hi2";
 import { HashLink } from "react-router-hash-link";
 import { FiAward } from "react-icons/fi";
 import { useAppContext } from "../../context/AppContext";
+import { manifest } from "../../routes/manifest";
 
 function Dashboard({ theme }: { theme: ThemeClassSet }) {
   const { openCollaborate } = useAppContext();
@@ -66,7 +67,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               </p>
             </div>
             <HashLink
-              to={"/experience/#testimonials"}
+              to={manifest.testimonials}
               smooth
               className={`text-blue-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
@@ -97,7 +98,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               </p>
             </div>
             <HashLink
-              to={"/gallery/#album"}
+              to={manifest.gallery}
               smooth
               className={`text-amber-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
@@ -130,7 +131,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               </p>
             </div>
             <HashLink
-              to={"/experience/#experience"}
+              to={manifest.experience}
               smooth
               className={`text-sky-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
@@ -162,7 +163,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               </p>
             </div>
             <HashLink
-              to={"/experience/#skills"}
+              to={manifest.skills}
               smooth
               className={`text-cyan-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
@@ -225,7 +226,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               </p>
             </div>
             <HashLink
-              to={"/experience/#awards"}
+              to={manifest.awards}
               className={`text-white/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
               smooth
             >
@@ -257,7 +258,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               </p>
             </div>
             <HashLink
-              to={"/gallery#rolemodels"}
+              to={manifest.rolemodels}
               className={`text-green-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
             >
               These are the people I look up to
