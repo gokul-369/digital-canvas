@@ -1,11 +1,12 @@
 import BlurText from "../../animations/Text/BlurText";
-import { type ThemeClassSet } from "../../types";
 import ScrollingRow from "../../animations/Scroller";
 import { testimonials } from "../../data";
 import { divideArray } from "../../utils/divideArray";
 import TestimonialCard from "./TestimonialCard";
+import useTheme from "../../hooks/useTheme";
 
-function Testimonials({ theme }: { theme: ThemeClassSet }) {
+function Testimonials() {
+  const { themeClassSet: theme } = useTheme();
   const testimonialData = testimonials;
   const [right, left] = divideArray(testimonialData);
   return (

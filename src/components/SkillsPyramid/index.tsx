@@ -96,7 +96,7 @@ function SkillsPyramid() {
                     }}
                     className="techitem flex flex-col items-center justify-center
                        w-16 h-20 md:w-20 md:h-24
-                       bg-slate-900/60 border border-sky-500/20
+                       dark:bg-slate-900/60 bg-slate-500/40 border border-sky-500/20
                        rounded-lg cursor-pointer"
                   >
                     <img
@@ -108,7 +108,7 @@ function SkillsPyramid() {
                           : "h-7 w-7 md:h-8 md:w-8"
                       } object-contain`}
                     />
-                    <span className="mt-2 text-[9px] text-center text-white/80 font-light px-4">
+                    <span className="mt-2 text-[9px] text-center dark:text-white/80 text-gray-900 font-light px-4">
                       {skill.name}
                     </span>
                   </motion.div>

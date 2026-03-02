@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router";
 import Home from "../pages/Home";
 
-import useTheme from "../hooks/useTheme";
 import Fade from "../animations/Fade";
 import Nav from "../components/Nav";
 import ReactLenis from "lenis/react";
@@ -17,7 +16,6 @@ import Footer from "../components/Footer";
 import { manifest } from "./manifest";
 
 export function AppRoutes() {
-  const { theme } = useTheme();
   const { isCollaborateOpen, closeCollaborate } = useAppContext();
   const Experience = lazy(() => import("../pages/Experience"));
   const ImageGallery = lazy(() => import("../pages/ImageGallery"));
@@ -39,15 +37,15 @@ export function AppRoutes() {
         variant="fade-down"
         delay={100}
       >
-        <Nav theme={theme} />
+        <Nav />
       </Fade>
       <Routes>
-        <Route path={manifest.home} element={<Home theme={theme} />} />
+        <Route path={manifest.home} element={<Home />} />
         <Route
           path={manifest.experience}
           element={
             <Suspense fallback={<Loader />}>
-              <Experience theme={theme} />
+              <Experience />
             </Suspense>
           }
         />

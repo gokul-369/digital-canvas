@@ -152,7 +152,9 @@ function About({ theme }: { theme: ThemeClassSet }) {
                   )}
                 </div>
                 {bio.description}
-                <div className="flex mt-10 gap-10  text-white items-center justify-start">
+                <div
+                  className={`flex mt-10 gap-10  ${theme.textPrimary} items-center justify-start`}
+                >
                   <a
                     href="https://linkedin.com/in/gokul-c-40773a1b6"
                     target="blank"
@@ -211,8 +213,12 @@ function About({ theme }: { theme: ThemeClassSet }) {
                   >
                     <span className="mt-1 h-2 w-2 rounded-full bg-indigo-400" />
                     <div>
-                      <p className="font-medium text-slate-100">{item.title}</p>
-                      <p className="text-xs text-slate-400">{item.subTitle}</p>
+                      <p className={`font-medium ${theme.textPrimary}`}>
+                        {item.title}
+                      </p>
+                      <p className={`text-xs  ${theme.textSecondary}`}>
+                        {item.subTitle}
+                      </p>
                     </div>
                   </motion.li>
                 ))}
@@ -236,12 +242,15 @@ function About({ theme }: { theme: ThemeClassSet }) {
                       px-4 py-1.5
                       rounded-full
                       backdrop-blur-md
-                      bg-white/5
+                      dark:bg-white/5
+                      bg-slate-400/30
                       border border-white/10
                       text-xs sm:text-sm
-                      text-white/70
-                      hover:bg-white/10
-                      hover:text-white
+                      dark:text-white/70
+                      text-black/75
+                      dark:hover:bg-indigo-500/10
+                      dark:hover:text-white
+                      hover:text-indigo-500/80
                       cursor-pointer
                       transition-colors"
                   >

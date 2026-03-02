@@ -26,7 +26,7 @@ module.exports = {
         darkBackgroundSecondary: colors.neutral[900],
         darkBgSecondary: colors.neutral[200],
         darkBgTertiary: colors.neutral[300],
-        darkTextPrimary: colors.black,
+        darkTextPrimary: colors.gray[900],
         darkTextSecondary: colors.gray[600],
         textMainAccent1: colors.indigo[500],
         textMainAccent2: colors.blue[500],
