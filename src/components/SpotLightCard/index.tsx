@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, type StyleHTMLAttributes } from "react";
 
 interface Position {
   x: number;
