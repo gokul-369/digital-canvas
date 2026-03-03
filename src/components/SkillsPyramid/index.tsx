@@ -1,7 +1,9 @@
 import { motion } from "motion/react";
 import { skills } from "../../data";
+import useTheme from "../../hooks/useTheme";
 
 function SkillsPyramid() {
+  const { theme } = useTheme();
   const handlePointerMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -30,7 +32,7 @@ function SkillsPyramid() {
             }}
             viewport={{ once: true }}
             className="techitem flex flex-col items-center justify-center
-               h-20 bg-slate-900/60 border border-sky-500/20
+               h-20 dark:bg-slate-900/60 bg-slate-300/50 border border-sky-500/20
                rounded-lg text-center"
           >
             <img
@@ -39,7 +41,7 @@ function SkillsPyramid() {
               style={{ filter: "none" }}
               className="h-7 w-7 object-contain"
             />
-            <span className="mt-1 text-[9px] text-white font-extralight">
+            <span className="mt-1 text-[9px] dark:text-white text-slate-900 font-extralight">
               {skill.name}
             </span>
           </motion.div>
@@ -96,12 +98,19 @@ function SkillsPyramid() {
                     }}
                     className="techitem flex flex-col items-center justify-center
                        w-16 h-20 md:w-20 md:h-24
-                       dark:bg-slate-900/60 bg-slate-500/40 border border-sky-500/20
+                       dark:bg-slate-900/60 bg-slate-300/50 border border-sky-500/20
                        rounded-lg cursor-pointer"
                   >
                     <img
                       src={skill.imagePath}
                       alt={skill.name}
+                      style={
+                        theme === "light"
+                          ? {
+                              filter: "none",
+                            }
+                          : undefined
+                      }
                       className={`${
                         skill.name === "SignalR"
                           ? "h-16 w-16"
