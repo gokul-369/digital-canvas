@@ -1,4 +1,4 @@
-import React, { useRef, useState, type StyleHTMLAttributes } from "react";
+import React, { useRef, useState } from "react";
 
 interface Position {
   x: number;
@@ -54,11 +54,11 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={`relative p-5 overflow-hidden rounded-2xl
-  border border-white/10
+  border dark:border-white/10 border-slate-300/10
   shadow-[0_0_40px_-10px_rgba(120,100,255,0.25)]
   transition-all duration-300 ${className} cursor-pointer
   
-  group bg-white/[0.02] backdrop-blur-xl ease-out hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_10px_40px_rgba(0,0,0,0.35)]
+  group bg-white/[0.02] backdrop-blur-xl ease-out hover:-translate-y-1 dark:hover:border-white/15 hover:border-slate-300/15 dark:hover:shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:shadow-[0_10px_40px_rgba(0,0,0,0.15)]
   
   `}
     >

@@ -13,7 +13,7 @@ function About({ theme }: { theme: ThemeClassSet }) {
   const [startTyping, setStartTyping] = useState(false);
   const aboutSectionItems = {
     ME: "Me",
-    EDUCATION: "Eductation",
+    EDUCATION: "Education",
     INTERESTS: "Interests",
   };
   const [currentMenu, setCurrentMenu] = useState(aboutSectionItems.ME);

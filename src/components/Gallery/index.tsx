@@ -203,11 +203,12 @@ function Gallery({
             rounded-full 
             flex items-center justify-center 
             text-white text-xl 
-            bg-white/10 
+            dark:bg-white/10
+            bg-slate-900/30
             backdrop-blur-md 
-            border border-white/20 
+            dark:border border-white/20 
             shadow-lg 
-            hover:bg-white/20 
+            dark:hover:bg-white/20 
             hover:scale-110 
             active:scale-95 
             transition-all duration-200 ease-out

@@ -15,40 +15,58 @@ function ScrollingRow({
   const controls = useRef<ReturnType<typeof animate> | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const element = containerRef.current;
+    if (!element) return;
 
-    const width = containerRef.current.scrollWidth / 2;
-    const from = direction === "left" ? 0 : -width;
-    const to = direction === "left" ? -width : 0;
+    const startAnimation = () => {
+      const width = element.scrollWidth / 2;
+      if (!width) return;
 
-    x.set(from);
+      const from = direction === "left" ? 0 : -width;
+      const to = direction === "left" ? -width : 0;
 
-    controls.current = animate(x, [from, to], {
-      ease: "linear",
-      duration: speed,
-      repeat: Infinity,
-      repeatType: "loop",
+      x.set(from);
+
+      controls.current?.stop();
+
+      controls.current = animate(x, [from, to], {
+        ease: "linear",
+        duration: speed,
+        repeat: Infinity,
+      });
+    };
+
+    startAnimation();
+
+    const resizeObserver = new ResizeObserver(() => {
+      startAnimation();
     });
 
-    return () => controls.current?.stop();
-  }, [direction, speed, x]);
+    resizeObserver.observe(element);
+
+    return () => {
+      controls.current?.stop();
+      resizeObserver.disconnect();
+    };
+  }, [direction, speed]);
 
   return (
-    <motion.div
-      ref={containerRef}
-      className="flex gap-6 w-max contain-layout"
-      style={{
-        x,
-        willChange: "transform",
-        transform: "translateZ(0)",
-        backfaceVisibility: "hidden",
-      }}
-      onMouseEnter={() => controls.current?.pause()}
-      onMouseLeave={() => controls.current?.play()}
-    >
-      {children}
-      {children}
-    </motion.div>
+    <div className="relative py-4 w-full overflow-hidden">
+      <motion.div
+        ref={containerRef}
+        className="flex gap-6"
+        style={{
+          x,
+          width: "max-content",
+          willChange: "transform",
+        }}
+        onMouseEnter={() => controls.current?.pause()}
+        onMouseLeave={() => controls.current?.play()}
+      >
+        {children}
+        {children}
+      </motion.div>
+    </div>
   );
 }
 

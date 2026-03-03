@@ -33,16 +33,16 @@ export const navLinks: formField[] = [
     value: "/#home",
   },
   {
-    name: "About",
-    value: "/#about",
-  },
-  {
     name: "Experience",
     value: "/experience",
   },
   {
     name: "Skills",
     value: "/experience#skills",
+  },
+  {
+    name: "Gallery",
+    value: "/gallery",
   },
 ];
 
@@ -385,7 +385,7 @@ export const interests: string[] = [
 
 export const testimonials: testimonial[] = [
   {
-    name: "Leelavathi Dahanabal",
+    name: "Leelavathi Dhanabal",
     jobTitle: "Lead Software Engineer",
     location: "Chennai, India",
     company: "TCS",
@@ -429,7 +429,7 @@ export const testimonials: testimonial[] = [
       "It’s rare to come across an engineer who combines such eagerness to learn, strong attention to detail, and a genuine willingness to go the extra mile to find solutions. Gokul is one of those engineers",
   },
   {
-    name: "Steephen Kingslein",
+    name: "Steephen",
     jobTitle: "Software Engineer",
     location: "Chennai, India",
     company: "TCS",
