@@ -1,10 +1,11 @@
 import BlurText from "../../animations/Text/BlurText";
 import { awards } from "../../data";
-import type { ThemeClassSet } from "../../types";
+import useTheme from "../../hooks/useTheme";
 import CertificateCard from "../CertificateCards";
 import { motion, type Variants } from "motion/react";
 
-function Awards({ theme }: { theme: ThemeClassSet }) {
+function Awards() {
+  const { themeClassSet: theme } = useTheme();
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {

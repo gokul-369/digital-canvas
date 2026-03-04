@@ -1,10 +1,11 @@
 import About from "../../components/About";
 import Dashboard from "../../components/Dashboard";
 import Hero from "../../components/Hero/Hero";
-import type { pageProp } from "../../types";
+import useTheme from "../../hooks/useTheme";
 import { themeFactory } from "../../utils/styleFactory";
 
-function Home({ theme }: pageProp) {
+function Home() {
+  const { theme } = useTheme();
   const themeClass = themeFactory(theme);
   const colors =
     theme === "dark"

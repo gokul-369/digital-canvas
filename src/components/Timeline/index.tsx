@@ -20,11 +20,15 @@ export function TimelineItem({
       className="relative"
     >
       <div className="absolute lg:-left-[50%]">
-        <h3 className="text-lg text-right hidden lg:inline-block font-semibold text-white/90">
+        <h3
+          className={`text-lg text-right hidden lg:inline-block font-semibold ${theme.textPrimary}`}
+        >
           {company}
         </h3>
       </div>
-      <h3 className="text-lg font-medium text-left ml-2 mb-4 lg:hidden text-white/90">
+      <h3
+        className={`text-lg font-medium text-left ml-2 mb-4 lg:hidden ${theme.textPrimary}`}
+      >
         {company}
       </h3>
       {roles.map((experience: experience, index) => (
@@ -41,7 +45,7 @@ export function TimelineItem({
           >
             {experience.role}
           </p>
-          <p className="lg:text-sm text-xs text-slate-300 mt-1">
+          <p className="lg:text-sm text-xs dark:text-slate-300 text-slate-700 mt-1">
             {experience.duration}
           </p>
           <ul>
@@ -81,7 +85,7 @@ export function Timeline({ children }: any) {
   return (
     <section ref={ref} className="relative min-h-[200vh]">
       {/* Track */}
-      <div className="absolute left-6 top-0 h-full w-[2px] bg-white/10" />
+      <div className="absolute left-6 top-0 h-full w-[2px] dark:bg-white/10 bg-black/10" />
 
       {/* Animated progress line */}
       <motion.div
@@ -103,7 +107,8 @@ export function Timeline({ children }: any) {
         className="
           absolute left-[25px]
           -translate-x-1/2
-          h-3.5 w-3.5 rounded-full bg-white
+          h-3.5 w-3.5 rounded-full dark:bg-white
+          bg-slate-400
           transform-gpu
           
         "

@@ -1,14 +1,11 @@
 import { navLinks } from "../../data";
-// import useTheme from "../../hooks/useTheme";
-import type { pageProp } from "../../types";
-import { themeFactory } from "../../utils/styleFactory";
+import useTheme from "../../hooks/useTheme";
 import { HashLink } from "react-router-hash-link";
-// import { PiMoonStarsLight } from "react-icons/pi";
-// import { GoSun } from "react-icons/go";
+import { PiMoonStarsLight } from "react-icons/pi";
+import { GoSun } from "react-icons/go";
 
-function Nav({ theme: themeClass }: pageProp) {
-  const theme = themeFactory(themeClass);
-  // const { toggleTheme, theme: themeName } = useTheme();
+function Nav() {
+  const { toggleTheme, theme: themeName, themeClassSet: theme } = useTheme();
 
   return (
     <nav
@@ -32,7 +29,7 @@ function Nav({ theme: themeClass }: pageProp) {
         ))}
       </ul>
 
-      {/* {themeName === "dark" ? ( //TODO: uncomment these once theme is configured
+      {themeName === "dark" ? ( //TODO: uncomment these once theme is configured
         <GoSun
           onClick={toggleTheme}
           className={`${theme.textPrimary} font-bold transition-transform duration-300 ease-in-out transform hover:rotate-90 text-sm cursor-pointer`}
@@ -42,7 +39,7 @@ function Nav({ theme: themeClass }: pageProp) {
           onClick={toggleTheme}
           className={`${theme.textPrimary} font-bold text-center cursor-pointer text-sm transition-transform duration-300 ease-in-out transform hover:-rotate-45`}
         />
-      )} */}
+      )}
     </nav>
   );
 }

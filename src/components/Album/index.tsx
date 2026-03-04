@@ -104,14 +104,14 @@ export default function Album() {
         <span className={`${theme.textMainAccent1} ml-3`}>freeze in time</span>
       </BlurText>
       <motion.div
-        className="absolute inset-0 h-dvh  bg-cover bg-center"
+        className="absolute -inset-12 bg-cover bg-center"
         style={{
           backgroundImage: `url(${bgImage.thumb})`,
-          filter: "blur(30px) brightness(0.6) saturate(1.2)",
+          filter: "blur(40px) brightness(0.7) saturate(1.2)",
         }}
-        initial={{ opacity: 0, scale: 1.05 }}
+        initial={{ opacity: 0, scale: 1.08 }}
         animate={
-          showBg ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.05 }
+          showBg ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.08 }
         }
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       />
