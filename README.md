@@ -1,127 +1,180 @@
-# Gokul’s Digital Canvas
+# Gokul's Digital Canvas
 
-A minimal, fast, and slightly over‑engineered digital resume built with **React**, **TypeScript**, and **Vite**, wrapped in a minimal, theme‑toggled UI.
+A minimal, fast, and slightly over-engineered **digital portfolio**
+built with **React**, **TypeScript**, and **Vite**.\
+It's designed as a clean and expressive space to showcase my work,
+ideas, and inspirations through a carefully crafted UI.
+
+The goal of this project is simple:\
+**present engineering, design, and personality in one cohesive digital
+canvas.**
+
+------------------------------------------------------------------------
 
 ## Features
 
-✨ **Light/Dark Theme Toggle** – Seamless theme switching with React Context  
-⚡ **Fast & Responsive** – Built with Vite for lightning-fast dev experience  
-🎨 **Tailwind CSS** – Modern, utility-first styling  
-📱 **Mobile-Friendly** – Responsive design that looks great on all devices  
-🏢 **Organized Work Experience** – Timeline view grouped by company  
-🛠️ **Type-Safe** – Full TypeScript support for reliable code
+✨ **Light / Dark Theme Toggle**\
+Smooth theme switching powered by React Context.
 
-## Stack
+⚡ **Fast & Responsive**\
+Built with **Vite** for extremely fast development and optimized builds.
 
-- **React 19** + **TypeScript** – Modern React with type safety
-- **Vite 7** – Lightning-fast build tool and dev server
-- **Tailwind CSS 4** – Utility-first CSS framework
-- **@radix-ui/react-icons** – Icon library
-- **ESLint** – Code linting and quality checks
-- **GitHub Actions** – Automated CI/CD and deploys to GitHub Pages
+🎨 **Modern UI with Tailwind CSS**\
+Utility-first styling for a clean, minimal interface.
+
+📱 **Fully Responsive**\
+Optimized for desktop, tablet, and mobile experiences.
+
+🏢 **Structured Work Experience**\
+Timeline view grouped by company for better readability.
+
+🛠️ **Type-Safe Codebase**\
+Built entirely with **TypeScript** for maintainability and reliability.
+
+------------------------------------------------------------------------
+
+## Tech Stack
+
+**Frontend**
+
+-   React 19
+-   TypeScript
+-   Vite
+
+**Styling**
+
+-   Tailwind CSS 4
+
+**Libraries**
+
+-   Framer Motion
+-   @radix-ui/react-icons
+
+**Tooling**
+
+-   ESLint
+-   GitHub Actions
+-   GitHub Pages
+
+------------------------------------------------------------------------
 
 ## Project Structure
 
-```
-src/
-├── components/        # React components (Bio, WorkExperience, etc.)
-├── context/          # Theme context provider
-├── data/             # Structured resume data
-├── hooks/            # Custom hooks (useTheme)
-├── utils/            # Utilities (groupByCompany, styleFactory)
-├── assets/           # Images and icons
-├── App.tsx           # Main app component
-├── main.tsx          # Entry point
-└── index.css         # Global styles with Tailwind
+    src/
+    ├── components/        # Reusable React UI components
+    ├── context/           # Theme context provider
+    ├── data/              # Structured portfolio data
+    ├── hooks/             # Custom hooks (useTheme)
+    ├── utils/             # Utility functions
+    ├── assets/            # Images and static resources
+    ├── App.tsx            # Root application component
+    ├── main.tsx           # Entry point
+    └── index.css          # Global styles (Tailwind)
 
-```
+------------------------------------------------------------------------
 
 ## Development
 
-### Install dependencies:
+### Install dependencies
 
-```bash
+``` bash
 npm install
 ```
 
-### Start dev server:
+### Start development server
 
-```bash
+``` bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open:
 
-### Build for production:
+    http://localhost:5173
 
-```bash
+### Build for production
+
+``` bash
 npm run build
 ```
 
-### Preview production build:
+### Preview production build
 
-```bash
+``` bash
 npm run preview
 ```
 
-### Lint:
+### Lint project
 
-```bash
+``` bash
 npm run lint
 ```
 
+------------------------------------------------------------------------
+
 ## Deployment
 
-This project is deployed automatically via **GitHub Actions** to **GitHub Pages**.
+This project deploys automatically to **GitHub Pages** using **GitHub
+Actions**.
 
-### Deployment Setup
+### Deployment Workflow
 
-1. Ensure your repository has GitHub Pages enabled:
-   - Go to **Settings** → **Pages**
-   - Set source to `gh-pages` branch (or configure via Actions)
+The CI pipeline performs:
 
-2. The workflow (if set up) will:
-   - Build the project on `npm run build`
-   - Deploy the `dist/` folder to GitHub Pages
+1.  Install dependencies
+2.  Build the project
+3.  Deploy the `dist/` output to GitHub Pages
 
-### Manual Deployment
+### Enable GitHub Pages
 
-To deploy manually:
+1.  Navigate to **Repository Settings → Pages**
+2.  Select **GitHub Actions** as the deployment source.
 
-```bash
-npm run build
-npm run deploy  # (if configured in package.json)
-```
+------------------------------------------------------------------------
 
-Or use GitHub CLI:
+## Live Portfolio
 
-```bash
-gh pages deploy dist
-```
+    https://<your-username>.github.io/digital-canvas/
 
-### Live URL
+Replace `<your-username>` with your GitHub username.
 
-Your resume will be available at:
-
-```
-https://<your-username>.github.io/digital-resume/
-```
-
-(Update with your actual repository name if different)
+------------------------------------------------------------------------
 
 ## Customization
 
-- **Resume Data**: Edit `src/data/index.ts` to update work experience, skills, and contact info
-- **Colors & Theme**: Modify `src/tailwind.config.js` for custom color tokens
-- **Components**: All components are in `src/components/` – modify as needed
-- **Hooks**: Theme logic lives in `src/context/ThemeContext.tsx` and `src/hooks/useTheme.ts`
+If you want to fork or adapt this project:
+
+**Update portfolio content**
+
+    src/data/index.ts
+
+**Modify UI components**
+
+    src/components/
+
+**Theme customization**
+
+    src/context/ThemeContext.tsx
+    src/utils/styleFactory.ts
+
+------------------------------------------------------------------------
 
 ## Performance
 
-- Built with Vite for instant HMR (Hot Module Replacement)
-- Tailwind CSS purges unused styles
-- Optimized for fast load times and smooth interactions
+-   Vite enables **instant HMR** during development
+-   Tailwind automatically **purges unused CSS**
+-   Optimized build output for **fast loading**
+
+------------------------------------------------------------------------
 
 ## Browser Support
 
-Works on all modern browsers that support ES2020.
+Compatible with all modern browsers supporting **ES2020**.
+
+------------------------------------------------------------------------
+
+## Author
+
+**Gokul**\
+Software Engineer
+
+GitHub: https://github.com/gokul-369
