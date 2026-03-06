@@ -56,6 +56,10 @@ export default function Album() {
   useLayoutEffect(() => {
     if (!containerRef.current || !revealRef.current || fullScreen) return;
 
+    if (window.innerWidth < 768) {
+      revealRef.current.style.scale = "0.92";
+      return;
+    }
     const ctx = gsap.context(() => {
       gsap.fromTo(
         revealRef.current,
@@ -84,8 +88,6 @@ export default function Album() {
   }, [fullScreen]);
 
   const [bgImage, setBgImage] = useState<prcocessedimages>(images[0]);
-  console.log(bgImage);
-
   const [showBg, setShowBg] = useState(false);
 
   return (
@@ -104,7 +106,7 @@ export default function Album() {
         <span className={`${theme.textMainAccent1} ml-3`}>freeze in time</span>
       </BlurText>
       <motion.div
-        className="absolute -inset-12 bg-cover bg-center"
+        className="absolute md:w-auto w-dvw -inset-12 bg-cover bg-center"
         style={{
           backgroundImage: `url(${bgImage.thumb})`,
           filter: "blur(40px) brightness(0.7) saturate(1.2)",
