@@ -1,180 +1,215 @@
+
 # Gokul's Digital Canvas
 
-A minimal, fast, and slightly over-engineered **digital portfolio**
-built with **React**, **TypeScript**, and **Vite**.\
-It's designed as a clean and expressive space to showcase my work,
-ideas, and inspirations through a carefully crafted UI.
+A minimal, fast, and slightly over‑engineered **digital portfolio** built with **React**, **TypeScript**, and **Vite**.
 
-The goal of this project is simple:\
-**present engineering, design, and personality in one cohesive digital
-canvas.**
+It serves as a personal space to showcase my work, experiments, and engineering philosophy — combining **clean design**, **smooth animations**, and **performance‑focused architecture**.
 
-------------------------------------------------------------------------
+The goal of this project is simple:
 
-## Features
+> **Present engineering, design, and personality in one cohesive digital canvas.**
 
-✨ **Light / Dark Theme Toggle**\
-Smooth theme switching powered by React Context.
+---
 
-⚡ **Fast & Responsive**\
-Built with **Vite** for extremely fast development and optimized builds.
+# ✨ Features
 
-🎨 **Modern UI with Tailwind CSS**\
-Utility-first styling for a clean, minimal interface.
+### 🎨 Light / Dark Theme
+Smooth theme switching powered by a custom React hook and theme factory.
 
-📱 **Fully Responsive**\
-Optimized for desktop, tablet, and mobile experiences.
+### ⚡ Fast & Optimized
+Built with **Vite** for lightning‑fast development and optimized builds.
 
-🏢 **Structured Work Experience**\
-Timeline view grouped by company for better readability.
+### 🌊 Three.js Background Animations
+Interactive **Liquid Ether** background powered by WebGL for a fluid visual experience.
 
-🛠️ **Type-Safe Codebase**\
-Built entirely with **TypeScript** for maintainability and reliability.
+### 📱 Fully Responsive
+Carefully tuned layout for **desktop, tablet, and mobile**.
 
-------------------------------------------------------------------------
+### 🧠 Structured Experience Section
+Timeline‑based work experience grouped by company.
 
-## Tech Stack
+### ✉️ Serverless Contact System
+Contact form powered by **Vercel Serverless Functions** for sending emails.
 
-**Frontend**
+### 🧩 Modular Architecture
+Reusable components, hooks, and utilities for maintainable scaling.
 
--   React 19
--   TypeScript
--   Vite
+---
 
-**Styling**
+# 🧰 Tech Stack
 
--   Tailwind CSS 4
+## Frontend
+- React 19
+- TypeScript
+- Vite
 
-**Libraries**
+## Styling
+- Tailwind CSS 4
 
--   Framer Motion
--   @radix-ui/react-icons
+## Animation & Graphics
+- Framer Motion
+- Three.js
+- Custom WebGL shaders
 
-**Tooling**
+## Tooling
+- ESLint
+- GitHub Actions
+- Vercel
 
--   ESLint
--   GitHub Actions
--   GitHub Pages
+## Backend
+- Vercel Serverless Functions (Email API)
 
-------------------------------------------------------------------------
+---
 
-## Project Structure
+# 📂 Project Structure
 
-    src/
-    ├── components/        # Reusable React UI components
-    ├── context/           # Theme context provider
-    ├── data/              # Structured portfolio data
-    ├── hooks/             # Custom hooks (useTheme)
-    ├── utils/             # Utility functions
-    ├── assets/            # Images and static resources
-    ├── App.tsx            # Root application component
-    ├── main.tsx           # Entry point
-    └── index.css          # Global styles (Tailwind)
+```
+src/
+├── components/        # Reusable UI components
+├── animations/        # Animation utilities
+├── backgrounds/       # Three.js visual backgrounds
+├── context/           # React context providers
+├── data/              # Portfolio data
+├── hooks/             # Custom hooks
+├── utils/             # Helper functions
+├── assets/            # Static images
+├── App.tsx
+├── main.tsx
+└── index.css
+```
 
-------------------------------------------------------------------------
+---
 
-## Development
+# 🚀 Development
 
-### Install dependencies
+## Install dependencies
 
-``` bash
+```
 npm install
 ```
 
-### Start development server
+## Start development server
 
-``` bash
+```
 npm run dev
 ```
 
 Open:
 
-    http://localhost:5173
+```
+http://localhost:5173
+```
 
-### Build for production
+## Build for production
 
-``` bash
+```
 npm run build
 ```
 
-### Preview production build
+## Preview production build
 
-``` bash
+```
 npm run preview
 ```
 
-### Lint project
+## Lint project
 
-``` bash
+```
 npm run lint
 ```
 
-------------------------------------------------------------------------
+---
 
-## Deployment
+# 🌍 Live Portfolio
 
-This project deploys automatically to **GitHub Pages** using **GitHub
-Actions**.
+🔗 **Live Website**
 
-### Deployment Workflow
+```
+https://<your-username>.vercel.app
+```
 
-The CI pipeline performs:
+Replace `<your-username>` with your deployment URL.
 
-1.  Install dependencies
-2.  Build the project
-3.  Deploy the `dist/` output to GitHub Pages
+---
 
-### Enable GitHub Pages
+# 📸 Screenshots
 
-1.  Navigate to **Repository Settings → Pages**
-2.  Select **GitHub Actions** as the deployment source.
+## Home / Hero Section
+Add screenshot here:
 
-------------------------------------------------------------------------
+```
+/screenshots/home.png
+```
 
-## Live Portfolio
+## Work Experience Dashboard
+Add screenshot here:
 
-    https://<your-username>.github.io/digital-canvas/
+```
+/screenshots/experience.png
+```
 
-Replace `<your-username>` with your GitHub username.
+## Testimonials Section
+Add screenshot here:
 
-------------------------------------------------------------------------
+```
+/screenshots/testimonials.png
+```
 
-## Customization
+---
 
-If you want to fork or adapt this project:
+# 📡 Live Status
 
-**Update portfolio content**
+You can optionally add deployment status badges here.
 
-    src/data/index.ts
+Example:
 
-**Modify UI components**
+```
+![Vercel Status](https://img.shields.io/badge/deployed-vercel-black)
+```
 
-    src/components/
+If using GitHub Actions:
 
-**Theme customization**
+```
+![Build Status](https://github.com/<username>/<repo>/actions/workflows/deploy.yml/badge.svg)
+```
 
-    src/context/ThemeContext.tsx
-    src/utils/styleFactory.ts
+---
 
-------------------------------------------------------------------------
+# ⚙️ Customization
 
-## Performance
+## Update Portfolio Data
 
--   Vite enables **instant HMR** during development
--   Tailwind automatically **purges unused CSS**
--   Optimized build output for **fast loading**
+```
+src/data/index.ts
+```
 
-------------------------------------------------------------------------
+## Modify Components
 
-## Browser Support
+```
+src/components/
+```
 
-Compatible with all modern browsers supporting **ES2020**.
+## Update Theme Styles
 
-------------------------------------------------------------------------
+```
+src/utils/styleFactory.ts
+```
 
-## Author
+---
 
-**Gokul**\
+# ⚡ Performance
+
+- Instant **Hot Module Replacement** via Vite
+- **Tailwind CSS tree‑shaking**
+- Optimized **WebGL rendering**
+- Lazy rendering for sections
+
+---
+
+# 👨‍💻 Author
+
+**Gokul**  
 Software Engineer
 
-GitHub: https://github.com/gokul-369
+GitHub  
+https://github.com/gokul-369
