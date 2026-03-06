@@ -1,6 +1,8 @@
 
 # Gokul's Digital Canvas
 
+![Digital Canvas Deploy](https://deploy-badge.vercel.app/?url=https://digital-canvas.vercel.app&name=digital-canvas)
+
 A minimal, fast, and slightly over‑engineered **digital portfolio** built with **React**, **TypeScript**, and **Vite**.
 
 It serves as a personal space to showcase my work, experiments, and engineering philosophy — combining **clean design**, **smooth animations**, and **performance‑focused architecture**.
@@ -10,6 +12,7 @@ The goal of this project is simple:
 > **Present engineering, design, and personality in one cohesive digital canvas.**
 
 ---
+
 
 # ✨ Features
 
@@ -128,17 +131,6 @@ npm run lint
 https://www.gokul.ink/
 ```
 
----
-
-# 📡 Live Status
-
-You can optionally add deployment status badges here.
-
-Example:
-
-```
-![Vercel Status](https://img.shields.io/badge/deployed-vercel-black)
-```
 ---
 
 # ⚡ Performance
