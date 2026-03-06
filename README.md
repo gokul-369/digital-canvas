@@ -125,34 +125,7 @@ npm run lint
 🔗 **Live Website**
 
 ```
-https://<your-username>.vercel.app
-```
-
-Replace `<your-username>` with your deployment URL.
-
----
-
-# 📸 Screenshots
-
-## Home / Hero Section
-Add screenshot here:
-
-```
-/screenshots/home.png
-```
-
-## Work Experience Dashboard
-Add screenshot here:
-
-```
-/screenshots/experience.png
-```
-
-## Testimonials Section
-Add screenshot here:
-
-```
-/screenshots/testimonials.png
+https://www.gokul.ink/
 ```
 
 ---
@@ -166,35 +139,6 @@ Example:
 ```
 ![Vercel Status](https://img.shields.io/badge/deployed-vercel-black)
 ```
-
-If using GitHub Actions:
-
-```
-![Build Status](https://github.com/<username>/<repo>/actions/workflows/deploy.yml/badge.svg)
-```
-
----
-
-# ⚙️ Customization
-
-## Update Portfolio Data
-
-```
-src/data/index.ts
-```
-
-## Modify Components
-
-```
-src/components/
-```
-
-## Update Theme Styles
-
-```
-src/utils/styleFactory.ts
-```
-
 ---
 
 # ⚡ Performance
