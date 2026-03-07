@@ -123,7 +123,7 @@ export default function Album() {
         </div>
         {!fullScreen && (
           <motion.div
-            className={`md:h-[600px] md:w-[1000px] h-[600px] w-[400px]`}
+            className={`md:h-[600px] md:w-[1000px] h-[480px] w-[420px]`}
             layoutId="gallery"
           >
             <Gallery

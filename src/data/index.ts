@@ -535,6 +535,39 @@ export const awards: achievement[] = [
 
 export const album: Album[] = [
   {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image13.webp",
+    title: "Perch",
+    description: "A broken tree, two small witnesses",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image21.webp",
+    title: "Skydance",
+    description: "Scattered birds, turning the chaos into  skydance",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image12.webp",
+    title: "P(J)oker",
+    description: "Need to hear a joke ?",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image34.webp",
+    title: "Big Bucket",
+    description:
+      "Glass stacked in circles, pretending it’s its own little planet",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image23.webp",
+    title: "Heart's game",
+    description: "one simple heart stealing the frame.",
+  },
+
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image22.webp",
+    title: "Bird's watch",
+    description: "A tiny lookout post for one very patient bird",
+  },
+
+  {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image1.webp",
     title: "Golden hour",
     description: "Sunsets and shilloutes",
@@ -551,53 +584,9 @@ export const album: Album[] = [
     description: "Symmetric pattern and concrete chambers",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image4.webp",
-    title: "Borrowed light",
-    orientation: "portrait",
-    description: "A small flame holding back the dark",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image5.webp",
-    title: "Clippings",
-    description: "Color coded clips, hanging out to dry",
-  },
-  {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image6.webp",
     title: "Floodlights",
     description: "Steel and bulbs, staring back at the clouds",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image7.webp",
-    title: "Sky on fire",
-    orientation: "portrait",
-    description: "The sky pretending it’s a canvas for once”",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image8.webp",
-    title: "Gradient",
-    orientation: "portrait",
-    description: "who needs CSS for graidents",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image9.webp",
-    title: "Valley",
-    description: "Hills exhaling under a sky that can’t make up its mind",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image11.webp",
-    title: "Jet smoke",
-    orientation: "portrait",
-    description: "Cyan skies and Jet smokes",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image12.webp",
-    title: "P(J)oker",
-    description: "Need to hear a joke ?",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image13.webp",
-    title: "Perch",
-    description: "A broken tree, two small witnesses",
   },
   {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image15.webp",
@@ -605,16 +594,33 @@ export const album: Album[] = [
     description: "Letters and numbers pretending to sort out our mess",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image16.webp",
-    title: "Neon blocks",
-    orientation: "portrait",
-    description: "Geometry dressed up in blue and orange for the night shift",
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image5.webp",
+    title: "Clippings",
+    description: "Color coded clips, hanging out to dry",
   },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image32.webp",
+    title: "Framed quiet",
+    description:
+      "Rust, grills, and a frame that’s seen more seasons than views",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image33.webp",
+    title: "The Yellow Wall",
+    description: "Yellow noise, blue pause, boxed into a perfect little frame",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image9.webp",
+    title: "Valley",
+    description: "Hills exhaling under a sky that can’t make up its mind",
+  },
+
   {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image17.webp",
     title: "Loose change",
     description: "Coins and notes, quietly keeping score in a corner drawer",
   },
+
   {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image18.webp",
     title: "Fireflies",
@@ -633,25 +639,60 @@ export const album: Album[] = [
       "One blue house trying a little harder than the rest of the street",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image21.webp",
-    title: "Skydance",
-    description: "Scattered birds, turning the chaos into  skydance",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image22.webp",
-    title: "Bird's watch",
-    description: "A tiny lookout post for one very patient bird",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image23.webp",
-    title: "Heart's game",
-    description: "one simple heart stealing the frame.",
-  },
-  {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image24.webp",
     title: "Old Stories",
     description:
       "Faded white, red doors, and a hallway full of leftover echoes",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image26.webp",
+    title: "Entropy",
+    description: "Order on paper, entropy in motion between stations",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image28.webp",
+    title: "Stacked",
+    description: "Color coded crates playing Tetris in the back of reality.",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image31.webp",
+    title: "White town",
+    description: "A small square of shade in a sunburnt wall",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image29.webp",
+    title: "Red Threshold",
+    description: "Weathered wood, and a threshold that’s seen it all",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image4.webp",
+    title: "Borrowed light",
+    orientation: "portrait",
+    description: "A small flame holding back the dark",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image7.webp",
+    title: "Sky on fire",
+    orientation: "portrait",
+    description: "The sky pretending it’s a canvas for once”",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image8.webp",
+    title: "Gradient",
+    orientation: "portrait",
+    description: "who needs CSS for graidents",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image11.webp",
+    title: "Jet smoke",
+    orientation: "portrait",
+    description: "Cyan skies and Jet smokes",
+  },
+  {
+    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image16.webp",
+    title: "Neon blocks",
+    orientation: "portrait",
+    description: "Geometry dressed up in blue and orange for the night shift",
   },
   {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image25.webp",
@@ -660,55 +701,20 @@ export const album: Album[] = [
     description: "One person and a mirrored corridor",
   },
   {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image26.webp",
-    title: "Entropy",
-    description: "Order on paper, entropy in motion between stations",
-  },
-  {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image27.webp",
     title: "Blue tunnel",
     orientation: "portrait",
     description:
       "One person folded into a blue corridor, scrolling their way out",
   },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image28.webp",
-    title: "Stacked",
-    description: "Color coded crates playing Tetris in the back of reality.",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image29.webp",
-    title: "Red Threshold",
-    description: "Weathered wood, and a threshold that’s seen it all",
-  },
+
   {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image30.webp",
     title: "Door 89",
     orientation: "portrait",
     description: "Dressed in white and accidental blue",
   },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image31.webp",
-    title: "White town",
-    description: "A small square of shade in a sunburnt wall",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image32.webp",
-    title: "Framed quiet",
-    description:
-      "Rust, grills, and a frame that’s seen more seasons than views",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image33.webp",
-    title: "The Yellow Wall",
-    description: "Yellow noise, blue pause, boxed into a perfect little frame",
-  },
-  {
-    img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image34.webp",
-    title: "Big Bucket",
-    description:
-      "Glass stacked in circles, pretending it’s its own little planet",
-  },
+
   {
     img: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/full/image35.webp",
     title: "Sanctum Sanctorum",
