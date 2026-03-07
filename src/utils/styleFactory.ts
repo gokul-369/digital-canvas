@@ -35,3 +35,5 @@ export const themeFactory = (theme: "light" | "dark"): ThemeClassSet => {
   };
   return themeFactory[theme];
 };
+
+export const isMobile = window.innerWidth <= 768;
