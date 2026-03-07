@@ -19,11 +19,6 @@ export default function Album() {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollYRef = useRef(0);
 
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-    ScrollTrigger.clearScrollMemory();
-    ScrollTrigger.refresh();
-  }, []);
 
   useLayoutEffect(() => {
     if (fullScreen) {
@@ -53,6 +48,15 @@ export default function Album() {
     }
   }, [fullScreen]);
 
+
+  useLayoutEffect(() => {
+    if (fullScreen) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "";
+      ScrollTrigger.refresh();
+    }
+  }, [fullScreen]);
   useLayoutEffect(() => {
     if (!containerRef.current || !revealRef.current || fullScreen) return;
 
@@ -97,7 +101,7 @@ export default function Album() {
       id="album"
     >
       <BlurText
-        className="uppercase tracking-widest"
+        className="uppercase text-center tracking-widest"
         delay={200}
         animateBy="tags"
         direction="top"

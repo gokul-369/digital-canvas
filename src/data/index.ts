@@ -81,7 +81,8 @@ export const workExperiences: experience[] = [
     duration: "April 2025 - Present",
     description: [
       "One of the Designated Front-End Engineers in Lloyds Banking Group project, one of the UK’s leading financial institutions.",
-      "Contributing to the Card Controls team, developing Single Page Applications (SPAs) that enable customers to manage and restrict card usage and limits.",
+      "Contributed to the Card Controls team, developing Single Page Applications (SPAs) that enable customers to manage and restrict card usage and limits.",
+      "Currently working on VISA's click to pay team, that enables customer to pay using their VISA card",
       "Actively involved in building AI-driven solutions, including developing MCP servers, designing unique tools, and crafting elicitations for seamless integration with MCP clients.",
     ],
   },
