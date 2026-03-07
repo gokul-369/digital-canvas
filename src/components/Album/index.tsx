@@ -101,7 +101,7 @@ export default function Album() {
       id="album"
     >
       <BlurText
-        className="uppercase tracking-widest"
+        className="uppercase text-center tracking-widest"
         delay={200}
         animateBy="tags"
         direction="top"
