@@ -245,7 +245,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
               <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
             </HashLink>
             <FiAward
-              className={`h-24 w-24 absolute bottom-1 right-3 dark:text-white/5 text-gray-800 dark:group-hover:text-white/25 transition`}
+              className={`h-24 w-24 absolute bottom-1 right-3 dark:text-white/5 text-gray-800/60 dark:group-hover:text-white/25 transition`}
             />
           </SpotlightCard>
         </div>

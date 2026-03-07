@@ -30,6 +30,8 @@ function Hero({ theme, colors }: HeroProps) {
           isViscous
           iterationsViscous={isMobile ? 24 : 30}
           resolution={0.25}
+          // autoDemo={isMobile ? false : true}
+          autoIntensity={isMobile ? 1.6 : 2.2}
           autoResumeDelay={1500}
           autoRampDuration={0.3}
           isBounce
