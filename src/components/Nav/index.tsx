@@ -8,6 +8,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useScroll, useTransform, motion } from "motion/react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { isMobile } from "../../utils/styleFactory";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,7 +24,6 @@ function Nav() {
   const menuIconOpacity = useTransform(scrollY, [80, 140], [0, 1]);
 
   const tweenRef = useRef<gsap.core.Tween | null>(null);
-  const isMobile = window.innerWidth <= 768;
   useLayoutEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
@@ -153,7 +153,7 @@ function Nav() {
       </motion.span>
 
       <motion.span
-        className="absolute md:text-lg text-xs"
+        className={`absolute md:text-lg text-xs ${theme.textPrimary}`}
         style={{
           cursor: "pointer",
           opacity: open ? 0 : menuIconOpacity,

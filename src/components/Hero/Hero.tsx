@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 import { useAppContext } from "../../context/AppContext";
 import { LuMail } from "react-icons/lu";
 import { HiOutlineBriefcase } from "react-icons/hi2";
+import { isMobile } from "../../utils/styleFactory";
 
 type HeroProps = {
   theme: ThemeClassSet;
@@ -25,9 +26,9 @@ function Hero({ theme, colors }: HeroProps) {
       <div className="fixed top-0 h-[100dvh] w-full left-0 right-0 -z-0">
         <LiquidEther
           colors={colors}
-          mouseForce={13}
+          mouseForce={isMobile ? 8 : 13}
           isViscous
-          iterationsViscous={30}
+          iterationsViscous={isMobile ? 24 : 30}
           resolution={0.25}
           autoResumeDelay={1500}
           autoRampDuration={0.3}
