@@ -16,7 +16,7 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
 
   return (
     <section
-      className={`h-full lg:h-dvh w-full flex px-8 lg:px-40 py-8 ${theme.bgPrimary}`}
+      className={`h-full w-full flex px-8 lg:px-40 py-8 ${theme.bgPrimary}`}
     >
       <div className="grid mt-20 justify-center md:grid-cols-3 grid-cols-2 gap-4">
         <div className="col-span-2 lg:col-span-1 row-span-2 lg:row-span-1">
