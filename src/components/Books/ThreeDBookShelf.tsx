@@ -227,46 +227,41 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.0;
     rendererRef.current = renderer;
 
     container.innerHTML = "";
     container.appendChild(renderer.domElement);
 
-    // 4. Lighting: Clean Studio Key + Vibrant Ambient + Dedicated Hero Front Light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.45);
+    // 4. Lighting: Natural, legible studio illumination with zero blowout or glare
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
     scene.add(ambientLight);
 
-    const keySpot = new THREE.DirectionalLight(0xffffff, 2.8);
-    keySpot.position.set(4.0, 5.0, 5.5);
+    const keySpot = new THREE.DirectionalLight(0xffffff, 1.5);
+    keySpot.position.set(3.5, 4.5, 5.0);
     keySpot.castShadow = true;
     keySpot.shadow.mapSize.width = 2048;
     keySpot.shadow.mapSize.height = 2048;
     keySpot.shadow.bias = -0.0005;
     scene.add(keySpot);
 
-    const fillLight = new THREE.DirectionalLight(0x818cf8, 1.3);
-    fillLight.position.set(-4.5, 2.5, 3.5);
+    const fillLight = new THREE.DirectionalLight(0x94a3b8, 0.6);
+    fillLight.position.set(-3.5, 2.5, 3.5);
     scene.add(fillLight);
 
-    // Dedicated white studio spotlight directly illuminating the selected book's front cover
-    const heroSpot = new THREE.DirectionalLight(0xffffff, 2.6);
-    heroSpot.position.set(-0.85, 2.2, 5.0);
-    scene.add(heroSpot);
-
-    const softShelfLight = new THREE.PointLight(0x818cf8, 1.2, 8);
+    const softShelfLight = new THREE.PointLight(0x818cf8, 0.8, 8);
     softShelfLight.position.set(0, -1.2, 1.2);
     scene.add(softShelfLight);
 
-    // 5. Minimal, Elegant Floating Shelf Platform (Clean dark obsidian, no harsh stripes or grid lines)
+    // 5. Minimal, Elegant Floating Shelf Platform with Fading Edge Line
     const shelfAnchor = new THREE.Group();
     const baseY = SHELF_Y - BOOK_H / 2 - 0.04;
 
-    // Sleek chamfered floating platform
-    const platformGeo = new THREE.BoxGeometry(16.5, 0.07, 0.95);
+    // Platform width matched to books (13.5 units instead of overextended 16.5)
+    const platformGeo = new THREE.BoxGeometry(13.5, 0.07, 0.95);
     const platformMat = new THREE.MeshStandardMaterial({
       color: 0x080d1a,
-      roughness: 0.3,
+      roughness: 0.35,
       metalness: 0.85,
     });
     const platformMesh = new THREE.Mesh(platformGeo, platformMat);
@@ -274,19 +269,34 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     platformMesh.receiveShadow = true;
     shelfAnchor.add(platformMesh);
 
-    // Subtle edge highlight (soft cyan/indigo glow along the front lip)
-    const lipGeo = new THREE.BoxGeometry(16.52, 0.012, 0.02);
+    // Fading edge highlight line: smoothly fades out to transparent on both ends
+    const lipCanvas = document.createElement("canvas");
+    lipCanvas.width = 512;
+    lipCanvas.height = 32;
+    const lipCtx = lipCanvas.getContext("2d");
+    if (lipCtx) {
+      const grad = lipCtx.createLinearGradient(0, 0, 512, 0);
+      grad.addColorStop(0, "rgba(99, 102, 241, 0)");
+      grad.addColorStop(0.18, "rgba(99, 102, 241, 0.75)");
+      grad.addColorStop(0.5, "rgba(56, 189, 248, 0.95)");
+      grad.addColorStop(0.82, "rgba(99, 102, 241, 0.75)");
+      grad.addColorStop(1, "rgba(99, 102, 241, 0)");
+      lipCtx.fillStyle = grad;
+      lipCtx.fillRect(0, 0, 512, 32);
+    }
+    const lipTex = new THREE.CanvasTexture(lipCanvas);
+    const lipGeo = new THREE.BoxGeometry(13.52, 0.012, 0.02);
     const lipMat = new THREE.MeshBasicMaterial({
-      color: 0x6366f1,
+      map: lipTex,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.85,
     });
     const lipMesh = new THREE.Mesh(lipGeo, lipMat);
     lipMesh.position.set(0, baseY + 0.032, -0.38);
     shelfAnchor.add(lipMesh);
 
     // Soft contact shadow plane beneath the books
-    const shadowGeo = new THREE.PlaneGeometry(16.5, 0.9);
+    const shadowGeo = new THREE.PlaneGeometry(13.5, 0.9);
     const shadowMat = new THREE.MeshBasicMaterial({
       color: 0x000000,
       transparent: true,
@@ -328,11 +338,11 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       const coverTex = texLoader.load(item.coverImage);
       coverTex.colorSpace = THREE.SRGBColorSpace;
 
-      // Front Cover Material - Vibrant, full color, crisp sheen, never darkened by fog
+      // Front Cover Material - Vibrant, natural contrast, perfectly legible text with zero blowout
       const frontMat = new THREE.MeshStandardMaterial({
         map: coverTex,
-        roughness: 0.18,
-        metalness: 0.02,
+        roughness: 0.35,
+        metalness: 0.0,
         fog: false,
       });
 
@@ -607,21 +617,20 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       if (selectedBookRef.current) return;
 
       const maxScroll = Math.max(0, booksList.length - 3);
-      const isDown = e.deltaY > 0 || e.deltaX > 0;
-      const isUp = e.deltaY < 0 || e.deltaX < 0;
+      const rawDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const isDown = rawDelta > 0;
+      const isUp = rawDelta < 0;
 
-      // While shelf has horizontal runway (scrolling down before maxScroll or up before 0):
+      // While shelf has horizontal runway (scrolling forward before maxScroll or backward before 0):
       if (isDown && scrollTargetRef.current < maxScroll - 0.05) {
         e.preventDefault();
         e.stopPropagation();
-        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-        scrollTargetRef.current = Math.min(maxScroll, scrollTargetRef.current + delta * 0.0035);
+        scrollTargetRef.current = Math.min(maxScroll, scrollTargetRef.current + rawDelta * 0.0032);
         onScrollIndexChange(scrollTargetRef.current);
       } else if (isUp && scrollTargetRef.current > 0.05) {
         e.preventDefault();
         e.stopPropagation();
-        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-        scrollTargetRef.current = Math.max(0, scrollTargetRef.current - delta * 0.0035);
+        scrollTargetRef.current = Math.max(0, scrollTargetRef.current + rawDelta * 0.0032);
         onScrollIndexChange(scrollTargetRef.current);
       }
       // Once shelf reaches either end (0 or maxScroll), allow vertical page scroll!

@@ -150,7 +150,7 @@ export default function BooksSection() {
         )}
       </AnimatePresence>
 
-      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Covers Nav at z-50, No Harsh Border, Progressive Blur) */}
+      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Covers Nav at z-50, Frosted Blur Extends to Book, Unmasked Text) */}
       <AnimatePresence>
         {selectedBook && (
           <motion.div
@@ -162,14 +162,21 @@ export default function BooksSection() {
               duration: 0.45,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[540px] md:w-[600px] lg:w-[680px] pointer-events-auto flex flex-col justify-between pt-10 sm:pt-14 pb-8 sm:pb-10 px-8 sm:px-14 bg-gradient-to-r from-transparent via-[#02050f]/85 to-[#02050f]/98 backdrop-blur-xl overflow-y-auto"
-            style={{
-              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%, black 100%)",
-              maskImage: "linear-gradient(to right, transparent 0%, black 20%, black 100%)",
-            }}
+            className="absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[62vw] md:w-[64vw] lg:w-[66vw] max-w-[880px] pointer-events-auto flex flex-col justify-between overflow-y-auto"
           >
-            {/* Top Bar: Archival Tag, Big Title & Close Button aligned at top */}
-            <div>
+            {/* FROSTED GLASS BACKGROUND LAYER (Masked so blur fades seamlessly into 3D scene) */}
+            <div
+              className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-r from-transparent via-[#02050f]/85 to-[#02050f]/98 backdrop-blur-xl"
+              style={{
+                WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 22%, black 100%)",
+                maskImage: "linear-gradient(to right, transparent 0%, black 22%, black 100%)",
+              }}
+            />
+
+            {/* FOREGROUND CONTENT LAYER (100% UNMASKED, CRISP & RAZOR-SHARP) */}
+            <div className="relative z-10 pt-10 sm:pt-14 pb-8 sm:pb-10 pl-14 sm:pl-20 pr-8 sm:pr-14 flex flex-col justify-between min-h-full">
+              {/* Top Bar: Archival Tag, Big Title & Close Button aligned at top */}
+              <div>
               <div className="flex items-start justify-between">
                 <div>
                   <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.26em] text-slate-400 uppercase block">
@@ -253,7 +260,8 @@ export default function BooksSection() {
                 <span>12 VOLUMES ARCHIVED</span>
               </div>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
         )}
       </AnimatePresence>
     </section>
