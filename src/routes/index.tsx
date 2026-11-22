@@ -23,6 +23,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Experience = lazy(() => import("../pages/Experience"));
 const SkillsPage = lazy(() => import("../pages/SkillsPage"));
 const ImageGallery = lazy(() => import("../pages/ImageGallery"));
+const BooksPage = lazy(() => import("../pages/BooksPage"));
 
 function ScrollSync() {
   const lenis = useLenis(() => {
@@ -88,6 +89,14 @@ export function AppRoutes() {
           element={
             <Suspense fallback={<Loader />}>
               <ImageGallery />
+            </Suspense>
+          }
+        />
+        <Route
+          path={manifest.books}
+          element={
+            <Suspense fallback={<Loader />}>
+              <BooksPage />
             </Suspense>
           }
         />

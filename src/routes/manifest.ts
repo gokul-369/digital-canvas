@@ -7,4 +7,5 @@ export const manifest = {
   awards: "/experience/#awards",
   gallery: "/gallery",
   rolemodels: "/gallery#rolemodels",
+  books: "/books",
 };

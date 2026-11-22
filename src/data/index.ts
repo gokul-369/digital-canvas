@@ -44,6 +44,10 @@ export const navLinks: formField[] = [
     name: "Gallery",
     value: "/gallery",
   },
+  {
+    name: "Books",
+    value: "/books",
+  },
 ];
 
 export const hero: heroType = {
