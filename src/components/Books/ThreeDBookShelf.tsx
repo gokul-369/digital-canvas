@@ -277,8 +277,10 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     booksList.forEach((item, idx) => {
       const bookAnchor = new THREE.Group();
 
-      // Initial position along the horizontal shelf
-      const x = (idx - 1.5) * BOOK_SPACING;
+      // Responsive initial position along the horizontal shelf
+      const isSmall = typeof window !== "undefined" && window.innerWidth < 640;
+      const defaultX = isSmall ? idx * BOOK_SPACING : (idx - 1.5) * BOOK_SPACING;
+      const x = defaultX - scrollIndex * BOOK_SPACING;
       bookAnchor.position.set(x, SHELF_Y, -0.85);
 
       const leanTiltX = -0.14 + ((idx * 2) % 4) * 0.012;
@@ -350,110 +352,106 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
     bookMeshesRef.current = meshes;
 
-    // 6.5. 3D Celestial Comet Shelf Beam with Stardust Particle Trail
-    // Positioned physically right below the soles of the books (y = -0.82) and slightly in front (z = -0.80)
+    // 6.5. Realistic 3D Celestial Comet (No artificial guide line - genuine free-floating cosmic body)
+    // Positioned physically right below the soles of the books (y = -0.82)
     const COMET_Y = -0.82;
-    const COMET_Z = -0.80;
+    const COMET_Z = -0.78;
 
-    // A. Luminous Horizon Beam Line
-    const beamCanvas = document.createElement("canvas");
-    beamCanvas.width = 512;
-    beamCanvas.height = 32;
-    const beamCtx = beamCanvas.getContext("2d");
-    if (beamCtx) {
-      const grad = beamCtx.createLinearGradient(0, 0, 512, 0);
-      grad.addColorStop(0, "rgba(56, 189, 248, 0)");
-      grad.addColorStop(0.2, "rgba(56, 189, 248, 0.45)");
-      grad.addColorStop(0.5, "rgba(129, 140, 248, 0.7)");
-      grad.addColorStop(0.8, "rgba(56, 189, 248, 0.45)");
-      grad.addColorStop(1, "rgba(56, 189, 248, 0)");
-      beamCtx.fillStyle = grad;
-      beamCtx.fillRect(0, 14, 512, 4);
-    }
-    const beamTex = new THREE.CanvasTexture(beamCanvas);
-    const beamGeo = new THREE.PlaneGeometry(18, 0.04);
-    const beamMat = new THREE.MeshBasicMaterial({
-      map: beamTex,
-      transparent: true,
-      opacity: isDark ? 0.85 : 0.65,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-    const shelfBeamMesh = new THREE.Mesh(beamGeo, beamMat);
-    shelfBeamMesh.position.set(0, COMET_Y, COMET_Z);
-    scene.add(shelfBeamMesh);
-
-    // B. Shooting Comet Head & Tapered Dust Tail
     const cometGroup = new THREE.Group();
-    cometGroup.position.set(-6.0, COMET_Y, COMET_Z + 0.02);
+    cometGroup.position.set(-6.0, COMET_Y, COMET_Z);
 
-    // Comet Head Core
-    const headGeo = new THREE.SphereGeometry(0.026, 16, 16);
-    const headMat = new THREE.MeshBasicMaterial({
+    // A. Intense Icy Nucleus Core (Pure white pinpoint star)
+    const nucleusGeo = new THREE.SphereGeometry(0.026, 16, 16);
+    const nucleusMat = new THREE.MeshBasicMaterial({
       color: 0xffffff,
+      transparent: true,
+      opacity: 1.0,
       blending: THREE.AdditiveBlending,
     });
-    const cometHead = new THREE.Mesh(headGeo, headMat);
-    cometGroup.add(cometHead);
+    const cometNucleus = new THREE.Mesh(nucleusGeo, nucleusMat);
+    cometGroup.add(cometNucleus);
 
-    // Comet Glow Halo
-    const haloGeo = new THREE.SphereGeometry(0.065, 16, 16);
-    const haloMat = new THREE.MeshBasicMaterial({
+    // B. Inner Gas Coma (Electric Cyan Glow)
+    const innerComaGeo = new THREE.SphereGeometry(0.065, 16, 16);
+    const innerComaMat = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending,
     });
-    const cometHalo = new THREE.Mesh(haloGeo, haloMat);
-    cometGroup.add(cometHalo);
+    const cometInnerComa = new THREE.Mesh(innerComaGeo, innerComaMat);
+    cometGroup.add(cometInnerComa);
 
-    // Tapered Shimmering Dust Tail
+    // C. Outer Diffuse Coma Envelope (Soft violet/cyan gas haze)
+    const outerComaGeo = new THREE.SphereGeometry(0.14, 16, 16);
+    const outerComaMat = new THREE.MeshBasicMaterial({
+      color: 0x818cf8,
+      transparent: true,
+      opacity: 0.35,
+      blending: THREE.AdditiveBlending,
+    });
+    const cometOuterComa = new THREE.Mesh(outerComaGeo, outerComaMat);
+    cometGroup.add(cometOuterComa);
+
+    // D. Realistic Swept-Back Dual Cometary Tail (Focused Ion Beam + Diffuse Dust Stream)
     const tailCanvas = document.createElement("canvas");
-    tailCanvas.width = 256;
-    tailCanvas.height = 32;
+    tailCanvas.width = 512;
+    tailCanvas.height = 128;
     const tailCtx = tailCanvas.getContext("2d");
     if (tailCtx) {
-      const grad = tailCtx.createLinearGradient(0, 0, 256, 0);
-      grad.addColorStop(0, "rgba(56, 189, 248, 0)");
-      grad.addColorStop(0.5, "rgba(129, 140, 248, 0.5)");
-      grad.addColorStop(0.9, "rgba(56, 189, 248, 0.9)");
-      grad.addColorStop(1, "rgba(255, 255, 255, 1)");
-      tailCtx.fillStyle = grad;
+      // 1. Wide diffuse dust tail (soft parabolic gradient that dissolves into dark space)
+      const dustGrad = tailCtx.createRadialGradient(512, 64, 4, 300, 64, 320);
+      dustGrad.addColorStop(0, "rgba(56, 189, 248, 0.45)");
+      dustGrad.addColorStop(0.35, "rgba(129, 140, 248, 0.25)");
+      dustGrad.addColorStop(0.75, "rgba(99, 102, 241, 0.08)");
+      dustGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      tailCtx.fillStyle = dustGrad;
+      tailCtx.fillRect(0, 0, 512, 128);
+
+      // 2. Focused Ion Beam (Electric cyan/white sharp spine tapering to left)
+      const ionGrad = tailCtx.createLinearGradient(512, 64, 0, 64);
+      ionGrad.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+      ionGrad.addColorStop(0.15, "rgba(125, 211, 252, 0.85)");
+      ionGrad.addColorStop(0.5, "rgba(56, 189, 248, 0.4)");
+      ionGrad.addColorStop(0.85, "rgba(129, 140, 248, 0.12)");
+      ionGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      tailCtx.fillStyle = ionGrad;
       tailCtx.beginPath();
-      tailCtx.moveTo(0, 16);
-      tailCtx.lineTo(256, 12);
-      tailCtx.lineTo(256, 20);
+      tailCtx.moveTo(512, 60);
+      tailCtx.lineTo(0, 48);
+      tailCtx.lineTo(0, 80);
+      tailCtx.lineTo(512, 68);
       tailCtx.closePath();
       tailCtx.fill();
     }
     const tailTex = new THREE.CanvasTexture(tailCanvas);
-    const tailGeo = new THREE.PlaneGeometry(1.6, 0.07);
+    const tailGeo = new THREE.PlaneGeometry(2.5, 0.22);
     const tailMat = new THREE.MeshBasicMaterial({
       map: tailTex,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.85,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
     const cometTail = new THREE.Mesh(tailGeo, tailMat);
-    cometTail.position.x = -0.8;
+    cometTail.position.x = -1.25;
     cometGroup.add(cometTail);
 
-    // Sparkling Stardust Particles Trailing the Comet
-    const DUST_COUNT = 24;
+    // E. Dispersing Sparkling Stardust Particles Trailing Behind
+    const DUST_COUNT = 36;
     const dustPositions = new Float32Array(DUST_COUNT * 3);
     const dustOffsets = new Float32Array(DUST_COUNT);
     for (let i = 0; i < DUST_COUNT; i++) {
-      dustPositions[i * 3 + 0] = -(Math.random() * 1.5 + 0.1);
-      dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
-      dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.03;
+      dustPositions[i * 3 + 0] = -(Math.random() * 2.2 + 0.1);
+      dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 0.08;
+      dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
       dustOffsets[i] = Math.random() * Math.PI * 2;
     }
     const dustGeo = new THREE.BufferGeometry();
     dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPositions, 3));
     const dustMat = new THREE.PointsMaterial({
       color: 0x7dd3fc,
-      size: 0.035,
+      size: 0.032,
       transparent: true,
       opacity: 0.85,
       blending: THREE.AdditiveBlending,
@@ -466,29 +464,43 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
     // 7. Animation Loop with Smooth Slerp Damping
     let animId: number;
+    let cometCurrentOpacity = 1.0;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
-      // Animate 3D Celestial Comet smoothly along the shelf horizon
+      // Celestial Comet Flight & Selection Visibility
+      // When a book is selected, the comet fades out completely to 0 opacity and pauses (NOT running in background)
       const activeItem = selectedBookRef.current;
-      const targetCometOpacity = activeItem ? 0.2 : 1.0;
-      cometTail.material.opacity += (targetCometOpacity * 0.9 - cometTail.material.opacity) * 0.05;
-      shelfBeamMesh.material.opacity += (targetCometOpacity * (isDark ? 0.85 : 0.65) - shelfBeamMesh.material.opacity) * 0.05;
+      const targetCometOpacity = activeItem ? 0.0 : 1.0;
+      cometCurrentOpacity += (targetCometOpacity - cometCurrentOpacity) * 0.08;
 
-      cometGroup.position.x += 0.035;
-      if (cometGroup.position.x > 8.0) {
-        cometGroup.position.x = -8.0;
-      }
+      nucleusMat.opacity = cometCurrentOpacity;
+      innerComaMat.opacity = cometCurrentOpacity * 0.75;
+      outerComaMat.opacity = cometCurrentOpacity * 0.35;
+      tailMat.opacity = cometCurrentOpacity * 0.85;
+      dustMat.opacity = cometCurrentOpacity * 0.85;
+      cometGroup.visible = cometCurrentOpacity > 0.01;
 
-      // Stardust particle twinkling
-      const posAttr = dustGeo.attributes.position as THREE.BufferAttribute;
-      const time = performance.now() * 0.003;
-      for (let i = 0; i < DUST_COUNT; i++) {
-        const py = Math.sin(time + dustOffsets[i]) * 0.02;
-        posAttr.setY(i, py);
+      // Only advance comet along trajectory when visible (and shelf is idle)
+      if (cometGroup.visible) {
+        cometGroup.position.x += 0.022;
+        if (cometGroup.position.x > 8.5) {
+          cometGroup.position.x = -8.5;
+        }
+
+        const time = performance.now() * 0.002;
+        // Organic celestial vertical undulation
+        cometGroup.position.y = COMET_Y + Math.sin(time * 1.5) * 0.012;
+
+        // Stardust particle twinkling
+        const posAttr = dustGeo.attributes.position as THREE.BufferAttribute;
+        for (let i = 0; i < DUST_COUNT; i++) {
+          const py = Math.sin(time * 2 + dustOffsets[i]) * 0.03;
+          posAttr.setY(i, py);
+        }
+        dustGeo.attributes.position.needsUpdate = true;
       }
-      posAttr.needsUpdate = true;
 
       // Damping on interactive rotation
       activeBookRot.current.x += (activeBookRotTarget.current.x - activeBookRot.current.x) * 0.1;
@@ -534,8 +546,9 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
             anchor.scale.z + (targetScale - anchor.scale.z) * 0.1
           );
 
-          // Horizontal shelf position shifted by scrollPosRef
-          const defaultX = (idx - 1.5) * BOOK_SPACING;
+          // Horizontal shelf position shifted by scrollPosRef (responsive centering on mobile)
+          const isSmall = window.innerWidth < 640;
+          const defaultX = isSmall ? idx * BOOK_SPACING : (idx - 1.5) * BOOK_SPACING;
           let targetX = defaultX - scrollPosRef.current * BOOK_SPACING;
           let targetY = SHELF_Y;
           let targetZ = activeItem ? -4.0 : -0.85;
@@ -635,12 +648,14 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       activeBookRotTarget.current.x += dy * 0.006;
       activeBookRotTarget.current.x = Math.max(-0.6, Math.min(0.6, activeBookRotTarget.current.x));
     } else if (dragMode.current === "scroll" && !selectedBookRef.current) {
-      // Drag horizontally to scroll shelf
-      const scrollDelta = -dx / 180;
-      const isSmall = window.innerWidth < 640;
-      const maxScroll = Math.max(0, booksList.length - (isSmall ? 1 : 3));
-      scrollTargetRef.current = Math.max(0, Math.min(maxScroll, scrollTargetRef.current + scrollDelta));
-      onScrollIndexChange(scrollTargetRef.current);
+      // Require small threshold to distinguish deliberate swipe from tap
+      if (dragDist.current > 6) {
+        const scrollDelta = -dx / 180;
+        const isSmall = window.innerWidth < 640;
+        const maxScroll = Math.max(0, booksList.length - (isSmall ? 1 : 3));
+        scrollTargetRef.current = Math.max(0, Math.min(maxScroll, scrollTargetRef.current + scrollDelta));
+        onScrollIndexChange(scrollTargetRef.current);
+      }
     }
 
     lastPointer.current = { x: e.clientX, y: e.clientY };
@@ -671,7 +686,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       const isMobile = window.innerWidth < 768;
       if (isMobile) {
         let closestBook: BookItem | null = null;
-        let minDist = 120; // 120px touch tolerance
+        let minDist = 220; // 220px generous touch radius
         const v = new THREE.Vector3();
 
         bookMeshesRef.current.forEach((mesh) => {
@@ -692,6 +707,16 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
           onSelectBookRef.current(closestBook);
           return;
         }
+
+        // Tap fallback on mobile: select the currently centered book on the screen
+        const roundedIndex = Math.min(booksList.length - 1, Math.max(0, Math.round(scrollPosRef.current)));
+        const centerBook = booksList[roundedIndex];
+        if (centerBook) {
+          activeBookRotTarget.current = { x: 0.05, y: -0.28 };
+          activeBookRot.current = { x: 0.05, y: -0.28 };
+          onSelectBookRef.current(centerBook);
+          return;
+        }
       }
     } else if (selectedBookRef.current) {
       onSelectBookRef.current(null);
@@ -707,11 +732,20 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       // safe fallback
     }
 
+    const isSmall = window.innerWidth < 640;
+    const maxScroll = Math.max(0, booksList.length - (isSmall ? 1 : 3));
+
+    // If swiped on mobile, smoothly snap to the closest book
+    if (dragMode.current === "scroll" && dragDist.current > 24 && isSmall) {
+      scrollTargetRef.current = Math.max(0, Math.min(maxScroll, Math.round(scrollTargetRef.current)));
+      onScrollIndexChange(scrollTargetRef.current);
+    }
+
     const elapsed = performance.now() - pointerStart.current.time;
     const moveDist = Math.hypot(e.clientX - pointerStart.current.x, e.clientY - pointerStart.current.y);
 
-    // Reliable tap detection: finger or mouse lifted within 35px and 450ms
-    if (moveDist < 35 && elapsed < 450) {
+    // Reliable tap detection: finger or mouse lifted within 48px and 550ms
+    if (moveDist < 48 && elapsed < 550) {
       handleSelectAtCoords(e.clientX, e.clientY);
     }
   };

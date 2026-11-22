@@ -162,29 +162,40 @@ export function Timeline({ children }: { children: React.ReactNode }) {
       {/* Subtle Spine Track Base */}
       <div className="absolute left-3 sm:left-4 top-0 bottom-0 w-[2px] bg-slate-200 dark:bg-white/10 hidden md:block" />
 
-      {/* Extending Cosmic Comet Shimmering Dust Tail that grows as you scroll */}
-      <motion.div
-        style={{ height: pointerY }}
-        className="absolute left-3 sm:left-4 -translate-x-[1px] top-0 w-[3px] bg-gradient-to-b from-indigo-500/20 via-sky-400/60 to-white shadow-[0_0_12px_rgba(56,189,248,0.7),0_0_24px_rgba(99,102,241,0.5)] transform-gpu hidden md:block z-15"
-      />
+      {/* Orbit Rail Track Container with Overflow Clipping so the tail gracefully enters/exits */}
+      <div className="absolute left-3 sm:left-4 top-0 bottom-0 w-10 -translate-x-1/2 pointer-events-none overflow-hidden hidden md:block z-20">
+        {/* Realistic Cosmic Comet with Tapered Fading Ion & Dust Tail */}
+        <motion.div
+          style={{ top: pointerY }}
+          className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none"
+        >
+          {/* FADING REAL COMET TAIL: Trails upward behind the descending comet head (260px long, fading to 0 opacity) */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-6 h-64 pointer-events-none flex flex-col items-center justify-end">
+            {/* Outer Diffuse Cometary Dust Sheath (Wide, soft gaussian blur, dissolves into dark space) */}
+            <div className="w-5 h-64 bg-gradient-to-t from-cyan-400/50 via-indigo-500/20 via-30% to-transparent blur-[3px]" />
 
-      {/* Blazing Comet Head at the front of the scroll extension with trailing dust sparks */}
-      <motion.div
-        style={{ top: pointerY }}
-        className="absolute left-3 sm:left-4 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center z-25 pointer-events-none"
-      >
-        {/* Trailing Stardust Sparks right above the head */}
-        <span className="absolute -top-3 -left-3 w-1.5 h-1.5 rounded-full bg-cyan-200 shadow-[0_0_6px_#38bdf8] animate-dust-1" />
-        <span className="absolute -top-6 -right-2 w-1 h-1 rounded-full bg-indigo-200 shadow-[0_0_6px_#818cf8] animate-dust-2" />
-        <span className="absolute -top-9 -left-2 w-1.5 h-1.5 rounded-full bg-amber-200 shadow-[0_0_6px_#fbbf24] animate-dust-3" />
+            {/* Inner Intense Ion Beam (Electric cyan/white spine, highly focused at the nucleus, fading upward) */}
+            <div className="absolute bottom-0 w-[2.5px] h-60 bg-gradient-to-t from-white via-sky-300/80 via-25% via-cyan-400/40 via-60% to-transparent shadow-[0_0_12px_rgba(56,189,248,0.9)]" />
 
-        {/* Outer Pulsing Aura */}
-        <span className="absolute h-7 w-7 rounded-full bg-cyan-400/30 animate-ping" />
-        <span className="absolute h-5 w-5 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 opacity-80 blur-[2px]" />
+            {/* Dispersing Sparkling Stardust Particles drifting upwards along the tail */}
+            <span className="absolute bottom-6 -left-1.5 w-1.5 h-1.5 rounded-full bg-cyan-200 shadow-[0_0_8px_#38bdf8] animate-dust-1 opacity-90" />
+            <span className="absolute bottom-14 right-1 w-1 h-1 rounded-full bg-indigo-200 shadow-[0_0_6px_#818cf8] animate-dust-2 opacity-80" />
+            <span className="absolute bottom-24 -left-2 w-1.5 h-1.5 rounded-full bg-amber-200 shadow-[0_0_6px_#fbbf24] animate-dust-3 opacity-65" />
+            <span className="absolute bottom-36 right-1.5 w-1 h-1 rounded-full bg-sky-200 shadow-[0_0_6px_#38bdf8] animate-dust-1 opacity-45" />
+            <span className="absolute bottom-48 -left-1 w-1 h-1 rounded-full bg-white shadow-[0_0_6px_#ffffff] animate-dust-2 opacity-25" />
+          </div>
 
-        {/* Radiant Star Core */}
-        <span className="relative h-3 w-3 rounded-full bg-white shadow-[0_0_10px_#ffffff,0_0_20px_#38bdf8,0_0_35px_#818cf8]" />
-      </motion.div>
+          {/* COMET HEAD (Intense Icy Nucleus & Radiant Gas Coma) */}
+          <div className="relative flex items-center justify-center">
+            {/* Pulsing Outer Coma Halo */}
+            <span className="absolute h-8 w-8 rounded-full bg-cyan-400/25 animate-ping opacity-60" />
+            <span className="absolute h-6 w-6 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 opacity-90 blur-[2px]" />
+
+            {/* Intense Stellar Core */}
+            <span className="relative h-3 w-3 rounded-full bg-white shadow-[0_0_12px_#ffffff,0_0_24px_#38bdf8,0_0_40px_#818cf8]" />
+          </div>
+        </motion.div>
+      </div>
 
       {/* Experience Chapters */}
       <div className="space-y-10 md:pl-12">{children}</div>

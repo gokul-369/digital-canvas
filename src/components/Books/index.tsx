@@ -225,11 +225,12 @@ export default function BooksSection() {
             }}
             className={`absolute ${
               isDossierCollapsed ? "top-[88vh]" : "top-[54vh]"
-            } sm:top-0 left-0 sm:left-auto right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[46vw] lg:w-[42vw] max-w-[580px] pointer-events-auto flex flex-col justify-between overflow-y-auto rounded-t-3xl sm:rounded-none shadow-2xl sm:shadow-none transition-[top] duration-300 ease-out ${
+            } sm:top-0 left-0 sm:left-auto right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[46vw] lg:w-[42vw] max-w-[580px] pointer-events-auto flex flex-col justify-between overflow-y-auto rounded-t-3xl sm:rounded-none shadow-2xl sm:shadow-none transition-[top] duration-300 ease-out touch-pan-y ${
               isDark
                 ? "bg-[#030611]/95 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border-t sm:border-t-0 border-white/15"
                 : "bg-white/95 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border-t sm:border-t-0 border-slate-200/80"
             }`}
+            style={{ touchAction: "pan-y" }}
           >
             {/* Top mobile pull handle button (Tapping collapses/expands to give 88% screen to 3D book) */}
             <button
