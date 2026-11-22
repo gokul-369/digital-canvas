@@ -10,6 +10,8 @@ import animalFarmCover from "../assets/books/animal-farm.jpg";
 import subtleArtCover from "../assets/books/subtle-art.jpg";
 import psychologyOfMoneyCover from "../assets/books/psychology-of-money.jpg";
 import trialCover from "../assets/books/trial.jpg";
+import monkFerrariCover from "../assets/books/monk-ferrari.jpg";
+import leaguesCover from "../assets/books/twenty-thousand-leagues.jpg";
 
 export interface BookItem {
   id: string;
@@ -172,5 +174,29 @@ export const booksList: BookItem[] = [
     coverImage: melaninSunCover,
     spineColor: "#241219",
     foilColor: "#f472b6",
+  },
+  {
+    id: "monk-ferrari",
+    name: "The Monk Who Sold His Ferrari",
+    subtext: "A Fable About Fulfilling Your Dreams",
+    author: "Robin Sharma",
+    year: "1997",
+    quote: "The mind is a wonderful servant, but a terrible master.",
+    review: "A transformative fable on mental mastery, purpose, and deliberate pacing. In modern high-velocity software engineering, it acts as a timeless reminder that relentless burnout is the enemy of craft—clarity of thought and disciplined energy management build enduring systems.",
+    coverImage: monkFerrariCover,
+    spineColor: "#c2410c",
+    foilColor: "#fbbf24",
+  },
+  {
+    id: "twenty-thousand-leagues",
+    name: "Twenty Thousand Leagues Under the Sea",
+    subtext: "Vingt mille lieues sous les mers",
+    author: "Jules Verne",
+    year: "1870",
+    quote: "The sea is only the embodiment of a supernatural and wonderful existence. It is the Living Infinite.",
+    review: "Verne's masterpiece of visionary technological imagination. Captain Nemo's Nautilus embodies the ultimate frontier of autonomous systems architecture—pushing technical boundaries into the uncharted depths while balancing engineering mastery with ethical stewardship.",
+    coverImage: leaguesCover,
+    spineColor: "#0b202e",
+    foilColor: "#38bdf8",
   },
 ];

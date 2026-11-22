@@ -233,7 +233,7 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
                 </span>
                 <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-indigo-400/40 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 font-semibold flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
-                  12 Volumes
+                  14 Volumes
                 </span>
               </div>
 

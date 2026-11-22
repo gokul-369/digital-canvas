@@ -211,9 +211,17 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // 2. Camera: fov = 26, positioned for clear architectural view of the shelf
+    // 2. Camera: fov = 26, dynamically positioned for responsive multi-device framing
+    const getCameraZ = (w: number, h: number) => {
+      const aspect = w / h;
+      if (aspect < 0.65) return 10.2; // Mobile phones (narrow portrait)
+      if (aspect < 1.0) return 8.8;   // Tablet portrait
+      if (w < 1200) return 7.8;      // Small laptop / landscape tablet
+      return 7.2;                    // Standard & wide desktop
+    };
+
     const camera = new THREE.PerspectiveCamera(26, width / height, 0.2, 100);
-    camera.position.set(0, 0, 7.2);
+    camera.position.set(0, 0, getCameraZ(width, height));
     camera.lookAt(0, -0.05, 0);
     cameraRef.current = camera;
 
@@ -236,10 +244,10 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
     // 4. Lighting: Natural, legible studio illumination with zero blowout or glare
     const isDark = theme === "dark";
-    const ambientLight = new THREE.AmbientLight(0xffffff, isDark ? 0.85 : 1.05);
+    const ambientLight = new THREE.AmbientLight(0xffffff, isDark ? 0.95 : 1.15);
     scene.add(ambientLight);
 
-    const keySpot = new THREE.DirectionalLight(0xffffff, isDark ? 1.15 : 1.25);
+    const keySpot = new THREE.DirectionalLight(0xffffff, isDark ? 1.05 : 1.15);
     keySpot.position.set(3.0, 4.0, 4.5);
     keySpot.castShadow = true;
     keySpot.shadow.mapSize.width = 2048;
@@ -250,10 +258,6 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     const fillLight = new THREE.DirectionalLight(isDark ? 0xa5b4fc : 0x94a3b8, isDark ? 0.45 : 0.6);
     fillLight.position.set(-3.0, 2.0, 3.0);
     scene.add(fillLight);
-
-    const softShelfLight = new THREE.PointLight(isDark ? 0x818cf8 : 0x6366f1, isDark ? 0.55 : 0.7, 7);
-    softShelfLight.position.set(0, -1.2, 1.2);
-    scene.add(softShelfLight);
 
     // 5. Floating Volumes (No line as requested - books float cleanly with natural contact shadows and cosmic parallax)
 
@@ -288,8 +292,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       // Front Cover Material - Vibrant, natural contrast, perfectly legible text with zero blowout
       const frontMat = new THREE.MeshStandardMaterial({
         map: coverTex,
-        roughness: 0.52,
-        metalness: 0.01,
+        roughness: 0.78,
+        metalness: 0.0,
         fog: false,
       });
 
@@ -367,15 +371,15 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         const isHovered = hoveredIndexRef.current === idx && !activeItem;
 
         if (isSelected) {
-          // Workshop Codex layout: 3D book stands prominently in left-center viewport (not pushed off to the edge)
+          // Responsive 3D layout: upper stage on mobile, left-center stage on desktop
           const isSmall = window.innerWidth < 768;
           const targetX = isSmall ? 0 : -0.75;
-          const targetY = isSmall ? 0.45 : -0.05;
-          const targetZ = isSmall ? 2.15 : 2.40;
+          const targetY = isSmall ? 0.65 : -0.05;
+          const targetZ = isSmall ? 2.6 : 2.40;
           const targetPos = new THREE.Vector3(targetX, targetY, targetZ);
           anchor.position.lerp(targetPos, 0.08);
 
-          const targetScale = isSmall ? 1.35 : 1.52;
+          const targetScale = isSmall ? 1.05 : 1.52;
           anchor.scale.set(
             anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
             anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
@@ -433,6 +437,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       const w = container.clientWidth || window.innerWidth;
       const h = container.clientHeight || window.innerHeight;
       camera.aspect = w / h;
+      camera.position.z = getCameraZ(w, h);
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
@@ -499,7 +504,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     } else if (dragMode.current === "scroll" && !selectedBookRef.current) {
       // Drag horizontally to scroll shelf
       const scrollDelta = -dx / 180;
-      const maxScroll = booksList.length - 3;
+      const isSmall = window.innerWidth < 640;
+      const maxScroll = Math.max(0, booksList.length - (isSmall ? 1 : 3));
       scrollTargetRef.current = Math.max(0, Math.min(maxScroll, scrollTargetRef.current + scrollDelta));
       onScrollIndexChange(scrollTargetRef.current);
     }
@@ -555,7 +561,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     const onWheelNative = (e: WheelEvent) => {
       if (selectedBookRef.current) return;
 
-      const maxScroll = Math.max(0, booksList.length - 3);
+      const isSmall = window.innerWidth < 640;
+      const maxScroll = Math.max(0, booksList.length - (isSmall ? 1 : 3));
       const rawDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
       const isDown = rawDelta > 0;
       const isUp = rawDelta < 0;

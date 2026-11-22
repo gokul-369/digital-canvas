@@ -44,7 +44,19 @@ export default function BooksSection() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedBook]);
 
-  const maxScroll = Math.max(0, booksList.length - 3);
+  const [maxScroll, setMaxScroll] = useState<number>(() =>
+    Math.max(0, booksList.length - (typeof window !== "undefined" && window.innerWidth < 640 ? 1 : 3))
+  );
+
+  useEffect(() => {
+    const updateMaxScroll = () => {
+      const isMobile = window.innerWidth < 640;
+      setMaxScroll(Math.max(0, booksList.length - (isMobile ? 1 : 3)));
+    };
+    updateMaxScroll();
+    window.addEventListener("resize", updateMaxScroll);
+    return () => window.removeEventListener("resize", updateMaxScroll);
+  }, []);
 
   const handlePrev = () => {
     setScrollIndex((prev) => Math.max(0, prev - 1));
@@ -69,7 +81,7 @@ export default function BooksSection() {
             tag="LITERARY CODEX"
             title="The Bookshelf"
             accent="Volumes"
-            description="Twelve influential classics and modern philosophy that shaped my perspective, engineering discipline, and mental models."
+            description="Fourteen influential classics and modern philosophy that shaped my perspective, engineering discipline, and mental models."
             className="mb-0"
           />
         </motion.div>
@@ -142,7 +154,7 @@ export default function BooksSection() {
             transition={{ duration: 0.3 }}
             className="relative z-20 w-full pb-6 flex items-center justify-center pointer-events-none"
           >
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md border pointer-events-auto transition-colors ${
+            <div className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-md border pointer-events-auto transition-colors max-w-[92vw] overflow-x-auto scrollbar-none ${
               isDark
                 ? "bg-[#060a14]/70 border-white/10"
                 : "bg-white/85 border-slate-200 shadow-sm"
@@ -152,9 +164,9 @@ export default function BooksSection() {
                   key={i}
                   type="button"
                   onClick={() => setScrollIndex(i)}
-                  className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
+                  className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all cursor-pointer flex-shrink-0 ${
                     Math.round(scrollIndex) === i
-                      ? "w-6 bg-indigo-500"
+                      ? "w-5 sm:w-6 bg-indigo-500"
                       : isDark
                         ? "bg-white/25 hover:bg-white/50"
                         : "bg-slate-300 hover:bg-slate-400"
@@ -167,26 +179,29 @@ export default function BooksSection() {
         )}
       </AnimatePresence>
 
-      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Panel blur strictly on right side so 3D book is never faded) */}
+      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Responsive bottom-sheet on mobile, split-pane on desktop) */}
       <AnimatePresence>
         {selectedBook && (
           <motion.div
             key="workshop-codex-immersive-dossier"
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
             transition={{
-              duration: 0.4,
+              duration: 0.35,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className={`absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[48vw] lg:w-[46vw] max-w-[640px] pointer-events-auto flex flex-col justify-between overflow-y-auto ${
+            className={`absolute top-[44vh] sm:top-0 left-0 sm:left-auto right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[48vw] lg:w-[46vw] max-w-[640px] pointer-events-auto flex flex-col justify-between overflow-y-auto rounded-t-3xl sm:rounded-none border-t sm:border-t-0 shadow-2xl sm:shadow-none ${
               isDark
-                ? "bg-gradient-to-l from-[#02050f]/95 via-[#030611]/85 to-transparent backdrop-blur-xl"
-                : "bg-gradient-to-l from-white/95 via-white/85 to-transparent backdrop-blur-xl"
+                ? "bg-[#030611]/95 sm:bg-gradient-to-l sm:from-[#02050f]/95 sm:via-[#030611]/85 sm:to-transparent border-white/15 backdrop-blur-xl"
+                : "bg-white/95 sm:bg-gradient-to-l sm:from-white/95 sm:via-white/85 sm:to-transparent border-slate-200/80 backdrop-blur-xl"
             }`}
           >
+            {/* Top mobile pull handle indicator */}
+            <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-white/20 mx-auto mt-2.5 sm:hidden flex-shrink-0" />
+
             {/* FOREGROUND CONTENT LAYER (100% UNMASKED, CRISP & RAZOR-SHARP) */}
-            <div className="relative z-10 pt-10 sm:pt-14 pb-8 sm:pb-10 pl-6 sm:pl-10 lg:pl-12 pr-6 sm:pr-10 flex flex-col justify-between min-h-full">
+            <div className="relative z-10 pt-3 sm:pt-14 pb-6 sm:pb-10 pl-5 sm:pl-10 lg:pl-12 pr-5 sm:pr-10 flex flex-col justify-between min-h-full">
               {/* Top Bar: Archival Tag, Big Title & Close Button aligned at top */}
               <div>
               <div className="flex items-start justify-between">
@@ -194,10 +209,10 @@ export default function BooksSection() {
                   <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.26em] text-slate-500 dark:text-slate-400 uppercase block">
                     ARCHIVAL RECORD // 0{selectedBook.year}
                   </span>
-                  <h2 className="font-space text-2xl sm:text-3xl lg:text-[34px] font-bold tracking-tight text-slate-900 dark:text-white mt-1.5 leading-tight">
+                  <h2 className="font-space text-xl sm:text-3xl lg:text-[34px] font-bold tracking-tight text-slate-900 dark:text-white mt-1 leading-tight">
                     {selectedBook.name}
                   </h2>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-space italic mt-1">
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-space italic mt-0.5">
                     {selectedBook.subtext} · {selectedBook.author}
                   </p>
                 </div>
@@ -205,7 +220,7 @@ export default function BooksSection() {
                 <button
                   type="button"
                   onClick={() => setSelectedBook(null)}
-                  className="w-10 h-10 rounded-full bg-slate-200/80 hover:bg-slate-300 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-md flex-shrink-0 ml-4"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-200/80 hover:bg-slate-300 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-md flex-shrink-0 ml-3"
                   title="Close (Esc)"
                 >
                   <IoCloseOutline size={22} />
@@ -213,19 +228,19 @@ export default function BooksSection() {
               </div>
 
               {/* Clean Horizontal Divider Rule */}
-              <div className="h-px bg-slate-200 dark:bg-white/10 my-4 sm:my-5" />
+              <div className="h-px bg-slate-200 dark:bg-white/10 my-3 sm:my-5" />
 
               {/* Authentic Famous Quote in Handwritten Script (Caveat) */}
               <blockquote
-                className="text-xl sm:text-2xl text-amber-700 dark:text-amber-200/90 leading-relaxed tracking-wide my-3"
+                className="text-lg sm:text-2xl text-amber-700 dark:text-amber-200/90 leading-relaxed tracking-wide my-2 sm:my-3"
                 style={{ fontFamily: "'Caveat', cursive" }}
               >
                 “{selectedBook.quote}”
               </blockquote>
 
               {/* Gokul's Personal Intake & Engineering Takeaway in Immersive Prose */}
-              <div className="my-4">
-                <span className="text-[10px] uppercase font-mono tracking-[0.2em] text-indigo-600 dark:text-indigo-400 block mb-1.5">
+              <div className="my-3 sm:my-4">
+                <span className="text-[10px] uppercase font-mono tracking-[0.2em] text-indigo-600 dark:text-indigo-400 block mb-1">
                   // Personal Intake & Engineering Takeaway
                 </span>
                 <p className="text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 font-space leading-relaxed">
@@ -234,7 +249,7 @@ export default function BooksSection() {
               </div>
 
               {/* Archival Metadata Grid */}
-              <div className="grid grid-cols-2 gap-4 pt-4 my-2 border-t border-slate-200 dark:border-white/10 font-mono text-xs text-slate-600 dark:text-slate-300">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-3 sm:pt-4 my-2 border-t border-slate-200 dark:border-white/10 font-mono text-xs text-slate-600 dark:text-slate-300">
                 <div>
                   <span className="text-slate-400 dark:text-slate-500 block uppercase tracking-wider text-[10px]">Author</span>
                   <span className="text-slate-900 dark:text-white font-medium text-[11px] sm:text-xs">{selectedBook.author}</span>
@@ -247,12 +262,12 @@ export default function BooksSection() {
             </div>
 
             {/* Bottom Actions & Archival Footnote */}
-            <div className="pt-6 space-y-4">
-              <div className="flex items-center gap-2.5">
+            <div className="pt-4 sm:pt-6 space-y-3 sm:space-y-4">
+              <div className="flex items-center gap-2 sm:gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsFlipped(!isFlipped)}
-                  className="px-4 py-2 rounded-full bg-slate-900 dark:bg-white text-white dark:text-[#03060f] font-mono text-xs font-semibold hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-sm flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                  className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-slate-900 dark:bg-white text-white dark:text-[#03060f] font-mono text-xs font-semibold hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-sm flex items-center gap-1.5 active:scale-95 cursor-pointer"
                 >
                   <IoSyncOutline size={14} />
                   <span>{isFlipped ? "Front" : "Flip 3D"}</span>
@@ -261,7 +276,7 @@ export default function BooksSection() {
                 <button
                   type="button"
                   onClick={() => setSelectedBook(null)}
-                  className="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white border border-slate-300 dark:border-white/20 font-mono text-xs font-medium transition-all active:scale-95 cursor-pointer text-center"
+                  className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white border border-slate-300 dark:border-white/20 font-mono text-xs font-medium transition-all active:scale-95 cursor-pointer text-center"
                 >
                   Close
                 </button>
@@ -269,7 +284,7 @@ export default function BooksSection() {
 
               <div className="pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400 dark:text-slate-500">
                 <span>✦ GOKUL'S LITERARY CODEX</span>
-                <span>12 VOLUMES ARCHIVED</span>
+                <span>14 VOLUMES ARCHIVED</span>
               </div>
             </div>
           </div>
