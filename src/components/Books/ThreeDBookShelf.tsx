@@ -43,6 +43,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
   const isDragging = useRef<boolean>(false);
   const dragDist = useRef<number>(0);
   const lastPointer = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const pointerStart = useRef<{ x: number; y: number; time: number }>({ x: 0, y: 0, time: 0 });
   const dragMode = useRef<"orbit" | "scroll">("scroll");
 
   // 3D rotation of active book in foreground
@@ -214,9 +215,9 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     // 2. Camera: fov = 26, dynamically positioned for responsive multi-device framing
     const getCameraZ = (w: number, h: number) => {
       const aspect = w / h;
-      if (aspect < 0.65) return 10.2; // Mobile phones (narrow portrait)
-      if (aspect < 1.0) return 8.8;   // Tablet portrait
-      if (w < 1200) return 7.8;      // Small laptop / landscape tablet
+      if (aspect < 0.65) return 11.6; // Mobile phones (narrow portrait - keeps books comfortably within frame)
+      if (aspect < 1.0) return 9.2;   // Tablet portrait
+      if (w < 1200) return 8.0;      // Small laptop / landscape tablet
       return 7.2;                    // Standard & wide desktop
     };
 
@@ -373,13 +374,13 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         if (isSelected) {
           // Responsive 3D layout: upper stage on mobile, left-center stage on desktop
           const isSmall = window.innerWidth < 768;
-          const targetX = isSmall ? 0 : -0.75;
-          const targetY = isSmall ? 0.65 : -0.05;
-          const targetZ = isSmall ? 2.6 : 2.40;
+          const targetX = isSmall ? 0 : -0.55;
+          const targetY = isSmall ? 0.52 : -0.05;
+          const targetZ = isSmall ? 3.4 : 2.40;
           const targetPos = new THREE.Vector3(targetX, targetY, targetZ);
           anchor.position.lerp(targetPos, 0.08);
 
-          const targetScale = isSmall ? 1.05 : 1.52;
+          const targetScale = isSmall ? 1.15 : 1.40;
           anchor.scale.set(
             anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
             anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
@@ -458,6 +459,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     isDragging.current = true;
     dragDist.current = 0;
+    pointerStart.current = { x: e.clientX, y: e.clientY, time: performance.now() };
     lastPointer.current = { x: e.clientX, y: e.clientY };
     dragMode.current = selectedBookRef.current ? "orbit" : "scroll";
 
@@ -533,6 +535,33 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         onSelectBookRef.current(clickedBook);
         return;
       }
+    } else if (!selectedBookRef.current) {
+      // On mobile / touch, if tap landed slightly outside the thin 3D mesh, find closest visible book
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        let closestBook: BookItem | null = null;
+        let minDist = 120; // 120px touch tolerance
+        const v = new THREE.Vector3();
+
+        bookMeshesRef.current.forEach((mesh) => {
+          mesh.getWorldPosition(v);
+          v.project(cameraRef.current!);
+          const screenX = ((v.x + 1) / 2) * rect.width + rect.left;
+          const screenY = ((-v.y + 1) / 2) * rect.height + rect.top;
+          const dist = Math.hypot(clientX - screenX, clientY - screenY);
+          if (dist < minDist && mesh.userData?.book) {
+            minDist = dist;
+            closestBook = mesh.userData.book;
+          }
+        });
+
+        if (closestBook) {
+          activeBookRotTarget.current = { x: 0.05, y: -0.28 };
+          activeBookRot.current = { x: 0.05, y: -0.28 };
+          onSelectBookRef.current(closestBook);
+          return;
+        }
+      }
     } else if (selectedBookRef.current) {
       onSelectBookRef.current(null);
     }
@@ -547,8 +576,11 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       // safe fallback
     }
 
-    // Tap/Click to select or reset
-    if (dragDist.current < 12) {
+    const elapsed = performance.now() - pointerStart.current.time;
+    const moveDist = Math.hypot(e.clientX - pointerStart.current.x, e.clientY - pointerStart.current.y);
+
+    // Reliable tap detection: finger or mouse lifted within 35px and 450ms
+    if (moveDist < 35 && elapsed < 450) {
       handleSelectAtCoords(e.clientX, e.clientY);
     }
   };

@@ -12,6 +12,7 @@ import psychologyOfMoneyCover from "../assets/books/psychology-of-money.jpg";
 import trialCover from "../assets/books/trial.jpg";
 import monkFerrariCover from "../assets/books/monk-ferrari.jpg";
 import leaguesCover from "../assets/books/twenty-thousand-leagues.jpg";
+import bobokCover from "../assets/books/bobok.jpg";
 
 export interface BookItem {
   id: string;
@@ -197,6 +198,18 @@ export const booksList: BookItem[] = [
     review: "Verne's masterpiece of visionary technological imagination. Captain Nemo's Nautilus embodies the ultimate frontier of autonomous systems architecture—pushing technical boundaries into the uncharted depths while balancing engineering mastery with ethical stewardship.",
     coverImage: leaguesCover,
     spineColor: "#0b202e",
+    foilColor: "#38bdf8",
+  },
+  {
+    id: "bobok",
+    name: "Bobok",
+    subtext: "From Somebody's Diary · 1873",
+    author: "Fyodor Dostoevsky",
+    year: "1873",
+    quote: "Bobok, bobok! Even here there is no peace, even here there is vanity.",
+    review: "Dostoevsky's sharpest, most unsettling satirical grotesque on human pretension and intellectual vanity. It reminds me that stripped of titles, vanity metrics, and superficial complexity, software engineering is fundamentally about truth, simplicity, and unvarnished reality.",
+    coverImage: bobokCover,
+    spineColor: "#101827",
     foilColor: "#38bdf8",
   },
 ];

@@ -421,7 +421,7 @@ export const testimonials: testimonial[] = [
     name: "Nabeel Ahmed",
     jobTitle: "Lead Engineer",
     location: "Edinburg, Scotland",
-    company: "Premium UK Bank",
+    company: "Lloyds Bank",
     testimonial:
       "It was a pleasure working with Gokul. He consistently demonstarted a strong desire to learn and took initiative in addressing key challenges. His technical expertise was evident across various tasks and readily provided thoughtful support. As the team lead. I value his his collaborative spirit, effective problem solving and the positive impact he had on our deliverables.",
   },
@@ -429,7 +429,7 @@ export const testimonials: testimonial[] = [
     name: "JM Mcghee",
     jobTitle: "Software Engineer",
     location: "Edinburg, Scotland",
-    company: "Premium UK Bank",
+    company: "Lloyds Bank",
     testimonial:
       "It’s rare to come across an engineer who combines such eagerness to learn, strong attention to detail, and a genuine willingness to go the extra mile to find solutions. Gokul is one of those engineers",
   },

@@ -81,7 +81,7 @@ export default function BooksSection() {
             tag="LITERARY CODEX"
             title="The Bookshelf"
             accent="Volumes"
-            description="Fourteen influential classics and modern philosophy that shaped my perspective, engineering discipline, and mental models."
+            description="Fifteen influential classics and modern philosophy that shaped my perspective, engineering discipline, and mental models."
             className="mb-0"
           />
         </motion.div>
@@ -101,7 +101,7 @@ export default function BooksSection() {
         />
       </div>
 
-      {/* HORIZONTAL SHELF NAVIGATION ARROWS (Visible when unselected) */}
+      {/* DESKTOP SHELF NAVIGATION ARROWS (Hidden on mobile so they don't cover book covers) */}
       <AnimatePresence>
         {!selectedBook && (
           <motion.div
@@ -109,7 +109,7 @@ export default function BooksSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-y-0 left-0 right-0 z-20 pointer-events-none flex items-center justify-between px-4 sm:px-8"
+            className="absolute inset-y-0 left-0 right-0 z-20 pointer-events-none hidden sm:flex items-center justify-between px-6 sm:px-8"
           >
             {/* Prev Button */}
             <button
@@ -144,7 +144,7 @@ export default function BooksSection() {
         )}
       </AnimatePresence>
 
-      {/* SHELF CAROUSEL PAGINATION DOTS (Bottom Center) */}
+      {/* SHELF CAROUSEL CONTROLS (Bottom Center): Flanked by Prev/Next on Mobile */}
       <AnimatePresence>
         {!selectedBook && (
           <motion.div
@@ -152,9 +152,24 @@ export default function BooksSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3 }}
-            className="relative z-20 w-full pb-6 flex items-center justify-center pointer-events-none"
+            className="relative z-20 w-full pb-6 px-4 flex items-center justify-center gap-2.5 sm:gap-3 pointer-events-none"
           >
-            <div className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-md border pointer-events-auto transition-colors max-w-[92vw] overflow-x-auto scrollbar-none ${
+            {/* Mobile Prev Button */}
+            <button
+              type="button"
+              onClick={handlePrev}
+              disabled={scrollIndex <= 0}
+              className={`sm:hidden w-8 h-8 rounded-full backdrop-blur-md border flex items-center justify-center transition-all pointer-events-auto cursor-pointer shadow-md active:scale-95 ${
+                isDark
+                  ? "bg-[#080d1a]/90 border-white/15 text-white"
+                  : "bg-white/95 border-slate-200 text-slate-800"
+              } ${scrollIndex <= 0 ? "opacity-25 cursor-not-allowed" : ""}`}
+              title="Previous Book"
+            >
+              <IoChevronBackOutline size={16} />
+            </button>
+
+            <div className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-md border pointer-events-auto transition-colors max-w-[70vw] sm:max-w-[92vw] overflow-x-auto scrollbar-none ${
               isDark
                 ? "bg-[#060a14]/70 border-white/10"
                 : "bg-white/85 border-slate-200 shadow-sm"
@@ -175,26 +190,41 @@ export default function BooksSection() {
                 />
               ))}
             </div>
+
+            {/* Mobile Next Button */}
+            <button
+              type="button"
+              onClick={handleNext}
+              disabled={scrollIndex >= maxScroll}
+              className={`sm:hidden w-8 h-8 rounded-full backdrop-blur-md border flex items-center justify-center transition-all pointer-events-auto cursor-pointer shadow-md active:scale-95 ${
+                isDark
+                  ? "bg-[#080d1a]/90 border-white/15 text-white"
+                  : "bg-white/95 border-slate-200 text-slate-800"
+              } ${scrollIndex >= maxScroll ? "opacity-25 cursor-not-allowed" : ""}`}
+              title="Next Book"
+            >
+              <IoChevronForwardOutline size={16} />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Responsive bottom-sheet on mobile, split-pane on desktop) */}
+      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Seamless floating text on desktop, clean bottom-sheet on mobile) */}
       <AnimatePresence>
         {selectedBook && (
           <motion.div
             key="workshop-codex-immersive-dossier"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 30 }}
+            exit={{ opacity: 0, y: 20 }}
             transition={{
               duration: 0.35,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className={`absolute top-[44vh] sm:top-0 left-0 sm:left-auto right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[48vw] lg:w-[46vw] max-w-[640px] pointer-events-auto flex flex-col justify-between overflow-y-auto rounded-t-3xl sm:rounded-none border-t sm:border-t-0 shadow-2xl sm:shadow-none ${
+            className={`absolute top-[46vh] sm:top-0 left-0 sm:left-auto right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[46vw] lg:w-[42vw] max-w-[580px] pointer-events-auto flex flex-col justify-between overflow-y-auto rounded-t-3xl sm:rounded-none shadow-2xl sm:shadow-none ${
               isDark
-                ? "bg-[#030611]/95 sm:bg-gradient-to-l sm:from-[#02050f]/95 sm:via-[#030611]/85 sm:to-transparent border-white/15 backdrop-blur-xl"
-                : "bg-white/95 sm:bg-gradient-to-l sm:from-white/95 sm:via-white/85 sm:to-transparent border-slate-200/80 backdrop-blur-xl"
+                ? "bg-[#030611]/95 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border-t sm:border-t-0 border-white/15"
+                : "bg-white/95 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border-t sm:border-t-0 border-slate-200/80"
             }`}
           >
             {/* Top mobile pull handle indicator */}
@@ -284,7 +314,7 @@ export default function BooksSection() {
 
               <div className="pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400 dark:text-slate-500">
                 <span>✦ GOKUL'S LITERARY CODEX</span>
-                <span>14 VOLUMES ARCHIVED</span>
+                <span>15 VOLUMES ARCHIVED</span>
               </div>
             </div>
           </div>

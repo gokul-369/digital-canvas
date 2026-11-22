@@ -301,9 +301,10 @@ input:-webkit-autofill:focus {
 }
 
 body.book-inspect-open nav,
-body.book-inspect-open .fixed:has(nav) {
+body.book-inspect-open .fixed:has(nav),
+body.book-inspect-open [class*="fixed"][class*="top-7"] {
   opacity: 0 !important;
   pointer-events: none !important;
-  transform: translateY(-32px) !important;
+  transform: translateY(-40px) !important;
   transition: opacity 0.3s ease-out, transform 0.3s ease-out !important;
 }
