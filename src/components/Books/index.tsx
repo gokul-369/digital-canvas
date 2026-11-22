@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { booksList, type BookItem } from "../../data/books";
+import { type BookItem } from "../../data/books";
 import ThreeDBookShelf from "./ThreeDBookShelf";
+import CosmicTornPanel from "./CosmicTornPanel";
 
 export default function BooksSection() {
   const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
@@ -59,7 +60,7 @@ export default function BooksSection() {
         </div>
       </div>
 
-      {/* FULL-BLEED 3D BOOKSHELF VIEWPORT */}
+      {/* FULL-BLEED 3D BOOKSHELF VIEWPORT (4 Shelves x 3 Books) */}
       <div className="absolute inset-0 w-full h-full z-10">
         <ThreeDBookShelf
           selectedBook={selectedBook}
@@ -70,52 +71,58 @@ export default function BooksSection() {
         />
       </div>
 
-      {/* COSMIC GLASS DETAIL PANEL (Slides in from Left) */}
+      {/* COSMIC TORN-PAPER DETAIL SHEET (Left Side Panel) */}
       <AnimatePresence>
         {selectedBook && (
           <motion.div
-            key="cosmic-book-panel"
-            initial={{ x: "-100%", opacity: 0 }}
-            animate={{ x: "0%", opacity: 1 }}
-            exit={{ x: "-100%", opacity: 0 }}
+            key="cosmic-torn-panel"
+            initial={{ x: "-105%" }}
+            animate={{ x: "0%" }}
+            exit={{ x: "-105%" }}
             transition={{
               duration: 0.5,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="absolute top-0 left-0 bottom-0 z-30 w-[92%] sm:w-[440px] lg:w-[480px] pointer-events-auto flex flex-col justify-center p-8 sm:p-14 bg-[#070b16]/92 backdrop-blur-2xl border-r border-white/10 shadow-[25px_0_80px_rgba(0,0,0,0.85)]"
+            className="absolute top-0 left-0 bottom-0 z-30 w-[92%] sm:w-[440px] lg:w-[480px] pointer-events-auto flex flex-col justify-center p-8 sm:p-14"
           >
-            {/* Subtle Aurora Accent Strip on the right edge */}
-            <div
-              className="absolute top-0 right-0 bottom-0 w-[2px] opacity-75"
-              style={{
-                background: `linear-gradient(to bottom, transparent, ${selectedBook.foilColor}, transparent)`,
-              }}
-            />
+            {/* Procedural Cosmic Torn Paper with Stardust Fibers & Glowing Aurora Rim */}
+            <CosmicTornPanel glowColor={selectedBook.foilColor || "#6366f1"} />
 
-            {/* Typography Content Layer */}
-            <div className="relative z-10 space-y-5 max-w-sm">
+            {/* Typography Content Layer with Handwritten Elements */}
+            <div className="relative z-10 space-y-4 max-w-sm pl-2 sm:pl-4">
               {/* Eyebrow: Status or Author · Year */}
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-slate-400 font-semibold">
+                <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-indigo-300 font-semibold">
                   {selectedBook.author.toUpperCase()} · {selectedBook.year}
                 </span>
 
                 {selectedBook.isCurrentlyReading && (
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold">
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     CURRENTLY READING
                   </span>
                 )}
               </div>
 
-              {/* Title: Space Display Typography */}
-              <h2 className="font-space text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-white leading-[1.12]">
+              {/* Title: Display Serif / Grotesk */}
+              <h2 className="font-space text-3xl sm:text-4xl font-bold tracking-tight text-white leading-[1.12]">
                 {selectedBook.name}
               </h2>
 
-              {/* Subtext: Concise Lyrical Synopsis */}
-              <p className="font-space text-sm sm:text-[15px] text-slate-300 leading-relaxed pt-1">
+              {/* Subtext in Handwritten Font (Caveat) */}
+              <p
+                className="text-2xl sm:text-[28px] text-amber-200/90 leading-snug tracking-wide pt-1"
+                style={{ fontFamily: "'Caveat', cursive" }}
+              >
                 "{selectedBook.subtext}"
+              </p>
+
+              {/* Handwritten Reading Log Annotation */}
+              <p
+                className="text-xl sm:text-2xl text-cyan-300/80 pt-0.5"
+                style={{ fontFamily: "'Caveat', cursive" }}
+              >
+                ✦ Gokul's personal shelf archive
               </p>
 
               {/* Action Buttons: Look inside & Close Pills */}
@@ -138,30 +145,14 @@ export default function BooksSection() {
               </div>
 
               {/* Footnote */}
-              <div className="pt-8 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
-                <span>✦ GOKUL'S ARCHIVE</span>
+              <div className="pt-6 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                <span>✦ LITERARY ARCHIVE</span>
                 <span>{selectedBook.year}</span>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Bottom Catalogue Rail */}
-      <div className="relative z-20 w-full px-6 sm:px-12 pb-5 flex items-center justify-center pointer-events-none overflow-x-auto scrollbar-none opacity-40 hover:opacity-90 transition-opacity duration-300">
-        <div className="flex items-center gap-6 sm:gap-10 text-[10px] font-mono tracking-wider text-slate-400 whitespace-nowrap">
-          {booksList.map((item) => (
-            <span
-              key={item.id}
-              className={`transition-colors ${
-                selectedBook?.id === item.id ? "text-indigo-400 font-bold" : "hover:text-white"
-              }`}
-            >
-              {item.year} · {item.name}
-            </span>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
