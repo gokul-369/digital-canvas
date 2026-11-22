@@ -234,11 +234,11 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     container.innerHTML = "";
     container.appendChild(renderer.domElement);
 
-    // 4. Lighting: Space Ambient + Studio Key + Rim Glow + Chamber Lighting
-    const ambientLight = new THREE.AmbientLight(0x818cf8, 1.2);
+    // 4. Lighting: Refined Studio Key + Atmospheric Ambient + Soft Shelf Downlight
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
     scene.add(ambientLight);
 
-    const keySpot = new THREE.DirectionalLight(0xffffff, 2.6);
+    const keySpot = new THREE.DirectionalLight(0xffffff, 2.8);
     keySpot.position.set(4.0, 5.0, 5.5);
     keySpot.castShadow = true;
     keySpot.shadow.mapSize.width = 2048;
@@ -246,153 +246,57 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     keySpot.shadow.bias = -0.0005;
     scene.add(keySpot);
 
-    const fillLight = new THREE.DirectionalLight(0x60a5fa, 1.4);
+    const fillLight = new THREE.DirectionalLight(0x818cf8, 1.2);
     fillLight.position.set(-4.5, 2.5, 3.5);
     scene.add(fillLight);
 
-    // Warm atmospheric soffit downlights for museum vault feel
-    const chamberSpot1 = new THREE.PointLight(0x38bdf8, 1.8, 12);
-    chamberSpot1.position.set(-2.5, 1.5, 0.5);
-    scene.add(chamberSpot1);
+    const softShelfLight = new THREE.PointLight(0x818cf8, 1.2, 8);
+    softShelfLight.position.set(0, -1.2, 1.2);
+    scene.add(softShelfLight);
 
-    const chamberSpot2 = new THREE.PointLight(0x818cf8, 1.8, 12);
-    chamberSpot2.position.set(2.5, 1.5, 0.5);
-    scene.add(chamberSpot2);
+    // 5. Minimal, Elegant Floating Shelf Platform (Clean dark obsidian, no harsh stripes or grid lines)
+    const shelfAnchor = new THREE.Group();
+    const baseY = SHELF_Y - BOOK_H / 2 - 0.04;
 
-    // 5. ARCHITECTURAL SPACE ARCHIVAL CHAMBER (Backdrop Structure)
-    const chamberGroup = new THREE.Group();
-    chamberGroup.position.set(0, 0, -2.2);
-
-    // Deep composite bulkhead rear wall with beveled seam lines
-    const bulkheadGeo = new THREE.BoxGeometry(22.0, 8.0, 0.25);
-    const bulkheadMat = new THREE.MeshStandardMaterial({
-      color: 0x050914,
-      roughness: 0.45,
+    // Sleek chamfered floating platform
+    const platformGeo = new THREE.BoxGeometry(16.5, 0.07, 0.95);
+    const platformMat = new THREE.MeshStandardMaterial({
+      color: 0x080d1a,
+      roughness: 0.3,
       metalness: 0.85,
     });
-    const bulkheadMesh = new THREE.Mesh(bulkheadGeo, bulkheadMat);
-    bulkheadMesh.receiveShadow = true;
-    chamberGroup.add(bulkheadMesh);
+    const platformMesh = new THREE.Mesh(platformGeo, platformMat);
+    platformMesh.position.set(0, baseY, -0.85);
+    platformMesh.receiveShadow = true;
+    shelfAnchor.add(platformMesh);
 
-    // Vertical structural rib columns / bulkhead mullions
-    const ribGeo = new THREE.BoxGeometry(0.14, 8.0, 0.35);
-    const ribMat = new THREE.MeshStandardMaterial({
-      color: 0x0f172a,
-      roughness: 0.3,
-      metalness: 0.9,
-    });
-    [-7.5, -4.5, -1.5, 1.5, 4.5, 7.5].forEach((rx) => {
-      const rib = new THREE.Mesh(ribGeo, ribMat);
-      rib.position.set(rx, 0, 0.08);
-      chamberGroup.add(rib);
-    });
-
-    // Holographic laser grid lines across rear bulkhead wall
-    const gridLineMat = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
+    // Subtle edge highlight (soft cyan/indigo glow along the front lip)
+    const lipGeo = new THREE.BoxGeometry(16.52, 0.012, 0.02);
+    const lipMat = new THREE.MeshBasicMaterial({
+      color: 0x6366f1,
       transparent: true,
-      opacity: 0.25,
+      opacity: 0.6,
     });
-    const gridLineGeo = new THREE.BoxGeometry(22.0, 0.012, 0.26);
-    [-1.6, -0.4, 0.8, 2.0].forEach((gy) => {
-      const gLine = new THREE.Mesh(gridLineGeo, gridLineMat);
-      gLine.position.set(0, gy, 0.02);
-      chamberGroup.add(gLine);
-    });
+    const lipMesh = new THREE.Mesh(lipGeo, lipMat);
+    lipMesh.position.set(0, baseY + 0.032, -0.38);
+    shelfAnchor.add(lipMesh);
 
-    // Top Archival Soffit / Canopy Beam
-    const soffitGeo = new THREE.BoxGeometry(22.0, 0.5, 1.2);
-    const soffitMat = new THREE.MeshStandardMaterial({
-      color: 0x080e1e,
-      roughness: 0.35,
-      metalness: 0.9,
-    });
-    const soffitMesh = new THREE.Mesh(soffitGeo, soffitMat);
-    soffitMesh.position.set(0, 3.8, 0.45);
-    chamberGroup.add(soffitMesh);
-
-    scene.add(chamberGroup);
-
-    // 6. QUANTUM LEVITATION MAGNETIC CRADLE & SHELF ASSEMBLY
-    const shelfAnchor = new THREE.Group();
-    const baseY = SHELF_Y - BOOK_H / 2 - 0.05;
-
-    // Heavy chamfered dark titanium levitation spine
-    const spineGeo = new THREE.BoxGeometry(16.5, 0.14, 1.1);
-    const spineMat = new THREE.MeshStandardMaterial({
-      color: 0x070d1e,
-      roughness: 0.22,
-      metalness: 0.92,
-    });
-    const spineMesh = new THREE.Mesh(spineGeo, spineMat);
-    spineMesh.position.set(0, baseY, -0.85);
-    spineMesh.receiveShadow = true;
-    shelfAnchor.add(spineMesh);
-
-    // Dual glowing ion plasma channels (Cyan + Electric Indigo)
-    const conduitMat1 = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.9 });
-    const conduitMat2 = new THREE.MeshBasicMaterial({ color: 0x818cf8, transparent: true, opacity: 0.75 });
-    const conduitGeo = new THREE.BoxGeometry(16.52, 0.018, 0.035);
-
-    const conduit1 = new THREE.Mesh(conduitGeo, conduitMat1);
-    conduit1.position.set(0, baseY + 0.065, -0.35);
-    shelfAnchor.add(conduit1);
-
-    const conduit2 = new THREE.Mesh(conduitGeo, conduitMat2);
-    conduit2.position.set(0, baseY + 0.065, -1.35);
-    shelfAnchor.add(conduit2);
-
-    // Front Floating Magnetic Stabilizer Rail with laser tick marks
-    const frontRailGeo = new THREE.BoxGeometry(16.5, 0.035, 0.06);
-    const frontRailMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.95, roughness: 0.2 });
-    const frontRail = new THREE.Mesh(frontRailGeo, frontRailMat);
-    frontRail.position.set(0, baseY + 0.08, -0.32);
-    shelfAnchor.add(frontRail);
-
-    // Anti-Gravity Magnetic Emitter Pods for all 12 book docking bays
-    const emitterPadGeo = new THREE.CylinderGeometry(0.24, 0.28, 0.025, 24);
-    const emitterPadMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.85, roughness: 0.3 });
-    const emitterGlowGeo = new THREE.RingGeometry(0.12, 0.21, 24);
-    const emitterGlowMat = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
-      side: THREE.DoubleSide,
+    // Soft contact shadow plane beneath the books
+    const shadowGeo = new THREE.PlaneGeometry(16.5, 0.9);
+    const shadowMat = new THREE.MeshBasicMaterial({
+      color: 0x000000,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.45,
     });
-
-    booksList.forEach((_, idx) => {
-      const px = (idx - 1.5) * BOOK_SPACING;
-      const pad = new THREE.Mesh(emitterPadGeo, emitterPadMat);
-      pad.position.set(px, baseY + 0.075, -0.85);
-      shelfAnchor.add(pad);
-
-      const glowRing = new THREE.Mesh(emitterGlowGeo, emitterGlowMat);
-      glowRing.rotation.x = -Math.PI / 2;
-      glowRing.position.set(px, baseY + 0.09, -0.85);
-      shelfAnchor.add(glowRing);
-    });
-
-    // Heavy Hydraulic Cantilever Pylons anchoring the cradle to the rear bulkhead
-    const pylonGeo = new THREE.BoxGeometry(0.22, 0.35, 1.2);
-    const pylonMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.9, roughness: 0.25 });
-    const coreMat = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.8 });
-    const coreGeo = new THREE.CylinderGeometry(0.05, 0.05, 0.25, 16);
-
-    [-5.5, -2.0, 2.0, 5.5].forEach((px) => {
-      const pylon = new THREE.Mesh(pylonGeo, pylonMat);
-      pylon.position.set(px, baseY - 0.12, -1.35);
-      shelfAnchor.add(pylon);
-
-      const core = new THREE.Mesh(coreGeo, coreMat);
-      core.rotation.z = Math.PI / 2;
-      core.position.set(px, baseY - 0.12, -1.1);
-      shelfAnchor.add(core);
-    });
+    const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
+    shadowMesh.rotation.x = -Math.PI / 2;
+    shadowMesh.position.set(0, baseY + 0.036, -0.85);
+    shelfAnchor.add(shadowMesh);
 
     scene.add(shelfAnchor);
     shelfMeshRef.current = shelfAnchor;
 
-    // 7. Build the 12 3D Books with Authentic Published Covers
+    // 6. Build the 12 3D Books with Authentic Published Covers
     const texLoader = new THREE.TextureLoader();
     const pagesEdgeTex = createPagesEdgeTexture();
     const pageEdgeMat = new THREE.MeshStandardMaterial({
@@ -693,29 +597,20 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     }
   };
 
-  // Intercept wheel scroll to complete horizontal shelf traversal before vertical page scrolling
+  // Wheel scroll strictly drives horizontal shelf traversal without vertical page jitter
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
 
     const onWheelNative = (e: WheelEvent) => {
       if (selectedBookRef.current) return;
-      const maxScroll = Math.max(0, booksList.length - 3);
-      const isDown = e.deltaY > 0;
-      const isUp = e.deltaY < 0;
+      e.preventDefault();
+      e.stopPropagation();
 
-      // If scrolling down and shelf has not reached the end: prevent default vertical scroll and advance shelf
-      if (isDown && scrollTargetRef.current < maxScroll - 0.05) {
-        e.preventDefault();
-        scrollTargetRef.current = Math.min(maxScroll, scrollTargetRef.current + e.deltaY * 0.0032);
-        onScrollIndexChange(scrollTargetRef.current);
-      }
-      // If scrolling up and shelf has not reached the start: prevent default vertical scroll and reverse shelf
-      else if (isUp && scrollTargetRef.current > 0.05) {
-        e.preventDefault();
-        scrollTargetRef.current = Math.max(0, scrollTargetRef.current + e.deltaY * 0.0032);
-        onScrollIndexChange(scrollTargetRef.current);
-      }
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const maxScroll = Math.max(0, booksList.length - 3);
+      scrollTargetRef.current = Math.max(0, Math.min(maxScroll, scrollTargetRef.current + delta * 0.0035));
+      onScrollIndexChange(scrollTargetRef.current);
     };
 
     el.addEventListener("wheel", onWheelNative, { passive: false });

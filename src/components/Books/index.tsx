@@ -45,12 +45,13 @@ export default function BooksSection() {
   return (
     <section
       id="books"
+      data-lenis-prevent="true"
       className="relative w-full h-full min-h-[740px] overflow-hidden flex flex-col justify-between select-none"
     >
-      {/* SECTION HEADER CONSISTENT WITH OTHER SECTIONS */}
-      <div className="relative z-20 w-full px-6 pt-8 pointer-events-none">
+      {/* SECTION HEADER CONSISTENT WITH OTHER SECTIONS - Sits comfortably below floating Nav */}
+      <div className="relative z-20 w-full px-6 pt-24 sm:pt-28 lg:pt-32 pointer-events-none">
         <motion.div
-          animate={{ opacity: selectedBook ? 0 : 1, y: selectedBook ? -12 : 0, pointerEvents: selectedBook ? "none" : "auto" }}
+          animate={{ opacity: selectedBook ? 0 : 1, y: selectedBook ? -16 : 0, pointerEvents: selectedBook ? "none" : "auto" }}
           transition={{ duration: 0.35 }}
         >
           <SectionHeader
@@ -64,7 +65,7 @@ export default function BooksSection() {
       </div>
 
       {/* FULL-BLEED 3D BOOKSHELF VIEWPORT */}
-      <div className="absolute inset-0 w-full h-full z-10">
+      <div className="absolute inset-0 w-full h-full z-10" data-lenis-prevent="true">
         <ThreeDBookShelf
           selectedBook={selectedBook}
           onSelectBook={setSelectedBook}
@@ -142,84 +143,68 @@ export default function BooksSection() {
         )}
       </AnimatePresence>
 
-      {/* WORKSHOP CODEX INSPIRED RIGHT DETAIL DOSSIER (Frosted Glass Blur over 3D Scene) */}
+      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Covers Nav at z-50, No Harsh Border, Progressive Blur) */}
       <AnimatePresence>
         {selectedBook && (
           <motion.div
-            key="workshop-codex-detail-right"
-            initial={{ opacity: 0, x: 60 }}
+            key="workshop-codex-immersive-dossier"
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 60 }}
+            exit={{ opacity: 0, x: 40 }}
             transition={{
               duration: 0.45,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="absolute top-0 right-0 bottom-0 z-30 w-full sm:w-[540px] md:w-[600px] lg:w-[660px] pointer-events-auto flex flex-col justify-between p-7 sm:p-10 lg:p-12 backdrop-blur-2xl bg-[#030612]/85 border-l border-white/10 shadow-[-30px_0_60px_rgba(0,0,0,0.9)] overflow-y-auto"
+            className="absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[540px] md:w-[600px] lg:w-[680px] pointer-events-auto flex flex-col justify-between pt-10 sm:pt-14 pb-8 sm:pb-10 px-8 sm:px-14 bg-gradient-to-r from-transparent via-[#02050f]/80 to-[#02050f]/95 backdrop-blur-md sm:backdrop-blur-xl overflow-y-auto"
           >
-            {/* Top Bar: Archival Tag & Close Button */}
-            <div className="flex items-center justify-between pb-3">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.25em] text-slate-400 uppercase">
-                  ARCHIVAL RECORD // 0{selectedBook.year}
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setSelectedBook(null)}
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-md"
-                title="Return to Shelf (Esc)"
-              >
-                <IoCloseOutline size={20} />
-              </button>
-            </div>
-
-            {/* Main Editorial Content */}
-            <div className="space-y-4 my-auto">
-              {/* Category & Status Header */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-indigo-400 font-bold">
-                  {selectedBook.author.toUpperCase()} · {selectedBook.year}
-                </span>
-
-                {selectedBook.isCurrentlyReading && (
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    CURRENTLY READING
+            {/* Top Bar: Archival Tag, Big Title & Close Button aligned at top */}
+            <div>
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.26em] text-slate-400 uppercase block">
+                    ARCHIVAL RECORD // 0{selectedBook.year}
                   </span>
-                )}
+                  <h2 className="font-space text-2xl sm:text-3xl lg:text-[34px] font-bold tracking-tight text-white mt-1.5 leading-tight">
+                    {selectedBook.name}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-400 font-space italic mt-1">
+                    {selectedBook.subtext} · {selectedBook.author}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedBook(null)}
+                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-md flex-shrink-0 ml-4"
+                  title="Close (Esc)"
+                >
+                  <IoCloseOutline size={22} />
+                </button>
               </div>
 
-              {/* Title - Refined Editorial Sizing */}
-              <div>
-                <h2 className="font-space text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
-                  {selectedBook.name}
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-400 font-space italic mt-1">
-                  {selectedBook.subtext}
-                </p>
-              </div>
+              {/* Clean Horizontal Divider Rule */}
+              <div className="h-px bg-white/10 my-4 sm:my-5" />
 
-              {/* Authentic Famous Quote in Handwritten Script (Caveat) - Clean, No Left Border Line */}
+              {/* Authentic Famous Quote in Handwritten Script (Caveat) */}
               <blockquote
-                className="text-xl sm:text-2xl text-amber-200/90 leading-snug tracking-wide py-1"
+                className="text-xl sm:text-2xl text-amber-200/90 leading-relaxed tracking-wide my-3"
                 style={{ fontFamily: "'Caveat', cursive" }}
               >
                 “{selectedBook.quote}”
               </blockquote>
 
-              {/* Gokul's Personal Intake & Engineering Takeaway */}
-              <div className="space-y-1.5 pt-1">
-                <span className="text-[10px] uppercase font-mono tracking-[0.2em] text-slate-400 block">
+              {/* Gokul's Personal Intake & Engineering Takeaway in Immersive Prose */}
+              <div className="my-4">
+                <span className="text-[10px] uppercase font-mono tracking-[0.2em] text-indigo-400 block mb-1.5">
                   // Personal Intake & Engineering Takeaway
                 </span>
-                <p className="text-xs sm:text-[13px] text-slate-300 font-space leading-relaxed bg-white/[0.03] p-4 rounded-xl border border-white/5">
+                <p className="text-xs sm:text-[13px] text-slate-300 font-space leading-relaxed">
                   {selectedBook.review}
                 </p>
               </div>
 
-              {/* Archival Details Grid */}
-              <div className="grid grid-cols-2 gap-3 pt-2 font-mono text-xs border-t border-white/10 text-slate-300">
+              {/* Archival Metadata Grid */}
+              <div className="grid grid-cols-2 gap-4 pt-4 my-2 border-t border-white/10 font-mono text-xs text-slate-300">
                 <div>
                   <span className="text-slate-500 block uppercase tracking-wider text-[10px]">Author</span>
                   <span className="text-white font-medium text-[11px] sm:text-xs">{selectedBook.author}</span>
@@ -229,9 +214,11 @@ export default function BooksSection() {
                   <span className="text-white font-medium text-[11px] sm:text-xs">{selectedBook.year}</span>
                 </div>
               </div>
+            </div>
 
-              {/* Action Buttons (Workshop Codex Style: Inspect Back Cover + Close) */}
-              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* Bottom Actions & Archival Footnote */}
+            <div className="pt-6 space-y-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFlipped(!isFlipped)}
@@ -249,12 +236,11 @@ export default function BooksSection() {
                   Close
                 </button>
               </div>
-            </div>
 
-            {/* Bottom Archival Footnote */}
-            <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
-              <span>✦ GOKUL'S LITERARY CODEX</span>
-              <span>12 VOLUMES ARCHIVED</span>
+              <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                <span>✦ GOKUL'S LITERARY CODEX</span>
+                <span>12 VOLUMES ARCHIVED</span>
+              </div>
             </div>
           </motion.div>
         )}
