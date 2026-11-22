@@ -32,8 +32,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
   const lastPointer = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   // 3D rotation of active book in foreground
-  const activeBookRot = useRef<{ x: number; y: number }>({ x: 0.05, y: -0.26 });
-  const activeBookRotTarget = useRef<{ x: number; y: number }>({ x: 0.05, y: -0.26 });
+  const activeBookRot = useRef<{ x: number; y: number }>({ x: 0.05, y: -0.28 });
+  const activeBookRotTarget = useRef<{ x: number; y: number }>({ x: 0.05, y: -0.28 });
   const flipTargetAngle = useRef<number>(0);
 
   // Keep references to selectedBook and onSelectBook without triggering scene rebuilds
@@ -52,32 +52,26 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     flipTargetAngle.current = isFlipped ? Math.PI : 0;
   }, [isFlipped]);
 
-  // Refined, Sleek Book Dimensions (scaled down ~20% for elegant space proportions)
-  const BOOK_W = 0.65;
-  const BOOK_H = 0.98;
-  const BOOK_D = 0.13;
-  const BOOK_SPACING = 1.30;
+  // Compact, sleek book dimensions on shelf
+  const BOOK_W = 0.58;
+  const BOOK_H = 0.88;
+  const BOOK_D = 0.12;
+  const BOOK_SPACING = 0.86;
 
-  // 4 Shelves x 3 Books Layout
-  // Row 0 (top): y = 1.62
-  // Row 1: y = 0.54
-  // Row 2: y = -0.54
-  // Row 3 (bottom): y = -1.62
-  const shelfYPositions = [1.62, 0.54, -0.54, -1.62];
-
+  // 2 Shelves: 6 books on top (y = 0.42), 6 on bottom (y = -0.72)
   const getRestTransform = useCallback(
     (idx: number) => {
-      const row = Math.floor(idx / 3);
-      const col = idx % 3; // 0, 1, 2
+      const isTop = idx < 6;
+      const col = isTop ? idx : idx - 6;
 
-      // Center 3 books horizontally around x = 0
-      const x = (col - 1) * BOOK_SPACING;
-      const y = shelfYPositions[row];
-      const z = -1.0;
+      // Center 6 books horizontally around x = 0
+      const x = (col - 2.5) * BOOK_SPACING;
+      const y = isTop ? 0.42 : -0.72;
+      const z = -0.85;
 
       // Natural, subtle tactile lean
-      const leanTiltX = -0.14 + ((idx * 2) % 4) * 0.015;
-      const leanYawY = -0.05 + (col - 1) * -0.02;
+      const leanTiltX = -0.14 + ((idx * 2) % 4) * 0.012;
+      const leanYawY = -0.06 + (col - 2.5) * -0.015;
       const leanRollZ = idx % 2 === 0 ? 0.01 : -0.01;
 
       return { x, y, z, rx: leanTiltX, ry: leanYawY, rz: leanRollZ };
@@ -171,7 +165,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     ctx.fillStyle = item.spineColor;
     ctx.fillRect(0, 0, 600, 900);
 
-    // Subtle texture grain
+    // Subtle paper texture grain
     ctx.fillStyle = "rgba(255,255,255,0.03)";
     for (let i = 0; i < 2000; i++) {
       ctx.fillRect(Math.random() * 600, Math.random() * 900, 1, 1);
@@ -222,10 +216,10 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // 2. Camera: fov = 28, position (0, 0, 8.8) to cleanly frame all 4 shelves
-    const camera = new THREE.PerspectiveCamera(28, width / height, 0.2, 100);
-    camera.position.set(0, 0, 8.8);
-    camera.lookAt(0, 0, 0);
+    // 2. Camera: fov = 26, positioned to capture both shelves with natural perspective
+    const camera = new THREE.PerspectiveCamera(26, width / height, 0.2, 100);
+    camera.position.set(0, -0.15, 7.5);
+    camera.lookAt(0, -0.15, 0);
     cameraRef.current = camera;
 
     // 3. WebGL Renderer
@@ -245,68 +239,51 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     container.innerHTML = "";
     container.appendChild(renderer.domElement);
 
-    // 4. Cosmic Lighting: Deep Space Ambient + Studio Key + Blue Ion Underglow
-    const ambientLight = new THREE.AmbientLight(0xa0aec0, 1.3);
+    // 4. Lighting: Space Ambient + Studio Key + Rim Glow
+    const ambientLight = new THREE.AmbientLight(0xa0aec0, 1.35);
     scene.add(ambientLight);
 
-    const keySpot = new THREE.DirectionalLight(0xffffff, 2.2);
-    keySpot.position.set(4.0, 5.0, 6.0);
+    const keySpot = new THREE.DirectionalLight(0xffffff, 2.4);
+    keySpot.position.set(4.0, 5.0, 5.5);
     keySpot.castShadow = true;
     keySpot.shadow.mapSize.width = 2048;
     keySpot.shadow.mapSize.height = 2048;
     keySpot.shadow.bias = -0.0005;
     scene.add(keySpot);
 
-    const auroraFill = new THREE.DirectionalLight(0x818cf8, 1.1);
-    auroraFill.position.set(-4.5, 3.0, 3.5);
-    scene.add(auroraFill);
+    const fillLight = new THREE.DirectionalLight(0x818cf8, 1.1);
+    fillLight.position.set(-4.5, 2.5, 3.5);
+    scene.add(fillLight);
 
-    // 5. Creative Space-Themed Shelves (4 Levitation Rails)
-    // Dark cosmic titanium platform + glowing cyan plasma ion edge + anti-gravity node thrusters
+    // 5. Architectural Obsidian / Glass Shelves (2 Tiers)
     const shelfGroupList: THREE.Group[] = [];
 
-    const shelfGeo = new THREE.BoxGeometry(4.2, 0.035, 0.72);
+    const shelfGeo = new THREE.BoxGeometry(5.6, 0.035, 0.72);
     const shelfMat = new THREE.MeshStandardMaterial({
-      color: 0x070c18,
-      roughness: 0.25,
+      color: 0x090e1a,
+      roughness: 0.2,
       metalness: 0.9,
     });
 
-    const plasmaRailGeo = new THREE.BoxGeometry(4.24, 0.016, 0.03);
-    const plasmaRailMat = new THREE.MeshBasicMaterial({
+    const bevelGeo = new THREE.BoxGeometry(5.62, 0.012, 0.02);
+    const bevelMat = new THREE.MeshBasicMaterial({
       color: 0x38bdf8,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.6,
     });
 
-    const thrusterGeo = new THREE.CylinderGeometry(0.06, 0.08, 0.06, 16);
-    const thrusterMat = new THREE.MeshBasicMaterial({
-      color: 0x60a5fa,
-      transparent: true,
-      opacity: 0.75,
-    });
-
-    shelfYPositions.forEach((sy) => {
+    [0.42, -0.72].forEach((sy) => {
       const shelfAnchor = new THREE.Group();
-      const baseY = sy - BOOK_H / 2 - 0.02;
+      const baseY = sy - BOOK_H / 2 - 0.018;
 
-      // Main dark platform
       const shelfMesh = new THREE.Mesh(shelfGeo, shelfMat);
-      shelfMesh.position.set(0, baseY, -0.95);
+      shelfMesh.position.set(0, baseY, -0.85);
       shelfMesh.receiveShadow = true;
       shelfAnchor.add(shelfMesh);
 
-      // Glowing plasma front edge
-      const railMesh = new THREE.Mesh(plasmaRailGeo, plasmaRailMat);
-      railMesh.position.set(0, baseY + 0.005, -0.58);
-      shelfAnchor.add(railMesh);
-
-      // Anti-gravity emitter nodes underneath
-      [-1.4, 1.4].forEach((tx) => {
-        const thruster = new THREE.Mesh(thrusterGeo, thrusterMat);
-        thruster.position.set(tx, baseY - 0.04, -0.95);
-        shelfAnchor.add(thruster);
-      });
+      const bevelMesh = new THREE.Mesh(bevelGeo, bevelMat);
+      bevelMesh.position.set(0, baseY + 0.005, -0.49);
+      shelfAnchor.add(bevelMesh);
 
       scene.add(shelfAnchor);
       shelfGroupList.push(shelfAnchor);
@@ -408,7 +385,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
       // Animate Shelves: Recede slightly when a book is in focus
       shelvesRef.current.forEach((shelf) => {
-        const targetZ = activeItem ? -2.8 : 0;
+        const targetZ = activeItem ? -3.0 : 0;
         shelf.position.z += (targetZ - shelf.position.z) * 0.08;
       });
 
@@ -418,9 +395,18 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         const isHovered = hoveredIndexRef.current === idx && !activeItem;
 
         if (isSelected) {
-          // Foreground focus: positioned at x: 0.60, y: 0.0, z: 2.15 (~46% viewport height, elegant & compact)
-          const targetPos = new THREE.Vector3(0.60, 0.0, 2.15);
+          // When clicked, book comes into BIG, commanding foreground focus on left-center:
+          // x: -0.65, y: -0.15, z: 2.3
+          const targetPos = new THREE.Vector3(-0.65, -0.15, 2.3);
           anchor.position.lerp(targetPos, 0.08);
+
+          // Scales up by 1.62x when in focus so it is BIG, tactile, and detailed
+          const targetScale = 1.62;
+          anchor.scale.set(
+            anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
+            anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
+            anchor.scale.z + (targetScale - anchor.scale.z) * 0.08
+          );
 
           // Combined rotation: default tilt + drag rotation + flip angle
           const targetRotX = activeBookRot.current.x;
@@ -431,7 +417,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
           anchor.rotation.y += (targetRotY - anchor.rotation.y) * 0.1;
           anchor.rotation.z += (targetRotZ - anchor.rotation.z) * 0.1;
         } else {
-          // Normal rest position on the shelf
+          // Rest on the shelf: scale = 1.0 (compact and sleek)
           const rest = getRestTransform(idx);
           let targetX = rest.x;
           let targetY = rest.y;
@@ -440,9 +426,16 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
           let targetRotY = rest.ry;
           let targetRotZ = rest.rz;
 
+          const targetScale = 1.0;
+          anchor.scale.set(
+            anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
+            anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
+            anchor.scale.z + (targetScale - anchor.scale.z) * 0.08
+          );
+
           if (activeItem) {
             // When another book is selected, other books smoothly recede into background depth
-            targetZ = rest.z - 2.8;
+            targetZ = rest.z - 3.2;
           } else if (isHovered) {
             // Gentle tactile lift on hover
             targetY = rest.y + 0.05;
@@ -550,8 +543,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       }
       const clickedBook = obj?.userData?.book as BookItem;
       if (clickedBook) {
-        activeBookRotTarget.current = { x: 0.05, y: -0.26 };
-        activeBookRot.current = { x: 0.05, y: -0.26 };
+        activeBookRotTarget.current = { x: 0.05, y: -0.28 };
+        activeBookRot.current = { x: 0.05, y: -0.28 };
         onSelectBookRef.current(clickedBook);
         return;
       }

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { type BookItem } from "../../data/books";
 import ThreeDBookShelf from "./ThreeDBookShelf";
-import CosmicTornPanel from "./CosmicTornPanel";
+import { IoCloseOutline, IoSyncOutline } from "react-icons/io5";
 
 export default function BooksSection() {
   const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
@@ -29,7 +29,7 @@ export default function BooksSection() {
   return (
     <section
       id="books"
-      className="relative w-full h-full min-h-[700px] overflow-hidden bg-[#03060f] flex flex-col justify-between select-none"
+      className="relative w-full h-full min-h-[740px] overflow-hidden bg-[#03060f] flex flex-col justify-between select-none"
     >
       {/* Dynamic Cosmic Ambient Glow in Background */}
       <div
@@ -37,7 +37,7 @@ export default function BooksSection() {
         className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden"
       >
         <div
-          className="w-[900px] h-[600px] rounded-full blur-[170px] transition-all duration-1000 opacity-25"
+          className="w-[950px] h-[650px] rounded-full blur-[180px] transition-all duration-1000 opacity-25"
           style={{
             backgroundColor: selectedBook ? selectedBook.foilColor : "#6366f1",
           }}
@@ -45,22 +45,37 @@ export default function BooksSection() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#03060f_92%)]" />
       </div>
 
-      {/* Top Header Hint */}
-      <div className="relative z-20 w-full px-6 sm:px-12 pt-6 flex items-center justify-between pointer-events-none">
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-xs tracking-[0.28em] text-white/90 font-bold uppercase">
-            ✦ LITERARY CODEX
-          </span>
-        </div>
+      {/* PROMINENT SECTION HEADER */}
+      <div className="relative z-20 w-full px-6 sm:px-12 lg:px-16 pt-8 pointer-events-none">
+        <motion.div
+          animate={{ opacity: selectedBook ? 0.35 : 1, y: selectedBook ? -8 : 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-4 max-w-7xl mx-auto"
+        >
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs uppercase tracking-[0.28em] text-indigo-400 font-bold">
+                // 04 · LITERARY CODEX
+              </span>
+            </div>
+            <h1 className="font-space text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mt-1.5">
+              The Bookshelf
+            </h1>
+            <p className="text-sm sm:text-base text-slate-400 font-space max-w-xl mt-1.5 leading-relaxed">
+              Twelve influential classics and modern philosophy that shaped my perspective, engineering discipline, and mental models.
+            </p>
+          </div>
 
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-[11px] px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/80">
-            {selectedBook ? "Drag to Orbit · Click Outside to Return" : "Click Any Book on Shelf to Inspect"}
-          </span>
-        </div>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-2 font-mono text-[11px] px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-slate-300 backdrop-blur-md">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+              {selectedBook ? "Drag to Orbit 360° · Click Outside to Return" : "Click Any Book on Shelf to Inspect"}
+            </span>
+          </div>
+        </motion.div>
       </div>
 
-      {/* FULL-BLEED 3D BOOKSHELF VIEWPORT (4 Shelves x 3 Books) */}
+      {/* FULL-BLEED 3D BOOKSHELF VIEWPORT (2 Tiers with 12 Books) */}
       <div className="absolute inset-0 w-full h-full z-10">
         <ThreeDBookShelf
           selectedBook={selectedBook}
@@ -71,84 +86,109 @@ export default function BooksSection() {
         />
       </div>
 
-      {/* COSMIC TORN-PAPER DETAIL SHEET (Left Side Panel) */}
+      {/* LUXURY EDITORIAL DOSSIER (Slides in from Right on Book Selection) */}
       <AnimatePresence>
         {selectedBook && (
           <motion.div
-            key="cosmic-torn-panel"
-            initial={{ x: "-105%" }}
-            animate={{ x: "0%" }}
-            exit={{ x: "-105%" }}
+            key="book-editorial-dossier"
+            initial={{ x: "100%", opacity: 0 }}
+            animate={{ x: "0%", opacity: 1 }}
+            exit={{ x: "100%", opacity: 0 }}
             transition={{
-              duration: 0.5,
+              duration: 0.48,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="absolute top-0 left-0 bottom-0 z-30 w-[92%] sm:w-[440px] lg:w-[480px] pointer-events-auto flex flex-col justify-center p-8 sm:p-14"
+            className="absolute top-0 right-0 bottom-0 z-30 w-full sm:w-[460px] lg:w-[500px] pointer-events-auto flex flex-col justify-between p-8 sm:p-12 lg:p-14 bg-[#070b16]/92 backdrop-blur-2xl border-l border-white/10 shadow-[-25px_0_80px_rgba(0,0,0,0.85)]"
           >
-            {/* Procedural Cosmic Torn Paper with Stardust Fibers & Glowing Aurora Rim */}
-            <CosmicTornPanel glowColor={selectedBook.foilColor || "#6366f1"} />
+            {/* Top Bar: Close Button */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[10px] tracking-[0.24em] text-slate-400 uppercase">
+                  ARCHIVAL RECORD // 0{selectedBook.year}
+                </span>
+              </div>
 
-            {/* Typography Content Layer with Handwritten Elements */}
-            <div className="relative z-10 space-y-4 max-w-sm pl-2 sm:pl-4">
-              {/* Eyebrow: Status or Author · Year */}
+              <button
+                type="button"
+                onClick={() => setSelectedBook(null)}
+                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                title="Return to Shelf (Esc)"
+              >
+                <IoCloseOutline size={20} />
+              </button>
+            </div>
+
+            {/* Main Editorial Content */}
+            <div className="space-y-6 my-auto">
+              {/* Category / Status Header */}
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-indigo-300 font-semibold">
+                <span className="font-mono text-xs uppercase tracking-[0.22em] text-indigo-400 font-bold">
                   {selectedBook.author.toUpperCase()} · {selectedBook.year}
                 </span>
 
                 {selectedBook.isCurrentlyReading && (
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     CURRENTLY READING
                   </span>
                 )}
               </div>
 
-              {/* Title: Display Serif / Grotesk */}
-              <h2 className="font-space text-3xl sm:text-4xl font-bold tracking-tight text-white leading-[1.12]">
+              {/* Title */}
+              <h2 className="font-space text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-white leading-[1.08]">
                 {selectedBook.name}
               </h2>
 
-              {/* Subtext in Handwritten Font (Caveat) */}
-              <p
-                className="text-2xl sm:text-[28px] text-amber-200/90 leading-snug tracking-wide pt-1"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
+              {/* Golden / Indigo Accent Rule */}
+              <div
+                className="h-[2px] w-24 rounded-full"
+                style={{
+                  background: `linear-gradient(90deg, ${selectedBook.foilColor}, transparent)`,
+                }}
+              />
+
+              {/* Lyrical Subtext / Synopsis Block */}
+              <blockquote className="border-l-2 border-white/20 pl-4 py-1 text-slate-200 font-space text-base sm:text-lg italic leading-relaxed">
                 "{selectedBook.subtext}"
-              </p>
+              </blockquote>
 
-              {/* Handwritten Reading Log Annotation */}
-              <p
-                className="text-xl sm:text-2xl text-cyan-300/80 pt-0.5"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                ✦ Gokul's personal shelf archive
-              </p>
+              {/* Archival Metadata Table */}
+              <div className="grid grid-cols-2 gap-3 pt-2 font-mono text-xs border-t border-white/10 text-slate-300">
+                <div>
+                  <span className="text-slate-500 block uppercase tracking-wider text-[10px]">Author</span>
+                  <span className="text-white font-medium">{selectedBook.author}</span>
+                </div>
+                <div>
+                  <span className="text-slate-500 block uppercase tracking-wider text-[10px]">First Published</span>
+                  <span className="text-white font-medium">{selectedBook.year}</span>
+                </div>
+              </div>
 
-              {/* Action Buttons: Look inside & Close Pills */}
-              <div className="pt-6 flex items-center gap-3">
+              {/* Action Buttons */}
+              <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setIsFlipped(!isFlipped)}
-                  className="px-6 py-2.5 rounded-full bg-white text-[#03060f] font-mono text-xs font-bold hover:bg-slate-200 transition-all shadow-[0_0_25px_rgba(255,255,255,0.25)] active:scale-95 cursor-pointer"
+                  className="flex-1 py-3 px-5 rounded-full bg-white text-[#03060f] font-mono text-xs font-bold hover:bg-slate-200 transition-all shadow-[0_0_25px_rgba(255,255,255,0.25)] flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
                 >
-                  {isFlipped ? "Look front" : "Look inside"}
+                  <IoSyncOutline size={16} />
+                  <span>{isFlipped ? "View Front Cover" : "Inspect Back Cover"}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setSelectedBook(null)}
-                  className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-mono text-xs font-semibold transition-all shadow-sm active:scale-95 cursor-pointer"
+                  className="py-3 px-5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-mono text-xs font-semibold transition-all active:scale-95 cursor-pointer text-center"
                 >
-                  Close
+                  Return to Shelf
                 </button>
               </div>
+            </div>
 
-              {/* Footnote */}
-              <div className="pt-6 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
-                <span>✦ LITERARY ARCHIVE</span>
-                <span>{selectedBook.year}</span>
-              </div>
+            {/* Bottom Archival Footnote */}
+            <div className="pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>✦ GOKUL'S LITERARY CODEX</span>
+              <span>12 VOLUMES ON SHELF</span>
             </div>
           </motion.div>
         )}
