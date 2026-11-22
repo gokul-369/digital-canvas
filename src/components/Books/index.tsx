@@ -26,9 +26,9 @@ export default function BooksSection() {
   return (
     <section
       id="books"
-      className="relative w-full h-screen min-h-[750px] overflow-hidden bg-[#03060f] flex flex-col justify-between select-none"
+      className="relative w-full h-screen min-h-[700px] overflow-hidden bg-[#03060f] flex flex-col justify-between select-none"
     >
-      {/* SVG ClipPath for Organic Torn Paper / Deckle Edge */}
+      {/* SVG ClipPath for Organic Torn Deckled Edge */}
       <svg width="0" height="0" className="absolute pointer-events-none">
         <defs>
           <clipPath id="ashen-torn-edge" clipPathUnits="objectBoundingBox">
@@ -56,33 +56,30 @@ export default function BooksSection() {
         className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center overflow-hidden"
       >
         <div
-          className="w-[900px] h-[600px] rounded-full blur-[160px] transition-all duration-1000 opacity-25"
+          className="w-[850px] h-[550px] rounded-full blur-[160px] transition-all duration-1000 opacity-20"
           style={{
             backgroundColor: selectedBook ? selectedBook.foilColor : "#6366f1",
           }}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#03060f_90%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#03060f_92%)]" />
       </div>
 
-      {/* Top Header Bar (Ashen Press Brand & Instructions) */}
+      {/* Top Header Hint (Floating cleanly, non-intrusive) */}
       <div className="relative z-20 w-full px-6 sm:px-12 pt-6 flex items-center justify-between pointer-events-none">
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-sm tracking-[0.25em] text-white/90 font-bold uppercase flex items-center gap-2">
-            <span className="text-indigo-400">✦</span> ASHEN PRESS
-          </span>
-          <span className="hidden sm:inline font-mono text-[11px] text-white/40 tracking-wider">
-            // 4-TIER 3D BOOKSHELF
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-xs tracking-[0.25em] text-white/80 font-bold uppercase">
+            ✦ LITERARY ARCHIVE
           </span>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <span className="font-mono text-[11px] px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/80">
-            {selectedBook ? "Drag to Orbit · Click Outside to Return" : "Click Any Book on Shelf"}
+            {selectedBook ? "Drag to Orbit · Click Outside to Return" : "Click Any Book to Inspect"}
           </span>
         </div>
       </div>
 
-      {/* FULL-BLEED 3D STAGE (Edge-to-Edge, Not Trapped in a Box!) */}
+      {/* FULL-BLEED 3D BOOKSHELF VIEWPORT */}
       <div className="absolute inset-0 w-full h-full z-10">
         <ThreeDBookShelf
           selectedBook={selectedBook}
@@ -93,102 +90,84 @@ export default function BooksSection() {
         />
       </div>
 
-      {/* Depth-of-Field Lens Blur Overlay on Background when Book is Selected */}
+      {/* Depth-of-Field Lens Blur on Background Shelves when Book is Selected */}
       {selectedBook && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.35 }}
           onClick={() => setSelectedBook(null)}
-          className="absolute inset-0 z-15 backdrop-blur-[6px] bg-[#03060f]/35 cursor-pointer pointer-events-auto"
+          className="absolute inset-0 z-15 backdrop-blur-[6px] bg-[#03060f]/40 cursor-pointer pointer-events-auto"
         />
       )}
 
-      {/* --- ASHEN PRESS TORN-PAPER DETAIL PANEL (Space Theme Adapted) --- */}
+      {/* --- ASHEN PRESS TORN-PAPER DETAIL SHEET (Space Theme Edition) --- */}
       <AnimatePresence>
         {selectedBook && (
           <motion.div
-            key="ashen-detail-panel"
+            key="ashen-detail-sheet"
             initial={{ x: "-105%", opacity: 0 }}
             animate={{ x: "0%", opacity: 1 }}
             exit={{ x: "-105%", opacity: 0 }}
             transition={{
-              duration: 0.55,
+              duration: 0.5,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="absolute top-0 left-0 bottom-0 z-30 w-[92%] sm:w-[440px] lg:w-[480px] pointer-events-auto flex flex-col justify-between p-8 sm:p-12 shadow-[30px_0_90px_rgba(0,0,0,0.85)]"
+            className="absolute top-0 left-0 bottom-0 z-30 w-[90%] sm:w-[380px] lg:w-[420px] pointer-events-auto flex flex-col justify-center p-8 sm:p-12 shadow-[30px_0_90px_rgba(0,0,0,0.85)]"
             style={{
               clipPath: "url(#ashen-torn-edge)",
               background:
-                "linear-gradient(135deg, rgba(14, 20, 36, 0.95) 0%, rgba(9, 13, 24, 0.97) 70%, rgba(5, 7, 14, 0.98) 100%)",
-              backdropFilter: "blur(40px) saturate(160%)",
+                "linear-gradient(135deg, rgba(12, 17, 28, 0.96) 0%, rgba(7, 10, 18, 0.98) 100%)",
+              backdropFilter: "blur(30px)",
               borderRight: "1px solid rgba(255, 255, 255, 0.12)",
             }}
           >
-            {/* Top Brand Tag inside Sheet */}
-            <div>
-              <div className="flex items-center justify-between pb-6">
-                <span className="font-mono text-xs uppercase tracking-[0.25em] text-indigo-400/90 font-bold flex items-center gap-2">
-                  <span>✦</span> ASHEN PRESS
-                </span>
-                <span className="font-mono text-[11px] text-white/40 tracking-wider">
-                  COLLECTOR'S EDITION
-                </span>
+            {/* Minimal Ashen Press Typography Layout */}
+            <div className="space-y-4 max-w-sm">
+              {/* Header: AUTHOR · YEAR */}
+              <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400 font-semibold block">
+                {selectedBook.author.toUpperCase()} · {selectedBook.year}
+                {selectedBook.isCurrentlyReading && (
+                  <span className="ml-2.5 text-indigo-400 font-bold">● CURRENTLY READING</span>
+                )}
+              </span>
+
+              {/* Title (Large Display Typography) */}
+              <h2 className="font-space text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+                {selectedBook.name}
+              </h2>
+
+              {/* Subtext (Concise 2-Line Lyrical Synopsis) */}
+              <p className="font-space text-sm sm:text-base text-slate-300 leading-relaxed pt-1">
+                "{selectedBook.subtext}"
+              </p>
+
+              {/* Action Buttons: Look inside & Close Pills (Exactly like Ashen Press screenshot) */}
+              <div className="pt-6 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsFlipped(!isFlipped)}
+                  className="px-6 py-2.5 rounded-full bg-white text-slate-950 font-mono text-xs font-bold hover:bg-slate-200 transition-all shadow-md active:scale-95 cursor-pointer"
+                >
+                  {isFlipped ? "Look front" : "Look inside"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedBook(null)}
+                  className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-mono text-xs font-semibold transition-all shadow-sm active:scale-95 cursor-pointer"
+                >
+                  Close
+                </button>
               </div>
-
-              {/* Main Metadata in Ashen Press Exact Typography Layout */}
-              <div className="mt-14 sm:mt-20 space-y-4">
-                {/* Header Tag: AUTHOR · YEAR · VOLUME */}
-                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-slate-400 font-semibold block">
-                  {selectedBook.author.toUpperCase()} · {selectedBook.year}
-                  {selectedBook.isCurrentlyReading && (
-                    <span className="ml-2.5 text-indigo-400 font-bold">● CURRENTLY READING</span>
-                  )}
-                </span>
-
-                {/* Book Title (Large Display Typography) */}
-                <h2 className="font-space text-3xl sm:text-5xl font-bold tracking-tight text-white leading-[1.08]">
-                  {selectedBook.name}
-                </h2>
-
-                {/* Subtext (Concise Lyrical Synopsis) */}
-                <p className="font-space text-sm sm:text-base text-slate-300/90 leading-relaxed pt-2 max-w-sm">
-                  "{selectedBook.subtext}"
-                </p>
-
-                {/* Action Buttons: Look inside & Close Pills (Exactly like Ashen Press) */}
-                <div className="pt-6 flex items-center gap-3.5">
-                  <button
-                    type="button"
-                    onClick={() => setIsFlipped(!isFlipped)}
-                    className="px-6 py-2.5 rounded-full bg-white text-slate-950 font-mono text-xs font-bold hover:bg-slate-200 transition-all shadow-lg active:scale-95 cursor-pointer"
-                  >
-                    {isFlipped ? "Look front" : "Look inside"}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedBook(null)}
-                    className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-mono text-xs font-semibold transition-all shadow-md active:scale-95 cursor-pointer"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom Archival Footnote */}
-            <div className="pt-6 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-white/40">
-              <span>GOKUL'S LITERARY CODEX</span>
-              <span>12 TITLES ON OAK</span>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Bottom Ashen Press Catalogue Strip (Ghosted along floor) */}
-      <div className="relative z-20 w-full px-6 sm:px-12 pb-5 flex items-center justify-center pointer-events-none overflow-x-auto scrollbar-none opacity-40 hover:opacity-85 transition-opacity duration-300">
+      {/* Bottom Ashen Press Catalogue Strip (Faint along floor) */}
+      <div className="relative z-20 w-full px-6 sm:px-12 pb-5 flex items-center justify-center pointer-events-none overflow-x-auto scrollbar-none opacity-30 hover:opacity-80 transition-opacity duration-300">
         <div className="flex items-center gap-6 sm:gap-10 text-[10px] font-mono tracking-wider text-slate-400 whitespace-nowrap">
           {booksList.map((item) => (
             <span
