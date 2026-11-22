@@ -227,29 +227,29 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
+    renderer.toneMappingExposure = 0.95;
     rendererRef.current = renderer;
 
     container.innerHTML = "";
     container.appendChild(renderer.domElement);
 
     // 4. Lighting: Natural, legible studio illumination with zero blowout or glare
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
     scene.add(ambientLight);
 
-    const keySpot = new THREE.DirectionalLight(0xffffff, 1.5);
-    keySpot.position.set(3.5, 4.5, 5.0);
+    const keySpot = new THREE.DirectionalLight(0xffffff, 1.15);
+    keySpot.position.set(3.0, 4.0, 4.5);
     keySpot.castShadow = true;
     keySpot.shadow.mapSize.width = 2048;
     keySpot.shadow.mapSize.height = 2048;
     keySpot.shadow.bias = -0.0005;
     scene.add(keySpot);
 
-    const fillLight = new THREE.DirectionalLight(0x94a3b8, 0.6);
-    fillLight.position.set(-3.5, 2.5, 3.5);
+    const fillLight = new THREE.DirectionalLight(0xa5b4fc, 0.45);
+    fillLight.position.set(-3.0, 2.0, 3.0);
     scene.add(fillLight);
 
-    const softShelfLight = new THREE.PointLight(0x818cf8, 0.8, 8);
+    const softShelfLight = new THREE.PointLight(0x818cf8, 0.55, 7);
     softShelfLight.position.set(0, -1.2, 1.2);
     scene.add(softShelfLight);
 
@@ -341,8 +341,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       // Front Cover Material - Vibrant, natural contrast, perfectly legible text with zero blowout
       const frontMat = new THREE.MeshStandardMaterial({
         map: coverTex,
-        roughness: 0.35,
-        metalness: 0.0,
+        roughness: 0.52,
+        metalness: 0.01,
         fog: false,
       });
 
@@ -350,8 +350,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       const spineTex = createSpineCanvas(item);
       const spineMat = new THREE.MeshStandardMaterial({
         map: spineTex,
-        roughness: 0.35,
-        metalness: 0.04,
+        roughness: 0.45,
+        metalness: 0.02,
         fog: false,
       });
 
@@ -359,8 +359,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       const backTex = createBackCoverTexture(item);
       const backMat = new THREE.MeshStandardMaterial({
         map: backTex,
-        roughness: 0.35,
-        metalness: 0.04,
+        roughness: 0.45,
+        metalness: 0.02,
         fog: false,
       });
 
@@ -413,12 +413,18 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
       const activeItem = selectedBookRef.current;
 
-      // Shelf position moves slightly with scroll for natural parallax
+      // Shelf platform moves slightly with scroll for natural parallax, and gracefully slides away when inspecting a volume
       if (shelfMeshRef.current) {
         const shelfTargetX = -scrollPosRef.current * 0.35;
-        const shelfTargetZ = activeItem ? -3.5 : 0;
+        const shelfTargetY = activeItem ? baseY - 3.0 : baseY;
+        const shelfTargetScale = activeItem ? 0.001 : 1.0;
         shelfMeshRef.current.position.x += (shelfTargetX - shelfMeshRef.current.position.x) * 0.1;
-        shelfMeshRef.current.position.z += (shelfTargetZ - shelfMeshRef.current.position.z) * 0.08;
+        shelfMeshRef.current.position.y += (shelfTargetY - shelfMeshRef.current.position.y) * 0.08;
+        shelfMeshRef.current.scale.set(
+          shelfMeshRef.current.scale.x + (shelfTargetScale - shelfMeshRef.current.scale.x) * 0.08,
+          shelfMeshRef.current.scale.y + (shelfTargetScale - shelfMeshRef.current.scale.y) * 0.08,
+          shelfMeshRef.current.scale.z + (shelfTargetScale - shelfMeshRef.current.scale.z) * 0.08
+        );
       }
 
       meshes.forEach((anchor, idx) => {
@@ -427,15 +433,15 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         const isHovered = hoveredIndexRef.current === idx && !activeItem;
 
         if (isSelected) {
-          // Workshop Codex layout: Detail panel is on the RIGHT; 3D book stands prominently in the LEFT-CENTER viewport
+          // Workshop Codex layout: 3D book stands prominently in LEFT-CENTER viewport leaving clean breathing space for right panel
           const isSmall = window.innerWidth < 768;
-          const targetX = isSmall ? 0 : -0.85;
-          const targetY = isSmall ? 0.52 : -0.05;
-          const targetZ = isSmall ? 2.15 : 2.36;
+          const targetX = isSmall ? 0 : -1.25;
+          const targetY = isSmall ? 0.45 : -0.05;
+          const targetZ = isSmall ? 2.15 : 2.45;
           const targetPos = new THREE.Vector3(targetX, targetY, targetZ);
           anchor.position.lerp(targetPos, 0.08);
 
-          const targetScale = isSmall ? 1.42 : 1.68;
+          const targetScale = isSmall ? 1.4 : 1.62;
           anchor.scale.set(
             anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
             anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
@@ -450,27 +456,26 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
           anchor.rotation.y += (targetRotY - anchor.rotation.y) * 0.1;
           anchor.rotation.z += (targetRotZ - anchor.rotation.z) * 0.1;
         } else {
+          // When a book is selected, ALL OTHER BOOKS scale smoothly down to 0 so they vanish completely!
+          const targetScale = activeItem ? 0.0 : 1.0;
+          anchor.scale.set(
+            anchor.scale.x + (targetScale - anchor.scale.x) * 0.1,
+            anchor.scale.y + (targetScale - anchor.scale.y) * 0.1,
+            anchor.scale.z + (targetScale - anchor.scale.z) * 0.1
+          );
+
           // Horizontal shelf position shifted by scrollPosRef
           const defaultX = (idx - 1.5) * BOOK_SPACING;
           let targetX = defaultX - scrollPosRef.current * BOOK_SPACING;
           let targetY = SHELF_Y;
-          let targetZ = -0.85;
+          let targetZ = activeItem ? -4.0 : -0.85;
 
           const defaultRot = anchor.userData.defaultRot;
           let targetRotX = defaultRot.rx;
           let targetRotY = defaultRot.ry;
           let targetRotZ = defaultRot.rz;
 
-          const targetScale = 1.0;
-          anchor.scale.set(
-            anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
-            anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
-            anchor.scale.z + (targetScale - anchor.scale.z) * 0.08
-          );
-
-          if (activeItem) {
-            targetZ = -3.5;
-          } else if (isHovered) {
+          if (!activeItem && isHovered) {
             targetY = SHELF_Y + 0.06;
             targetZ = -0.68;
             targetRotX = defaultRot.rx - 0.03;
