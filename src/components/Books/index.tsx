@@ -1,39 +1,34 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import { booksList } from "../../data/books";
+import { IoCloseOutline, IoSyncOutline } from "react-icons/io5";
+import { booksList, type BookItem } from "../../data/books";
 import ThreeDBookShelf from "./ThreeDBookShelf";
 import SectionHeader from "../SectionHeader";
 
 export default function BooksSection() {
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const currentBook = booksList[selectedIndex] || booksList[0];
+  const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
+  const [isFlipped, setIsFlipped] = useState<boolean>(false);
 
-  // Keyboard navigation (ArrowLeft & ArrowRight)
+  // Reset flip state when changing book or closing
+  useEffect(() => {
+    setIsFlipped(false);
+  }, [selectedBook]);
+
+  // Keyboard navigation: Escape closes foreground book
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
-        setSelectedIndex((prev) => (prev + 1) % booksList.length);
-      } else if (e.key === "ArrowLeft") {
-        setSelectedIndex((prev) => (prev - 1 + booksList.length) % booksList.length);
+      if (e.key === "Escape") {
+        setSelectedBook(null);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const handleNext = () => {
-    setSelectedIndex((prev) => (prev + 1) % booksList.length);
-  };
-
-  const handlePrev = () => {
-    setSelectedIndex((prev) => (prev - 1 + booksList.length) % booksList.length);
-  };
-
   return (
     <section
       id="books"
-      className="relative min-h-dvh w-full py-16 sm:py-24 px-4 sm:px-6 lg:px-16 flex flex-col items-center bg-transparent overflow-hidden"
+      className="relative min-h-dvh w-full py-16 sm:py-24 px-4 sm:px-6 lg:px-12 flex flex-col items-center bg-transparent overflow-hidden"
     >
       {/* Dynamic Ambient Background Aura */}
       <div
@@ -41,8 +36,10 @@ export default function BooksSection() {
         className="pointer-events-none absolute inset-0 flex items-center justify-center -z-10 overflow-hidden"
       >
         <div
-          className="w-[600px] h-[400px] rounded-full blur-[130px] transition-all duration-700 opacity-20 dark:opacity-25"
-          style={{ backgroundColor: currentBook.foilColor }}
+          className="w-[700px] h-[450px] rounded-full blur-[140px] transition-all duration-700 opacity-20 dark:opacity-25"
+          style={{
+            backgroundColor: selectedBook ? selectedBook.foilColor : "#818cf8",
+          }}
         />
       </div>
 
@@ -51,132 +48,145 @@ export default function BooksSection() {
         tag="Literary Archive"
         title="Curated 3D"
         accent="bookshelf"
-        description="A tactile 3D book shelf inspired by ThreeUI's Ashen Press. Swipe or click to slide volumes, and drag the active book to inspect in 3D."
+        description="A tactile 3D book shelf inspired by ThreeUI's Ashen Press. Click any volume to lift it off the shelf and inspect its details."
         className="mb-6 sm:mb-8"
       />
 
-      {/* Main 3D Shelf Canvas Viewport */}
-      <div className="relative w-full max-w-6xl aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/10] max-h-[540px] rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/10 bg-gradient-to-b from-slate-900/10 via-slate-900/20 to-slate-950/40 dark:from-white/[0.02] dark:to-black/70 backdrop-blur-2xl shadow-2xl flex items-center justify-center mb-8">
+      {/* Main 3D Stage Frame (Holds the 3D Shelf and Detail Overlay) */}
+      <div className="relative w-full max-w-7xl aspect-[16/11] sm:aspect-[16/9] lg:aspect-[21/11] max-h-[660px] rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/10 bg-gradient-to-b from-slate-900/10 via-slate-900/25 to-slate-950/50 dark:from-white/[0.02] dark:to-black/80 backdrop-blur-2xl shadow-2xl flex items-center justify-center">
+        {/* 3D WebGL Double-Decker Bookshelf */}
         <ThreeDBookShelf
-          selectedIndex={selectedIndex}
-          onSelectIndex={setSelectedIndex}
+          selectedBook={selectedBook}
+          onSelectBook={setSelectedBook}
+          isFlipped={isFlipped}
+          onToggleFlip={() => setIsFlipped(!isFlipped)}
           className="w-full h-full"
         />
 
-        {/* Top Hint Pill */}
-        <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/70 dark:bg-black/60 backdrop-blur-md border border-white/15 text-[11px] font-mono text-white/80 pointer-events-none">
+        {/* Ambient Top Hint Bar */}
+        <div className="absolute top-4 left-5 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/75 dark:bg-black/70 backdrop-blur-md border border-white/15 text-[11px] font-mono text-white/90 pointer-events-none shadow-md">
           <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
-          <span>Interactive 3D Shelf · Click / Drag to Browse</span>
+          <span>
+            {selectedBook
+              ? "Drag book to rotate in 3D · Click background to return"
+              : "Click any book on the shelf to inspect"}
+          </span>
         </div>
 
-        {/* Counter Pill */}
-        <div className="absolute top-4 right-4 z-10 font-mono text-xs text-white/80 px-3 py-1.5 rounded-full bg-slate-900/70 dark:bg-black/60 backdrop-blur-md border border-white/15 pointer-events-none">
-          // {selectedIndex + 1} of {booksList.length}
+        {/* Total Volumes Counter */}
+        <div className="absolute top-4 right-5 z-20 font-mono text-xs text-white/90 px-3.5 py-1.5 rounded-full bg-slate-900/75 dark:bg-black/70 backdrop-blur-md border border-white/15 pointer-events-none shadow-md">
+          // {booksList.length} Volumes on Shelf
         </div>
 
-        {/* Left / Right Nav Arrows */}
-        <button
-          type="button"
-          onClick={handlePrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-black/50 hover:bg-black/70 border border-white/20 text-white backdrop-blur-md transition-all cursor-pointer active:scale-90 shadow-lg"
-          title="Previous Book"
-          aria-label="Previous Book"
-        >
-          <IoChevronBack size={20} />
-        </button>
-        <button
-          type="button"
-          onClick={handleNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-black/50 hover:bg-black/70 border border-white/20 text-white backdrop-blur-md transition-all cursor-pointer active:scale-90 shadow-lg"
-          title="Next Book"
-          aria-label="Next Book"
-        >
-          <IoChevronForward size={20} />
-        </button>
-      </div>
-
-      {/* Selected Book Minimal Dossier: Name, Subtext, Author, Year */}
-      <div className="w-full max-w-2xl text-center z-10 mb-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentBook.id}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-2 p-6 sm:p-7 rounded-3xl bg-white/60 dark:bg-white/[0.04] backdrop-blur-xl border border-slate-200/80 dark:border-white/10 shadow-lg"
-          >
-            {/* Name (Title) */}
-            <h3 className="font-space text-2xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
-              {currentBook.name}
-            </h3>
-
-            {/* Subtext */}
-            {currentBook.subtext && (
-              <p className="font-caveat text-xl sm:text-2xl text-indigo-600 dark:text-indigo-400">
-                "{currentBook.subtext}"
-              </p>
-            )}
-
-            {/* Author & Year */}
-            <div className="pt-2 flex items-center justify-center gap-3 text-xs sm:text-sm font-mono text-slate-600 dark:text-slate-300">
-              <span className="font-semibold text-slate-900 dark:text-white">
-                {currentBook.author}
-              </span>
-              <span>·</span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-bold">
-                {currentBook.year}
-              </span>
-              {currentBook.isCurrentlyReading && (
-                <>
-                  <span>·</span>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-500 dark:text-indigo-300 text-[11px] font-bold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
-                    Currently Reading
+        {/* --- ASHEN PRESS TORN-PAPER DETAIL SHEET --- */}
+        <AnimatePresence>
+          {selectedBook && (
+            <motion.div
+              key="detail-sheet"
+              initial={{ x: "-100%", opacity: 0 }}
+              animate={{ x: "0%", opacity: 1 }}
+              exit={{ x: "-100%", opacity: 0 }}
+              transition={{
+                duration: 0.55,
+                ease: [0.16, 1, 0.3, 1], // Critically damped spring
+              }}
+              className="absolute top-0 left-0 bottom-0 z-30 w-full sm:w-[420px] lg:w-[460px] pointer-events-auto flex flex-col justify-between p-7 sm:p-9 shadow-[25px_0_60px_rgba(0,0,0,0.6)]"
+              style={{
+                // Ashen Press warm parchment body with organic deckled torn-paper right edge
+                background:
+                  "linear-gradient(135deg, #f5ecd9 0%, #ebe0ca 60%, #e2d3b8 100%)",
+                clipPath:
+                  "polygon(0% 0%, 96.5% 0%, 98.2% 4%, 96.0% 8%, 97.8% 13%, 95.5% 18%, 98.0% 23%, 96.2% 28%, 98.5% 33%, 95.8% 38%, 97.9% 43%, 95.5% 48%, 98.1% 53%, 96.0% 59%, 98.3% 65%, 95.7% 71%, 98.0% 77%, 96.2% 83%, 97.8% 89%, 95.6% 95%, 97.0% 100%, 0% 100%)",
+              }}
+            >
+              {/* Torn Paper Header with Close Button */}
+              <div>
+                <div className="flex items-center justify-between pb-4 border-b border-[#c8baa3]/70">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#786650] font-semibold">
+                    // ARCHIVAL RECORD
                   </span>
-                </>
-              )}
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
 
-      {/* Horizontal Thumbnail Strip for Quick Jumping */}
-      <div className="w-full max-w-6xl z-10">
-        <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-indigo-500/20">
-          {booksList.map((item, idx) => {
-            const isSelected = idx === selectedIndex;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setSelectedIndex(idx)}
-                className={`relative flex-shrink-0 w-24 sm:w-28 p-2 rounded-2xl border transition-all text-left cursor-pointer group flex flex-col items-center ${
-                  isSelected
-                    ? "border-indigo-500 ring-2 ring-indigo-500/40 bg-white/90 dark:bg-white/[0.08] shadow-lg -translate-y-1.5"
-                    : "border-slate-200/80 dark:border-white/10 bg-white/50 dark:bg-white/[0.02] hover:border-indigo-400/50 hover:bg-white/80 dark:hover:bg-white/[0.05]"
-                }`}
-              >
-                {/* Actual Book Cover Thumbnail */}
-                <div className="w-full aspect-[2/3] rounded-xl overflow-hidden shadow-sm mb-2">
-                  <img
-                    src={item.coverImage}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setSelectedBook(null)}
+                    className="p-1.5 rounded-full hover:bg-black/10 text-[#4a3f31] transition-colors cursor-pointer"
+                    title="Return to Shelf (Esc)"
+                    aria-label="Return to Shelf"
+                  >
+                    <IoCloseOutline size={22} />
+                  </button>
                 </div>
 
-                <span className="font-space text-[11px] font-bold text-slate-900 dark:text-white text-center line-clamp-1 w-full">
-                  {item.name}
-                </span>
-                <span className="font-mono text-[9px] text-slate-500 dark:text-slate-400 text-center truncate w-full">
-                  {item.author}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+                {/* Name (Title) */}
+                <div className="mt-8 space-y-3">
+                  <h3 className="font-space text-3xl sm:text-4xl font-bold tracking-tight text-[#1e1914] leading-tight">
+                    {selectedBook.name}
+                  </h3>
+
+                  {/* Subtext */}
+                  {selectedBook.subtext && (
+                    <p className="font-caveat text-2xl sm:text-3xl text-[#5c4a35] leading-snug">
+                      "{selectedBook.subtext}"
+                    </p>
+                  )}
+                </div>
+
+                {/* Author & Year Metadata */}
+                <div className="mt-8 pt-6 border-t border-[#c8baa3]/60 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs uppercase tracking-wider text-[#7a6b57]">
+                      Author
+                    </span>
+                    <span className="font-space text-sm font-bold text-[#221c16]">
+                      {selectedBook.author}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs uppercase tracking-wider text-[#7a6b57]">
+                      Year
+                    </span>
+                    <span className="font-mono text-xs font-semibold text-[#221c16]">
+                      {selectedBook.year}
+                    </span>
+                  </div>
+
+                  {selectedBook.isCurrentlyReading && (
+                    <div className="flex items-center justify-between pt-2">
+                      <span className="font-mono text-xs uppercase tracking-wider text-[#7a6b57]">
+                        Status
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 font-mono text-[11px] px-2.5 py-0.5 rounded-full bg-[#3d3280]/10 border border-[#3d3280]/25 text-[#3d3280] font-bold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#3d3280] animate-pulse" />
+                        Currently Reading
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Action Controls: Flip Book & Return to Shelf */}
+              <div className="pt-6 border-t border-[#c8baa3]/70 space-y-2.5">
+                <button
+                  type="button"
+                  onClick={() => setIsFlipped(!isFlipped)}
+                  className="w-full py-3 px-4 rounded-xl bg-[#26201a] hover:bg-[#362f27] text-[#f5ebd9] font-mono text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md active:scale-98"
+                >
+                  <IoSyncOutline size={15} />
+                  <span>{isFlipped ? "View Front Cover" : "Inspect Back Cover (Flip)"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedBook(null)}
+                  className="w-full py-2.5 px-4 rounded-xl border border-[#b8a78e] hover:bg-black/5 text-[#4a3f31] font-mono text-xs font-medium flex items-center justify-center transition-all cursor-pointer active:scale-98"
+                >
+                  Return to Shelf (Esc)
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

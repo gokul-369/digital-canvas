@@ -4,14 +4,17 @@ import { booksList, type BookItem } from "../../data/books";
 import { createPagesEdgeTexture } from "./bookTextureGenerator";
 
 interface ThreeDBookShelfProps {
-  selectedIndex: number;
-  onSelectIndex: (index: number) => void;
+  selectedBook: BookItem | null;
+  onSelectBook: (book: BookItem | null) => void;
+  isFlipped: boolean;
+  onToggleFlip?: () => void;
   className?: string;
 }
 
 export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
-  selectedIndex,
-  onSelectIndex,
+  selectedBook,
+  onSelectBook,
+  isFlipped,
   className = "",
 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -20,48 +23,54 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const shelfGroupRef = useRef<THREE.Group | null>(null);
   const bookMeshesRef = useRef<THREE.Group[]>([]);
-  const pointLightRef = useRef<THREE.PointLight | null>(null);
+  const spotLightRef = useRef<THREE.SpotLight | null>(null);
 
-  // Raycasting for click/hover detection
+  // Interaction & Raycasting
   const raycaster = useRef(new THREE.Raycaster());
   const mousePos = useRef(new THREE.Vector2(-999, -999));
   const hoveredIndex = useRef<number | null>(null);
-
-  // Drag interaction state
   const isDragging = useRef<boolean>(false);
-  const dragStartX = useRef<number>(0);
-  const dragStartY = useRef<number>(0);
-  const dragDistance = useRef<number>(0);
+  const dragStart = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const dragDist = useRef<number>(0);
   const lastPointer = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Camera / Shelf carriage position lerp
-  const currentCarriageX = useRef<number>(0);
-  const targetCarriageX = useRef<number>(0);
-
-  // Selected book free 3D drag rotation
-  const bookRot = useRef<{ x: number; y: number }>({ x: 0.05, y: 0.1 });
-  const bookRotTarget = useRef<{ x: number; y: number }>({ x: 0.05, y: 0.1 });
-  const isRotatingActiveBook = useRef<boolean>(false);
+  // 3D rotation of active book when inspected in foreground
+  const activeBookRot = useRef<{ x: number; y: number }>({ x: 0.0, y: -0.28 });
+  const activeBookRotTarget = useRef<{ x: number; y: number }>({ x: 0.0, y: -0.28 });
+  const flipTargetAngle = useRef<number>(0);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Book Dimensions
-  const BOOK_W = 1.95;
-  const BOOK_H = 2.85;
-  const BOOK_D = 0.36;
-  const BOOK_SPACING = 2.75;
-
-  // Sync selectedIndex to targetCarriageX
+  // Synchronize Flip state
   useEffect(() => {
-    targetCarriageX.current = -selectedIndex * BOOK_SPACING;
-    // Reset selected book rotation when changing volume
-    bookRotTarget.current = { x: 0.04, y: 0.0 };
-    bookRot.current = { x: 0.04, y: 0.0 };
-  }, [selectedIndex, BOOK_SPACING]);
+    flipTargetAngle.current = isFlipped ? Math.PI : 0;
+  }, [isFlipped]);
 
-  // Helper to generate a crisp spine canvas texture
+  // Dimensions
+  const BOOK_W = 1.9;
+  const BOOK_H = 2.75;
+  const BOOK_D = 0.42;
+
+  // Shelf coordinates: 2 tiers of 6 books
+  // Tier 0 (top shelf): y = 1.62, indices 0..5
+  // Tier 1 (bottom shelf): y = -1.48, indices 6..11
+  const getRestTransform = useCallback((idx: number) => {
+    const isTop = idx < 6;
+    const col = isTop ? idx : idx - 6;
+    const x = (col - 2.5) * 2.38;
+    const y = isTop ? 1.62 : -1.48;
+    const z = 0.05;
+
+    // Organic casual book lean (Ashen Press style)
+    const leanTiltX = -0.14 + (idx % 3) * 0.025;
+    const leanYawY = -0.12 + ((col - 2.5) * -0.035);
+    const leanRollZ = (idx % 2 === 0 ? 0.018 : -0.018);
+
+    return { x, y, z, rx: leanTiltX, ry: leanYawY, rz: leanRollZ };
+  }, []);
+
+  // Helper to generate a tactile clothbound spine texture
   const createSpineCanvas = useCallback((item: BookItem): THREE.CanvasTexture => {
     const canvas = document.createElement("canvas");
     canvas.width = 180;
@@ -69,23 +78,23 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     const ctx = canvas.getContext("2d");
     if (!ctx) return new THREE.CanvasTexture(canvas);
 
-    // Spine gradient
+    // Spine cylinder gradient with shadow falloff
     const grad = ctx.createLinearGradient(0, 0, 180, 0);
     grad.addColorStop(0, "rgba(0,0,0,0.85)");
-    grad.addColorStop(0.3, item.spineColor);
-    grad.addColorStop(0.7, item.spineColor);
+    grad.addColorStop(0.28, item.spineColor);
+    grad.addColorStop(0.72, item.spineColor);
     grad.addColorStop(1, "rgba(0,0,0,0.85)");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 180, 1200);
 
-    // Raised decorative ribs
-    const ribs = [90, 100, 320, 330, 600, 610, 880, 890, 1100, 1110];
+    // Raised decorative headband ribs
+    const ribs = [80, 90, 310, 320, 600, 610, 890, 900, 1110, 1120];
     ctx.fillStyle = "rgba(0,0,0,0.55)";
-    ribs.forEach((y) => ctx.fillRect(10, y, 160, 4));
-    ctx.fillStyle = "rgba(255,255,255,0.18)";
-    ribs.forEach((y) => ctx.fillRect(10, y - 3, 160, 2));
+    ribs.forEach((ry) => ctx.fillRect(10, ry, 160, 4));
+    ctx.fillStyle = "rgba(255,255,255,0.2)";
+    ribs.forEach((ry) => ctx.fillRect(10, ry - 3, 160, 2));
 
-    // Vertical text: Title & Author
+    // Vertical Typography
     ctx.save();
     ctx.translate(90, 600);
     ctx.rotate(Math.PI / 2);
@@ -101,8 +110,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     ctx.fillText(item.author.toUpperCase(), 0, 32);
     ctx.restore();
 
-    // Year at bottom
-    ctx.font = "bold 22px monospace";
+    // Year at base
+    ctx.font = "bold 24px monospace";
     ctx.fillStyle = "rgba(255,255,255,0.7)";
     ctx.textAlign = "center";
     ctx.fillText(item.year, 90, 1050);
@@ -117,16 +126,16 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     const container = mountRef.current;
     if (!container) return;
 
-    const width = container.clientWidth || 800;
-    const height = container.clientHeight || 550;
+    const width = container.clientWidth || 900;
+    const height = container.clientHeight || 650;
 
     // 1. Scene
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // 2. Camera: tactile perspective looking at the bookshelf
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 0.35, 6.4);
+    // 2. Camera: Wide tactile perspective looking at the double-decker bookshelf
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    camera.position.set(0, 0.05, 8.4);
     camera.lookAt(0, 0, 0);
     cameraRef.current = camera;
 
@@ -144,53 +153,60 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // 4. Lighting: Ashen Press warm studio illumination
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.15);
+    // 4. Lighting: Ashen Press warm tactile studio illumination
+    const ambientLight = new THREE.AmbientLight(0xfff5ea, 1.25);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff7ed, 2.0);
-    keyLight.position.set(4, 7, 6);
+    const keyLight = new THREE.DirectionalLight(0xffedd5, 2.2);
+    keyLight.position.set(5, 9, 7);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x818cf8, 0.85);
-    fillLight.position.set(-5, -2, 4);
+    const fillLight = new THREE.DirectionalLight(0x818cf8, 0.8);
+    fillLight.position.set(-6, -3, 5);
     scene.add(fillLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 1.5, 14);
-    pointLight.position.set(0, 2, 4);
-    scene.add(pointLight);
-    pointLightRef.current = pointLight;
+    const spotLight = new THREE.SpotLight(0xffffff, 2.8, 16, Math.PI / 4, 0.5);
+    spotLight.position.set(2, 3, 7);
+    scene.add(spotLight);
+    spotLightRef.current = spotLight;
 
-    // 5. The Shelf Group
-    const shelfGroup = new THREE.Group();
-    shelfGroupRef.current = shelfGroup;
-    scene.add(shelfGroup);
-
-    // --- TACTILE OAK / SMOKED SHELF SLAB ---
-    const shelfGeo = new THREE.BoxGeometry(booksList.length * BOOK_SPACING + 12, 0.16, 3.8);
+    // 5. Build Two Solid Smoked Oak Shelves
+    const shelfGeo = new THREE.BoxGeometry(16.5, 0.18, 3.4);
     const shelfMat = new THREE.MeshStandardMaterial({
-      color: 0x12151c,
-      roughness: 0.35,
-      metalness: 0.3,
+      color: 0x141822,
+      roughness: 0.38,
+      metalness: 0.28,
     });
-    const shelfMesh = new THREE.Mesh(shelfGeo, shelfMat);
-    shelfMesh.position.set(0, -BOOK_H / 2 - 0.08, 0.2);
-    shelfGroup.add(shelfMesh);
 
-    // Subtle shelf rim highlight
-    const rimGeo = new THREE.BoxGeometry(booksList.length * BOOK_SPACING + 12, 0.02, 0.04);
+    // Top shelf
+    const topShelf = new THREE.Mesh(shelfGeo, shelfMat);
+    topShelf.position.set(0, 1.62 - BOOK_H / 2 - 0.09, 0.2);
+    scene.add(topShelf);
+
+    // Bottom shelf
+    const bottomShelf = new THREE.Mesh(shelfGeo, shelfMat);
+    bottomShelf.position.set(0, -1.48 - BOOK_H / 2 - 0.09, 0.2);
+    scene.add(bottomShelf);
+
+    // Subtle brushed metal rim accents along shelf edge
     const rimMat = new THREE.MeshStandardMaterial({
       color: 0x818cf8,
       roughness: 0.2,
       metalness: 0.8,
       emissive: 0x4f46e5,
-      emissiveIntensity: 0.25,
+      emissiveIntensity: 0.2,
     });
-    const rimMesh = new THREE.Mesh(rimGeo, rimMat);
-    rimMesh.position.set(0, -BOOK_H / 2 + 0.01, 2.08);
-    shelfGroup.add(rimMesh);
+    const rimGeo = new THREE.BoxGeometry(16.5, 0.02, 0.04);
 
-    // 6. Build the 12 3D Books on the Shelf
+    const topRim = new THREE.Mesh(rimGeo, rimMat);
+    topRim.position.set(0, 1.62 - BOOK_H / 2 + 0.01, 1.88);
+    scene.add(topRim);
+
+    const bottomRim = new THREE.Mesh(rimGeo, rimMat);
+    bottomRim.position.set(0, -1.48 - BOOK_H / 2 + 0.01, 1.88);
+    scene.add(bottomRim);
+
+    // 6. Build the 12 3D Books with Actual Cover Textures
     const texLoader = new THREE.TextureLoader();
     const pagesEdgeTex = createPagesEdgeTexture();
     const pageEdgeMat = new THREE.MeshStandardMaterial({
@@ -204,9 +220,11 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
     booksList.forEach((item, idx) => {
       const bookAnchor = new THREE.Group();
-      bookAnchor.position.set(idx * BOOK_SPACING, 0, 0);
+      const rest = getRestTransform(idx);
+      bookAnchor.position.set(rest.x, rest.y, rest.z);
+      bookAnchor.rotation.set(rest.rx, rest.ry, rest.rz);
 
-      // Load actual book cover image
+      // Load actual real book cover image
       const coverTex = texLoader.load(item.coverImage);
       coverTex.colorSpace = THREE.SRGBColorSpace;
 
@@ -232,22 +250,20 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         metalness: 0.1,
       });
 
-      // Box materials order: [+x (right), -x (left/spine), +y (top), -y (bottom), +z (front), -z (back)]
+      // Materials order: [+x (right), -x (left/spine), +y (top), -y (bottom), +z (front), -z (back)]
       const materials = [
         pageEdgeMat, // right: paper pages
         spineMat, // left: book spine
         pageEdgeMat, // top: paper pages
         pageEdgeMat, // bottom: paper pages
         frontMat, // front: ACTUAL BOOK COVER IMAGE
-        backMat, // back: matching hardcover
+        backMat, // back: matching clothbound hardcover
       ];
 
       const mesh = new THREE.Mesh(bookGeo, materials);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
-
-      // Tag mesh with its index for raycasting
-      mesh.userData = { index: idx };
+      mesh.userData = { index: idx, book: item };
 
       // Soft contact shadow underneath
       const shadowGeo = new THREE.PlaneGeometry(BOOK_W * 1.15, BOOK_D * 2.2);
@@ -262,67 +278,75 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       bookAnchor.add(shadowMesh);
 
       bookAnchor.add(mesh);
-      shelfGroup.add(bookAnchor);
+      scene.add(bookAnchor);
       meshes.push(bookAnchor);
     });
 
     bookMeshesRef.current = meshes;
     setIsLoading(false);
 
-    // 7. Animation Loop
+    // 7. Render & Animation Loop
     let animationFrameId: number;
-    let clock = new THREE.Clock();
+    const isMobile = window.innerWidth < 768;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      clock.getDelta();
 
-      // Smooth shelf carriage sliding (lerp to targetCarriageX)
-      currentCarriageX.current += (targetCarriageX.current - currentCarriageX.current) * 0.085;
-      if (shelfGroupRef.current) {
-        shelfGroupRef.current.position.x = currentCarriageX.current;
-      }
+      // Selected book target foreground position
+      // In Ashen Press: selected book is at [1.15, 0.05, 4.80] (right side), leaving left for detail sheet
+      const fgPos = isMobile
+        ? new THREE.Vector3(0.0, 0.65, 4.2)
+        : new THREE.Vector3(1.35, 0.0, 4.6);
 
-      // Smooth book elevation & angle transitions
-      const currIdx = selectedIndex;
       meshes.forEach((anchor, idx) => {
-        const bookMesh = anchor.children[1] as THREE.Mesh;
-        if (!bookMesh) return;
+        const item = booksList[idx];
+        const isSelected = selectedBook && selectedBook.id === item.id;
+        const isHovered = !selectedBook && idx === hoveredIndex.current;
+        const rest = getRestTransform(idx);
 
-        const isSelected = idx === currIdx;
-        const isHovered = idx === hoveredIndex.current && !isSelected;
-
-        // Target positions & rotations
-        let targetZ = 0;
-        let targetY = 0;
-        let targetRotY = -0.22; // default neat angle showing both cover and spine
-        let targetRotX = 0;
+        let targetX = rest.x;
+        let targetY = rest.y;
+        let targetZ = rest.z;
+        let targetRx = rest.rx;
+        let targetRy = rest.ry;
+        let targetRz = rest.rz;
 
         if (isSelected) {
-          // Selected book steps forward and lifts up
-          targetZ = 0.95;
-          targetY = 0.22;
-          targetRotX = bookRot.current.x;
-          targetRotY = bookRot.current.y;
+          // Selected book steps smoothly into the foreground
+          targetX = fgPos.x;
+          targetY = fgPos.y;
+          targetZ = fgPos.z;
+          targetRx = activeBookRot.current.x;
+          targetRy = activeBookRot.current.y + flipTargetAngle.current;
+          targetRz = 0;
+        } else if (selectedBook) {
+          // Other unselected books recede into background (Ashen Press depth effect)
+          targetZ = rest.z - 0.75;
+          targetRx = rest.rx - 0.08;
         } else if (isHovered) {
-          // Hovered book peeks forward from the shelf
-          targetZ = 0.38;
-          targetY = 0.08;
-          targetRotY = -0.12;
+          // Hovered book peeks forward from shelf
+          targetZ = rest.z + 0.35;
+          targetY = rest.y + 0.08;
+          targetRx = 0.0;
+          targetRy = -0.06;
         }
 
-        // Lerp book mesh position & rotation
-        bookMesh.position.z += (targetZ - bookMesh.position.z) * 0.1;
-        bookMesh.position.y += (targetY - bookMesh.position.y) * 0.1;
-        bookMesh.rotation.x += (targetRotX - bookMesh.rotation.x) * 0.1;
-        bookMesh.rotation.y += (targetRotY - bookMesh.rotation.y) * 0.1;
+        // Smooth critically-damped lerp
+        const lerpSpeed = isSelected ? 0.09 : 0.12;
+        anchor.position.x += (targetX - anchor.position.x) * lerpSpeed;
+        anchor.position.y += (targetY - anchor.position.y) * lerpSpeed;
+        anchor.position.z += (targetZ - anchor.position.z) * lerpSpeed;
 
-        // Active book rotation damping
-        if (isSelected && isRotatingActiveBook.current) {
-          bookRot.current.x += (bookRotTarget.current.x - bookRot.current.x) * 0.18;
-          bookRot.current.y += (bookRotTarget.current.y - bookRot.current.y) * 0.18;
-        }
+        anchor.rotation.x += (targetRx - anchor.rotation.x) * lerpSpeed;
+        anchor.rotation.y += (targetRy - anchor.rotation.y) * lerpSpeed;
+        anchor.rotation.z += (targetRz - anchor.rotation.z) * lerpSpeed;
       });
+
+      // Active book drag rotation damping
+      if (selectedBook && isDragging.current) {
+        activeBookRot.current.x += (activeBookRotTarget.current.x - activeBookRot.current.x) * 0.2;
+        activeBookRot.current.y += (activeBookRotTarget.current.y - activeBookRot.current.y) * 0.2;
+      }
 
       renderer.render(scene, camera);
     };
@@ -351,32 +375,14 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       renderer.dispose();
       scene.clear();
     };
-  }, [BOOK_D, BOOK_H, BOOK_SPACING, BOOK_W, createSpineCanvas, selectedIndex]);
+  }, [BOOK_D, BOOK_H, BOOK_W, createSpineCanvas, getRestTransform, selectedBook]);
 
-  // Pointer Handlers: Drag carriage or 3D inspect active book
+  // Pointer Handlers: Click book to select, or drag foreground book
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     isDragging.current = true;
-    dragStartX.current = e.clientX;
-    dragStartY.current = e.clientY;
-    dragDistance.current = 0;
+    dragStart.current = { x: e.clientX, y: e.clientY };
+    dragDist.current = 0;
     lastPointer.current = { x: e.clientX, y: e.clientY };
-
-    // Check if pointer hit the selected book
-    if (cameraRef.current && mountRef.current) {
-      const rect = mountRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      raycaster.current.setFromCamera(new THREE.Vector2(x, y), cameraRef.current);
-
-      const activeGroup = bookMeshesRef.current[selectedIndex];
-      if (activeGroup) {
-        const hits = raycaster.current.intersectObjects(activeGroup.children);
-        if (hits.length > 0) {
-          isRotatingActiveBook.current = true;
-        }
-      }
-    }
-
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   };
 
@@ -387,18 +393,13 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
     mousePos.current.set(nx, ny);
 
-    // Update point light tracking
-    if (pointLightRef.current) {
-      pointLightRef.current.position.set(nx * 4, ny * 3 + 1, 5);
-    }
-
-    // Raycast hover check when not dragging
-    if (!isDragging.current) {
+    // Raycast hover when no book is selected and not dragging
+    if (!selectedBook && !isDragging.current) {
       raycaster.current.setFromCamera(mousePos.current, cameraRef.current);
-      const meshes = bookMeshesRef.current.map((g) => g.children[1]).filter(Boolean);
-      const intersects = raycaster.current.intersectObjects(meshes);
-      if (intersects.length > 0) {
-        const idx = intersects[0].object.userData.index;
+      const targets = bookMeshesRef.current.map((g) => g.children[1]).filter(Boolean);
+      const hits = raycaster.current.intersectObjects(targets);
+      if (hits.length > 0) {
+        const idx = hits[0].object.userData.index;
         hoveredIndex.current = typeof idx === "number" ? idx : null;
       } else {
         hoveredIndex.current = null;
@@ -406,24 +407,17 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       return;
     }
 
-    // Dragging logic
+    if (!isDragging.current) return;
+
     const dx = e.clientX - lastPointer.current.x;
     const dy = e.clientY - lastPointer.current.y;
-    dragDistance.current += Math.abs(dx) + Math.abs(dy);
+    dragDist.current += Math.abs(dx) + Math.abs(dy);
 
-    if (isRotatingActiveBook.current) {
-      // 3D free spin on active book
-      bookRotTarget.current.y += dx * 0.009;
-      bookRotTarget.current.x += dy * 0.007;
-      // Clamp pitch so it doesn't flip upside down
-      bookRotTarget.current.x = Math.max(-0.6, Math.min(0.6, bookRotTarget.current.x));
-    } else {
-      // Dragging carriage along shelf
-      targetCarriageX.current += dx * 0.012;
-      // Clamp carriage bounds
-      const minX = -(booksList.length - 1) * BOOK_SPACING;
-      const maxX = 0;
-      targetCarriageX.current = Math.max(minX - 0.5, Math.min(maxX + 0.5, targetCarriageX.current));
+    // If a book is selected in foreground, drag to rotate it in 3D
+    if (selectedBook) {
+      activeBookRotTarget.current.y += dx * 0.009;
+      activeBookRotTarget.current.x += dy * 0.007;
+      activeBookRotTarget.current.x = Math.max(-0.6, Math.min(0.6, activeBookRotTarget.current.x));
     }
 
     lastPointer.current = { x: e.clientX, y: e.clientY };
@@ -431,7 +425,6 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     isDragging.current = false;
-    isRotatingActiveBook.current = false;
 
     try {
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);
@@ -439,31 +432,35 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       // safe fallback
     }
 
-    // If it was a quick tap/click (dragDistance < 10px), select clicked book
-    if (dragDistance.current < 10 && cameraRef.current && mountRef.current) {
+    // If tap/click (< 8px total movement), raycast to select book
+    if (dragDist.current < 8 && cameraRef.current && mountRef.current) {
       const rect = mountRef.current.getBoundingClientRect();
       const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
       raycaster.current.setFromCamera(new THREE.Vector2(nx, ny), cameraRef.current);
 
-      const meshes = bookMeshesRef.current.map((g) => g.children[1]).filter(Boolean);
-      const intersects = raycaster.current.intersectObjects(meshes);
-      if (intersects.length > 0) {
-        const clickedIdx = intersects[0].object.userData.index;
-        if (typeof clickedIdx === "number" && clickedIdx !== selectedIndex) {
-          onSelectIndex(clickedIdx);
+      const targets = bookMeshesRef.current.map((g) => g.children[1]).filter(Boolean);
+      const hits = raycaster.current.intersectObjects(targets);
+
+      if (hits.length > 0) {
+        const clickedBook = hits[0].object.userData.book as BookItem;
+        if (clickedBook) {
+          if (selectedBook?.id === clickedBook.id) {
+            // Clicking active book again resets rotation
+            activeBookRotTarget.current = { x: 0.0, y: -0.28 };
+            activeBookRot.current = { x: 0.0, y: -0.28 };
+          } else {
+            // Select new book from shelf
+            activeBookRotTarget.current = { x: 0.0, y: -0.28 };
+            activeBookRot.current = { x: 0.0, y: -0.28 };
+            onSelectBook(clickedBook);
+          }
           return;
         }
+      } else if (selectedBook) {
+        // Clicking empty space outside book returns to shelf
+        onSelectBook(null);
       }
-    }
-
-    // Snap to nearest book on carriage drag release
-    const nearestIdx = Math.round(-targetCarriageX.current / BOOK_SPACING);
-    const clampedIdx = Math.max(0, Math.min(booksList.length - 1, nearestIdx));
-    if (clampedIdx !== selectedIndex) {
-      onSelectIndex(clampedIdx);
-    } else {
-      targetCarriageX.current = -selectedIndex * BOOK_SPACING;
     }
   };
 
@@ -476,16 +473,20 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        className="w-full h-full cursor-grab active:cursor-grabbing touch-none"
-        title="Swipe shelf to browse · Drag active book to inspect in 3D"
+        className="w-full h-full cursor-pointer touch-none"
+        title={
+          selectedBook
+            ? "Drag to rotate book in 3D · Click background to return to shelf"
+            : "Click any book on the shelf to inspect"
+        }
       />
 
-      {/* Loading Indicator */}
+      {/* Loading Shimmer */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-950/40 backdrop-blur-md rounded-3xl">
           <div className="flex flex-col items-center gap-3">
             <div className="w-8 h-8 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />
-            <span className="font-mono text-xs text-indigo-400">Loading 3D Shelf...</span>
+            <span className="font-mono text-xs text-indigo-400">Loading Tactile 3D Shelf...</span>
           </div>
         </div>
       )}
