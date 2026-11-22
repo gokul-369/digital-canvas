@@ -53,8 +53,7 @@ export default function BooksSection() {
   return (
     <section
       id="books"
-      data-lenis-prevent="true"
-      className="relative w-full h-full min-h-[740px] overflow-hidden flex flex-col justify-between select-none"
+      className="relative w-full min-h-screen h-[100dvh] overflow-hidden flex flex-col justify-between select-none"
     >
       {/* SECTION HEADER CONSISTENT WITH OTHER SECTIONS - Sits comfortably below floating Nav */}
       <div className="relative z-20 w-full px-6 pt-24 sm:pt-28 lg:pt-32 pointer-events-none">
@@ -163,7 +162,11 @@ export default function BooksSection() {
               duration: 0.45,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[540px] md:w-[600px] lg:w-[680px] pointer-events-auto flex flex-col justify-between pt-10 sm:pt-14 pb-8 sm:pb-10 px-8 sm:px-14 bg-gradient-to-r from-transparent via-[#02050f]/80 to-[#02050f]/95 backdrop-blur-md sm:backdrop-blur-xl overflow-y-auto"
+            className="absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[540px] md:w-[600px] lg:w-[680px] pointer-events-auto flex flex-col justify-between pt-10 sm:pt-14 pb-8 sm:pb-10 px-8 sm:px-14 bg-gradient-to-r from-transparent via-[#02050f]/85 to-[#02050f]/98 backdrop-blur-xl overflow-y-auto"
+            style={{
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 20%, black 100%)",
+              maskImage: "linear-gradient(to right, transparent 0%, black 20%, black 100%)",
+            }}
           >
             {/* Top Bar: Archival Tag, Big Title & Close Button aligned at top */}
             <div>

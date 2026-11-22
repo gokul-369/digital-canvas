@@ -208,7 +208,6 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
     // 1. Scene
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x030712, 0.03);
     sceneRef.current = scene;
 
     // 2. Camera: fov = 26, positioned for clear architectural view of the shelf
@@ -228,14 +227,14 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
     rendererRef.current = renderer;
 
     container.innerHTML = "";
     container.appendChild(renderer.domElement);
 
-    // 4. Lighting: Refined Studio Key + Atmospheric Ambient + Soft Shelf Downlight
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+    // 4. Lighting: Clean Studio Key + Vibrant Ambient + Dedicated Hero Front Light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.45);
     scene.add(ambientLight);
 
     const keySpot = new THREE.DirectionalLight(0xffffff, 2.8);
@@ -246,9 +245,14 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     keySpot.shadow.bias = -0.0005;
     scene.add(keySpot);
 
-    const fillLight = new THREE.DirectionalLight(0x818cf8, 1.2);
+    const fillLight = new THREE.DirectionalLight(0x818cf8, 1.3);
     fillLight.position.set(-4.5, 2.5, 3.5);
     scene.add(fillLight);
+
+    // Dedicated white studio spotlight directly illuminating the selected book's front cover
+    const heroSpot = new THREE.DirectionalLight(0xffffff, 2.6);
+    heroSpot.position.set(-0.85, 2.2, 5.0);
+    scene.add(heroSpot);
 
     const softShelfLight = new THREE.PointLight(0x818cf8, 1.2, 8);
     softShelfLight.position.set(0, -1.2, 1.2);
@@ -324,27 +328,30 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       const coverTex = texLoader.load(item.coverImage);
       coverTex.colorSpace = THREE.SRGBColorSpace;
 
-      // Front Cover Material
+      // Front Cover Material - Vibrant, full color, crisp sheen, never darkened by fog
       const frontMat = new THREE.MeshStandardMaterial({
         map: coverTex,
-        roughness: 0.28,
-        metalness: 0.05,
+        roughness: 0.18,
+        metalness: 0.02,
+        fog: false,
       });
 
       // Spine Material
       const spineTex = createSpineCanvas(item);
       const spineMat = new THREE.MeshStandardMaterial({
         map: spineTex,
-        roughness: 0.40,
-        metalness: 0.08,
+        roughness: 0.35,
+        metalness: 0.04,
+        fog: false,
       });
 
       // Back Cover Material
       const backTex = createBackCoverTexture(item);
       const backMat = new THREE.MeshStandardMaterial({
         map: backTex,
-        roughness: 0.45,
-        metalness: 0.08,
+        roughness: 0.35,
+        metalness: 0.04,
+        fog: false,
       });
 
       const materials = [
@@ -402,12 +409,6 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         const shelfTargetZ = activeItem ? -3.5 : 0;
         shelfMeshRef.current.position.x += (shelfTargetX - shelfMeshRef.current.position.x) * 0.1;
         shelfMeshRef.current.position.z += (shelfTargetZ - shelfMeshRef.current.position.z) * 0.08;
-      }
-
-      // Atmospheric depth-of-field fog: background shelf & distant books blur softly when a book is in focus
-      if (scene.fog) {
-        const targetFog = activeItem ? 0.14 : 0.025;
-        (scene.fog as THREE.FogExp2).density += (targetFog - (scene.fog as THREE.FogExp2).density) * 0.08;
       }
 
       meshes.forEach((anchor, idx) => {
@@ -597,20 +598,33 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     }
   };
 
-  // Wheel scroll strictly drives horizontal shelf traversal without vertical page jitter
+  // Wheel scroll drives horizontal shelf traversal, and allows vertical page scrolling when shelf ends
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
 
     const onWheelNative = (e: WheelEvent) => {
       if (selectedBookRef.current) return;
-      e.preventDefault();
-      e.stopPropagation();
 
-      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
       const maxScroll = Math.max(0, booksList.length - 3);
-      scrollTargetRef.current = Math.max(0, Math.min(maxScroll, scrollTargetRef.current + delta * 0.0035));
-      onScrollIndexChange(scrollTargetRef.current);
+      const isDown = e.deltaY > 0 || e.deltaX > 0;
+      const isUp = e.deltaY < 0 || e.deltaX < 0;
+
+      // While shelf has horizontal runway (scrolling down before maxScroll or up before 0):
+      if (isDown && scrollTargetRef.current < maxScroll - 0.05) {
+        e.preventDefault();
+        e.stopPropagation();
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        scrollTargetRef.current = Math.min(maxScroll, scrollTargetRef.current + delta * 0.0035);
+        onScrollIndexChange(scrollTargetRef.current);
+      } else if (isUp && scrollTargetRef.current > 0.05) {
+        e.preventDefault();
+        e.stopPropagation();
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        scrollTargetRef.current = Math.max(0, scrollTargetRef.current - delta * 0.0035);
+        onScrollIndexChange(scrollTargetRef.current);
+      }
+      // Once shelf reaches either end (0 or maxScroll), allow vertical page scroll!
     };
 
     el.addEventListener("wheel", onWheelNative, { passive: false });

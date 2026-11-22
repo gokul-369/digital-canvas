@@ -220,44 +220,47 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
           </SpotlightCard>
         </div>
 
-        {/* CARD 6: 3D Literary Codex / Reading Shelf (Indigo Theme) */}
-        <div className="col-span-1">
+        {/* CARD 6: 3D Literary Codex / Reading Shelf (Full width banner matching Card 7) */}
+        <div className="col-span-1 md:col-span-2 lg:col-span-3">
           <SpotlightCard
-            className="h-full rounded-3xl p-7 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-indigo-400 hover:shadow-[0_4px_20px_rgba(99,102,241,0.12)] flex flex-col justify-between transition-all duration-300"
+            className="h-full rounded-3xl p-7 sm:p-8 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-indigo-400 hover:shadow-[0_4px_20px_rgba(99,102,241,0.12)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 transition-all duration-300"
             spotlightColor="rgba(99, 102, 241, 0.45)"
           >
-            <div>
-              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
                 <span className="font-mono text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-semibold">
                   // 06 · 3D LIBRARY
                 </span>
-                <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-indigo-400/40 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 font-semibold flex items-center gap-1">
+                <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-indigo-400/40 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 font-semibold flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
                   12 Volumes
                 </span>
               </div>
 
-              <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
-                Literary Shelf
-              </h3>
-              <p className="mt-2 font-caveat text-xl text-indigo-600 dark:text-indigo-400">
-                "Ideas that shaped how I think."
-              </p>
-              <p className="mt-1 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                A 3D interactive bookshelf of existential classics, Russian literature, Eastern philosophy, and behavioral psychology.
+              <div className="mt-4 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
+                <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  Literary Codex
+                </h3>
+                <p className="font-caveat text-xl text-indigo-600 dark:text-indigo-400">
+                  "Ideas that shaped how I think."
+                </p>
+              </div>
+
+              <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                A tactile 3D interactive bookshelf of existential classics, Russian literature, Eastern philosophy, and behavioral psychology.
               </p>
             </div>
 
-            <div className="mt-6 flex items-center justify-between">
+            <div className="flex items-center gap-4 flex-shrink-0">
               <HashLink
                 to={manifest.books}
                 scroll={scrollWithLenis}
-                className="inline-flex items-center gap-2 text-xs font-mono font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors cursor-pointer group"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-mono text-xs font-semibold shadow-md shadow-indigo-500/25 transition-all group"
               >
                 <span>Enter 3D library</span>
-                <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
+                <MdArrowRightAlt className="text-base group-hover:translate-x-1.5 transition-transform" />
               </HashLink>
-              <IoBookOutline className="h-8 w-8 text-indigo-500/30" />
+              <IoBookOutline className="h-10 w-10 text-indigo-500/30 hidden sm:block" />
             </div>
           </SpotlightCard>
         </div>
