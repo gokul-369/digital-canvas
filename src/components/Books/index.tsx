@@ -49,8 +49,8 @@ export default function BooksSection() {
       {/* PROMINENT SECTION HERO HEADER */}
       <div className="relative z-20 w-full px-6 sm:px-12 lg:px-16 pt-8 pointer-events-none">
         <motion.div
-          animate={{ opacity: selectedBook ? 0.25 : 1, y: selectedBook ? -10 : 0 }}
-          transition={{ duration: 0.4 }}
+          animate={{ opacity: selectedBook ? 0 : 1, y: selectedBook ? -12 : 0, pointerEvents: selectedBook ? "none" : "auto" }}
+          transition={{ duration: 0.35 }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-4 max-w-7xl mx-auto"
         >
           <div>
@@ -155,25 +155,48 @@ export default function BooksSection() {
         )}
       </AnimatePresence>
 
-      {/* IMMERSIVE RIGHT DETAIL AREA (Workshop Codex Inspired: No harsh panel borders) */}
+      {/* IMMERSIVE LEFT DETAIL PANEL (Ashen Press Inspired: Authentic Space-Themed Torn Paper Deckle Edge) */}
       <AnimatePresence>
         {selectedBook && (
           <motion.div
-            key="immersive-detail"
-            initial={{ opacity: 0, x: 40 }}
+            key="immersive-detail-left"
+            initial={{ opacity: 0, x: -60 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 40 }}
+            exit={{ opacity: 0, x: -60 }}
             transition={{
               duration: 0.45,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="absolute top-0 right-0 bottom-0 z-30 w-full sm:w-[500px] lg:w-[560px] pointer-events-auto flex flex-col justify-between p-8 sm:p-12 lg:p-16 bg-gradient-to-r from-transparent via-[#03060f]/75 to-[#03060f]/95 backdrop-blur-sm sm:backdrop-blur-md"
+            className="absolute top-0 left-0 bottom-0 z-30 w-full sm:w-[460px] md:w-[490px] lg:w-[530px] pointer-events-auto flex flex-col justify-between p-8 sm:p-12 lg:p-14 bg-gradient-to-r from-[#040711] via-[#060b18] to-[#080f22] backdrop-blur-xl shadow-[25px_0_60px_rgba(0,0,0,0.85)]"
           >
+            {/* ORGANIC TORN PAPER DECKLE EDGE SVG (Right Border) */}
+            <div className="hidden sm:block absolute top-0 bottom-0 -right-10 md:-right-12 w-10 md:w-12 h-full pointer-events-none overflow-visible z-10">
+              <svg
+                className="w-full h-full drop-shadow-[14px_0_18px_rgba(0,0,0,0.9)]"
+                viewBox="0 0 100 1000"
+                preserveAspectRatio="none"
+              >
+                {/* Torn paper dark space fill */}
+                <path
+                  d="M 0 0 L 50.0 0.0 L 67.6 12.5 L 72.6 25.0 L 75.9 37.5 L 68.1 50.0 L 76.0 62.5 L 74.4 75.0 L 78.1 87.5 L 64.9 100.0 L 55.3 112.5 L 51.3 125.0 L 55.2 137.5 L 68.0 150.0 L 66.6 162.5 L 69.1 175.0 L 59.6 187.5 L 66.5 200.0 L 66.3 212.5 L 67.3 225.0 L 54.1 237.5 L 35.6 250.0 L 25.8 262.5 L 18.4 275.0 L 26.0 287.5 L 19.7 300.0 L 21.2 312.5 L 14.8 325.0 L 25.8 337.5 L 38.1 350.0 L 49.3 362.5 L 52.8 375.0 L 43.0 387.5 L 43.5 400.0 L 39.6 412.5 L 50.2 425.0 L 45.2 437.5 L 44.1 450.0 L 37.5 462.5 L 43.8 475.0 L 59.5 487.5 L 71.4 500.0 L 82.9 512.5 L 76.7 525.0 L 81.6 537.5 L 79.2 550.0 L 87.8 562.5 L 80.7 575.0 L 69.1 587.5 L 53.4 600.0 L 42.4 612.5 L 47.0 625.0 L 45.9 637.5 L 51.1 650.0 L 40.1 662.5 L 42.7 675.0 L 43.0 687.5 L 53.4 700.0 L 54.8 712.5 L 45.0 725.0 L 34.3 737.5 L 20.1 750.0 L 24.3 762.5 L 20.3 775.0 L 24.5 787.5 L 14.8 800.0 L 17.3 812.5 L 25.2 825.0 L 41.8 837.5 L 58.7 850.0 L 60.1 862.5 L 63.8 875.0 L 57.7 887.5 L 68.3 900.0 L 68.0 912.5 L 70.2 925.0 L 58.5 937.5 L 50.6 950.0 L 52.6 962.5 L 59.0 975.0 L 73.8 987.5 L 71.4 1000.0 L 0 1000 Z"
+                  fill="#080f22"
+                />
+                {/* Luminous deckle edge highlight line */}
+                <path
+                  d="M 50.0 0.0 L 67.6 12.5 L 72.6 25.0 L 75.9 37.5 L 68.1 50.0 L 76.0 62.5 L 74.4 75.0 L 78.1 87.5 L 64.9 100.0 L 55.3 112.5 L 51.3 125.0 L 55.2 137.5 L 68.0 150.0 L 66.6 162.5 L 69.1 175.0 L 59.6 187.5 L 66.5 200.0 L 66.3 212.5 L 67.3 225.0 L 54.1 237.5 L 35.6 250.0 L 25.8 262.5 L 18.4 275.0 L 26.0 287.5 L 19.7 300.0 L 21.2 312.5 L 14.8 325.0 L 25.8 337.5 L 38.1 350.0 L 49.3 362.5 L 52.8 375.0 L 43.0 387.5 L 43.5 400.0 L 39.6 412.5 L 50.2 425.0 L 45.2 437.5 L 44.1 450.0 L 37.5 462.5 L 43.8 475.0 L 59.5 487.5 L 71.4 500.0 L 82.9 512.5 L 76.7 525.0 L 81.6 537.5 L 79.2 550.0 L 87.8 562.5 L 80.7 575.0 L 69.1 587.5 L 53.4 600.0 L 42.4 612.5 L 47.0 625.0 L 45.9 637.5 L 51.1 650.0 L 40.1 662.5 L 42.7 675.0 L 43.0 687.5 L 53.4 700.0 L 54.8 712.5 L 45.0 725.0 L 34.3 737.5 L 20.1 750.0 L 24.3 762.5 L 20.3 775.0 L 24.5 787.5 L 14.8 800.0 L 17.3 812.5 L 25.2 825.0 L 41.8 837.5 L 58.7 850.0 L 60.1 862.5 L 63.8 875.0 L 57.7 887.5 L 68.3 900.0 L 68.0 912.5 L 70.2 925.0 L 58.5 937.5 L 50.6 950.0 L 52.6 962.5 L 59.0 975.0 L 73.8 987.5 L 71.4 1000.0"
+                  fill="none"
+                  stroke="rgba(129, 140, 248, 0.45)"
+                  strokeWidth="1.5"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+            </div>
+
             {/* Top Bar: Close Button */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[11px] tracking-[0.24em] text-slate-400 uppercase">
-                  ARCHIVAL RECORD // 0{selectedBook.year}
+                  ARCHIVAL CODEX // 0{selectedBook.year}
                 </span>
               </div>
 
@@ -204,7 +227,7 @@ export default function BooksSection() {
               </div>
 
               {/* Title */}
-              <h2 className="font-space text-3xl sm:text-4xl lg:text-[46px] font-bold tracking-tight text-white leading-[1.08]">
+              <h2 className="font-space text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-white leading-[1.08]">
                 {selectedBook.name}
               </h2>
 
@@ -241,7 +264,7 @@ export default function BooksSection() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons (Ashen Press Style: Look Inside + Close) */}
               <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <button
                   type="button"
@@ -257,7 +280,7 @@ export default function BooksSection() {
                   onClick={() => setSelectedBook(null)}
                   className="py-3 px-6 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 font-mono text-xs font-semibold transition-all active:scale-95 cursor-pointer text-center"
                 >
-                  Return to Shelf
+                  Close
                 </button>
               </div>
             </div>

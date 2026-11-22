@@ -65,6 +65,15 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     flipTargetAngle.current = isFlipped ? Math.PI : 0;
   }, [isFlipped]);
 
+  // When book is selected, initialize to 3/4 hero angle (spine visible on left, cover facing user)
+  useEffect(() => {
+    selectedBookRef.current = selectedBook;
+    if (selectedBook) {
+      activeBookRotTarget.current = { x: 0.04, y: 0.32 };
+      activeBookRot.current = { x: 0.04, y: 0.32 };
+    }
+  }, [selectedBook]);
+
   // Dimensions
   const BOOK_W = 0.58;
   const BOOK_H = 0.88;
@@ -199,6 +208,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
     // 1. Scene
     const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x030712, 0.03);
     sceneRef.current = scene;
 
     // 2. Camera: fov = 26, positioned for clear architectural view of the shelf
@@ -391,17 +401,27 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         shelfMeshRef.current.position.z += (shelfTargetZ - shelfMeshRef.current.position.z) * 0.08;
       }
 
+      // Atmospheric depth-of-field fog: background shelf & distant books blur softly when a book is in focus
+      if (scene.fog) {
+        const targetFog = activeItem ? 0.14 : 0.025;
+        (scene.fog as THREE.FogExp2).density += (targetFog - (scene.fog as THREE.FogExp2).density) * 0.08;
+      }
+
       meshes.forEach((anchor, idx) => {
         const item = booksList[idx];
         const isSelected = activeItem?.id === item.id;
         const isHovered = hoveredIndexRef.current === idx && !activeItem;
 
         if (isSelected) {
-          // Large foreground focus on left-center: x: -0.85, y: -0.05, z: 2.4 (~65% viewport height)
-          const targetPos = new THREE.Vector3(-0.85, -0.05, 2.4);
+          // Ashen Press layout: 3D book stands prominently in the right-center viewport
+          const isSmall = window.innerWidth < 768;
+          const targetX = isSmall ? 0 : 0.84;
+          const targetY = isSmall ? 0.52 : -0.05;
+          const targetZ = isSmall ? 2.15 : 2.32;
+          const targetPos = new THREE.Vector3(targetX, targetY, targetZ);
           anchor.position.lerp(targetPos, 0.08);
 
-          const targetScale = 1.65;
+          const targetScale = isSmall ? 1.42 : 1.68;
           anchor.scale.set(
             anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
             anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
