@@ -146,7 +146,7 @@ export function Timeline({ children }: { children: React.ReactNode }) {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 80%", "end 80%"],
+    offset: ["start 25%", "end 80%"],
   });
 
   const smooth = useSpring(scrollYProgress, {

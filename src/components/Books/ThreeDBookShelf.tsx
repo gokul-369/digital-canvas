@@ -352,155 +352,13 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
     bookMeshesRef.current = meshes;
 
-    // 6.5. Realistic 3D Celestial Comet (No artificial guide line - genuine free-floating cosmic body)
-    // Positioned physically right below the soles of the books (y = -0.82)
-    const COMET_Y = -0.82;
-    const COMET_Z = -0.78;
-
-    const cometGroup = new THREE.Group();
-    cometGroup.position.set(-6.0, COMET_Y, COMET_Z);
-
-    // A. Intense Icy Nucleus Core (Pure white pinpoint star)
-    const nucleusGeo = new THREE.SphereGeometry(0.026, 16, 16);
-    const nucleusMat = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 1.0,
-      blending: THREE.AdditiveBlending,
-    });
-    const cometNucleus = new THREE.Mesh(nucleusGeo, nucleusMat);
-    cometGroup.add(cometNucleus);
-
-    // B. Inner Gas Coma (Electric Cyan Glow)
-    const innerComaGeo = new THREE.SphereGeometry(0.065, 16, 16);
-    const innerComaMat = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
-      transparent: true,
-      opacity: 0.75,
-      blending: THREE.AdditiveBlending,
-    });
-    const cometInnerComa = new THREE.Mesh(innerComaGeo, innerComaMat);
-    cometGroup.add(cometInnerComa);
-
-    // C. Outer Diffuse Coma Envelope (Soft violet/cyan gas haze)
-    const outerComaGeo = new THREE.SphereGeometry(0.14, 16, 16);
-    const outerComaMat = new THREE.MeshBasicMaterial({
-      color: 0x818cf8,
-      transparent: true,
-      opacity: 0.35,
-      blending: THREE.AdditiveBlending,
-    });
-    const cometOuterComa = new THREE.Mesh(outerComaGeo, outerComaMat);
-    cometGroup.add(cometOuterComa);
-
-    // D. Realistic Swept-Back Dual Cometary Tail (Focused Ion Beam + Diffuse Dust Stream)
-    const tailCanvas = document.createElement("canvas");
-    tailCanvas.width = 512;
-    tailCanvas.height = 128;
-    const tailCtx = tailCanvas.getContext("2d");
-    if (tailCtx) {
-      // 1. Wide diffuse dust tail (soft parabolic gradient that dissolves into dark space)
-      const dustGrad = tailCtx.createRadialGradient(512, 64, 4, 300, 64, 320);
-      dustGrad.addColorStop(0, "rgba(56, 189, 248, 0.45)");
-      dustGrad.addColorStop(0.35, "rgba(129, 140, 248, 0.25)");
-      dustGrad.addColorStop(0.75, "rgba(99, 102, 241, 0.08)");
-      dustGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
-      tailCtx.fillStyle = dustGrad;
-      tailCtx.fillRect(0, 0, 512, 128);
-
-      // 2. Focused Ion Beam (Electric cyan/white sharp spine tapering to left)
-      const ionGrad = tailCtx.createLinearGradient(512, 64, 0, 64);
-      ionGrad.addColorStop(0, "rgba(255, 255, 255, 0.95)");
-      ionGrad.addColorStop(0.15, "rgba(125, 211, 252, 0.85)");
-      ionGrad.addColorStop(0.5, "rgba(56, 189, 248, 0.4)");
-      ionGrad.addColorStop(0.85, "rgba(129, 140, 248, 0.12)");
-      ionGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
-      tailCtx.fillStyle = ionGrad;
-      tailCtx.beginPath();
-      tailCtx.moveTo(512, 60);
-      tailCtx.lineTo(0, 48);
-      tailCtx.lineTo(0, 80);
-      tailCtx.lineTo(512, 68);
-      tailCtx.closePath();
-      tailCtx.fill();
-    }
-    const tailTex = new THREE.CanvasTexture(tailCanvas);
-    const tailGeo = new THREE.PlaneGeometry(2.5, 0.22);
-    const tailMat = new THREE.MeshBasicMaterial({
-      map: tailTex,
-      transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-    const cometTail = new THREE.Mesh(tailGeo, tailMat);
-    cometTail.position.x = -1.25;
-    cometGroup.add(cometTail);
-
-    // E. Dispersing Sparkling Stardust Particles Trailing Behind
-    const DUST_COUNT = 36;
-    const dustPositions = new Float32Array(DUST_COUNT * 3);
-    const dustOffsets = new Float32Array(DUST_COUNT);
-    for (let i = 0; i < DUST_COUNT; i++) {
-      dustPositions[i * 3 + 0] = -(Math.random() * 2.2 + 0.1);
-      dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 0.08;
-      dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
-      dustOffsets[i] = Math.random() * Math.PI * 2;
-    }
-    const dustGeo = new THREE.BufferGeometry();
-    dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPositions, 3));
-    const dustMat = new THREE.PointsMaterial({
-      color: 0x7dd3fc,
-      size: 0.032,
-      transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-    const dustPoints = new THREE.Points(dustGeo, dustMat);
-    cometGroup.add(dustPoints);
-
-    scene.add(cometGroup);
-
     // 7. Animation Loop with Smooth Slerp Damping
     let animId: number;
-    let cometCurrentOpacity = 1.0;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
-      // Celestial Comet Flight & Selection Visibility
-      // When a book is selected, the comet fades out completely to 0 opacity and pauses (NOT running in background)
       const activeItem = selectedBookRef.current;
-      const targetCometOpacity = activeItem ? 0.0 : 1.0;
-      cometCurrentOpacity += (targetCometOpacity - cometCurrentOpacity) * 0.08;
-
-      nucleusMat.opacity = cometCurrentOpacity;
-      innerComaMat.opacity = cometCurrentOpacity * 0.75;
-      outerComaMat.opacity = cometCurrentOpacity * 0.35;
-      tailMat.opacity = cometCurrentOpacity * 0.85;
-      dustMat.opacity = cometCurrentOpacity * 0.85;
-      cometGroup.visible = cometCurrentOpacity > 0.01;
-
-      // Only advance comet along trajectory when visible (and shelf is idle)
-      if (cometGroup.visible) {
-        cometGroup.position.x += 0.022;
-        if (cometGroup.position.x > 8.5) {
-          cometGroup.position.x = -8.5;
-        }
-
-        const time = performance.now() * 0.002;
-        // Organic celestial vertical undulation
-        cometGroup.position.y = COMET_Y + Math.sin(time * 1.5) * 0.012;
-
-        // Stardust particle twinkling
-        const posAttr = dustGeo.attributes.position as THREE.BufferAttribute;
-        for (let i = 0; i < DUST_COUNT; i++) {
-          const py = Math.sin(time * 2 + dustOffsets[i]) * 0.03;
-          posAttr.setY(i, py);
-        }
-        dustGeo.attributes.position.needsUpdate = true;
-      }
 
       // Damping on interactive rotation
       activeBookRot.current.x += (activeBookRotTarget.current.x - activeBookRot.current.x) * 0.1;
@@ -718,9 +576,9 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
           return;
         }
       }
-    } else if (selectedBookRef.current) {
-      onSelectBookRef.current(null);
     }
+    // "x button alone closes the modal and book click alone opens a modal"
+    // Do not close modal on empty canvas click!
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
