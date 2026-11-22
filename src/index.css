@@ -299,3 +299,10 @@ input:-webkit-autofill:focus {
   -webkit-text-fill-color: inherit;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+body.book-inspect-open nav {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-24px) !important;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out !important;
+}

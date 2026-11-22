@@ -10,9 +10,17 @@ export default function BooksSection() {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [scrollIndex, setScrollIndex] = useState<number>(0);
 
-  // Reset flip state when changing book or closing
+  // Reset flip state and hide floating nav when inspecting a book
   useEffect(() => {
     setIsFlipped(false);
+    if (selectedBook) {
+      document.body.classList.add("book-inspect-open");
+    } else {
+      document.body.classList.remove("book-inspect-open");
+    }
+    return () => {
+      document.body.classList.remove("book-inspect-open");
+    };
   }, [selectedBook]);
 
   // Keyboard navigation: Escape closes foreground book, Space flips, Left/Right arrows scroll shelf
