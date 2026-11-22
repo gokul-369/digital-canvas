@@ -13,10 +13,12 @@ export default function BooksSection() {
   const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
   const [scrollIndex, setScrollIndex] = useState<number>(0);
+  const [isDossierCollapsed, setIsDossierCollapsed] = useState<boolean>(false);
 
   // Reset flip state and hide floating nav when inspecting a book
   useEffect(() => {
     setIsFlipped(false);
+    setIsDossierCollapsed(false);
     if (selectedBook) {
       document.body.classList.add("book-inspect-open");
     } else {
@@ -221,14 +223,26 @@ export default function BooksSection() {
               duration: 0.35,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className={`absolute top-[46vh] sm:top-0 left-0 sm:left-auto right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[46vw] lg:w-[42vw] max-w-[580px] pointer-events-auto flex flex-col justify-between overflow-y-auto rounded-t-3xl sm:rounded-none shadow-2xl sm:shadow-none ${
+            className={`absolute ${
+              isDossierCollapsed ? "top-[88vh]" : "top-[54vh]"
+            } sm:top-0 left-0 sm:left-auto right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[46vw] lg:w-[42vw] max-w-[580px] pointer-events-auto flex flex-col justify-between overflow-y-auto rounded-t-3xl sm:rounded-none shadow-2xl sm:shadow-none transition-[top] duration-300 ease-out ${
               isDark
                 ? "bg-[#030611]/95 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border-t sm:border-t-0 border-white/15"
                 : "bg-white/95 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-none border-t sm:border-t-0 border-slate-200/80"
             }`}
           >
-            {/* Top mobile pull handle indicator */}
-            <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-white/20 mx-auto mt-2.5 sm:hidden flex-shrink-0" />
+            {/* Top mobile pull handle button (Tapping collapses/expands to give 88% screen to 3D book) */}
+            <button
+              type="button"
+              onClick={() => setIsDossierCollapsed(!isDossierCollapsed)}
+              className="w-full pt-2.5 pb-1 sm:hidden flex flex-col items-center justify-center cursor-pointer group select-none"
+              title={isDossierCollapsed ? "Expand Details" : "Collapse for 3D View"}
+            >
+              <div className="w-12 h-1.5 rounded-full bg-slate-300 dark:bg-white/30 group-hover:bg-indigo-400 transition-colors" />
+              <span className="text-[9px] font-mono tracking-wider text-slate-400 dark:text-slate-400 mt-1 uppercase">
+                {isDossierCollapsed ? "Tap to Read Takeaway & Quote ▲" : "Tap to Free 3D Canvas ▼"}
+              </span>
+            </button>
 
             {/* FOREGROUND CONTENT LAYER (100% UNMASKED, CRISP & RAZOR-SHARP) */}
             <div className="relative z-10 pt-3 sm:pt-14 pb-6 sm:pb-10 pl-5 sm:pl-10 lg:pl-12 pr-5 sm:pr-10 flex flex-col justify-between min-h-full">

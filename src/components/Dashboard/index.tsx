@@ -46,7 +46,10 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
               <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
                 My Journey in Shipping at Scale
               </h3>
-              <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+              <p className="mt-2 font-caveat text-xl text-sky-600 dark:text-sky-400">
+                "Code written to endure, scaled for millions."
+              </p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
                 From core frontend architectures and zero-latency state systems to enterprise engineering at TCS and Paperflite. Discover how I build for performance.
               </p>
             </div>
@@ -84,7 +87,10 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
               <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
                 Architectural Tooling
               </h3>
-              <p className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+              <p className="mt-2 font-caveat text-xl text-indigo-600 dark:text-indigo-400">
+                "The right tool transforms friction into flow."
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
                 React, TypeScript, Next.js, GenAI MCP servers, Docker, and distributed realtime interfaces.
               </p>
             </div>
@@ -163,7 +169,10 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
               <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
                 Voices & Feedback
               </h3>
-              <p className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+              <p className="mt-2 font-caveat text-xl text-blue-600 dark:text-blue-400">
+                "Trust is earned in the trenches of shipping."
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
                 Unfiltered testimonials and recommendations from colleagues, tech leads, and teammates I’ve built with.
               </p>
             </div>
@@ -201,7 +210,10 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
               <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
                 Honors & Accolades
               </h3>
-              <p className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+              <p className="mt-2 font-caveat text-xl text-purple-600 dark:text-purple-400">
+                "Quiet discipline before the applause."
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
                 Department topper, physics symposium medalist, hackathon winner, and outstanding enterprise contributions.
               </p>
             </div>
@@ -283,6 +295,9 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
                 <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white mt-1">
                   Have a challenging product or architecture in mind?
                 </h3>
+                <p className="mt-1 font-caveat text-xl text-emerald-600 dark:text-emerald-400">
+                  "Great architecture begins with a candid conversation."
+                </p>
                 <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
                   Open the collaborative inquiry terminal to connect directly with me.
                 </p>

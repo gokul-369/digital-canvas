@@ -159,22 +159,31 @@ export function Timeline({ children }: { children: React.ReactNode }) {
 
   return (
     <div ref={ref} className="relative max-w-4xl mx-auto w-full my-8">
-      {/* Laser Spine Track */}
+      {/* Subtle Spine Track Base */}
       <div className="absolute left-3 sm:left-4 top-0 bottom-0 w-[2px] bg-slate-200 dark:bg-white/10 hidden md:block" />
 
-      {/* Illuminated Scroll Laser Beam */}
+      {/* Extending Cosmic Comet Shimmering Dust Tail that grows as you scroll */}
       <motion.div
-        style={{ scaleY: smooth }}
-        className="absolute left-3 sm:left-4 top-0 bottom-0 w-[2px] origin-top bg-gradient-to-b from-indigo-500 via-sky-400 to-amber-500 shadow-[0_0_12px_rgba(99,102,241,0.5)] transform-gpu hidden md:block"
+        style={{ height: pointerY }}
+        className="absolute left-3 sm:left-4 -translate-x-[1px] top-0 w-[3px] bg-gradient-to-b from-indigo-500/20 via-sky-400/60 to-white shadow-[0_0_12px_rgba(56,189,248,0.7),0_0_24px_rgba(99,102,241,0.5)] transform-gpu hidden md:block z-15"
       />
 
-      {/* Glowing Orbit Beacon */}
+      {/* Blazing Comet Head at the front of the scroll extension with trailing dust sparks */}
       <motion.div
         style={{ top: pointerY }}
-        className="absolute left-3 sm:left-4 -translate-x-1/2 h-4 w-4 rounded-full bg-indigo-500 shadow-md transform-gpu hidden md:flex items-center justify-center z-20"
+        className="absolute left-3 sm:left-4 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center z-25 pointer-events-none"
       >
-        <span className="absolute -inset-1 rounded-full animate-ping opacity-40 bg-indigo-400" />
-        <span className="h-2 w-2 rounded-full bg-white" />
+        {/* Trailing Stardust Sparks right above the head */}
+        <span className="absolute -top-3 -left-3 w-1.5 h-1.5 rounded-full bg-cyan-200 shadow-[0_0_6px_#38bdf8] animate-dust-1" />
+        <span className="absolute -top-6 -right-2 w-1 h-1 rounded-full bg-indigo-200 shadow-[0_0_6px_#818cf8] animate-dust-2" />
+        <span className="absolute -top-9 -left-2 w-1.5 h-1.5 rounded-full bg-amber-200 shadow-[0_0_6px_#fbbf24] animate-dust-3" />
+
+        {/* Outer Pulsing Aura */}
+        <span className="absolute h-7 w-7 rounded-full bg-cyan-400/30 animate-ping" />
+        <span className="absolute h-5 w-5 rounded-full bg-gradient-to-tr from-cyan-400 to-indigo-500 opacity-80 blur-[2px]" />
+
+        {/* Radiant Star Core */}
+        <span className="relative h-3 w-3 rounded-full bg-white shadow-[0_0_10px_#ffffff,0_0_20px_#38bdf8,0_0_35px_#818cf8]" />
       </motion.div>
 
       {/* Experience Chapters */}

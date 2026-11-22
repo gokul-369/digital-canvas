@@ -350,11 +350,145 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
     bookMeshesRef.current = meshes;
 
+    // 6.5. 3D Celestial Comet Shelf Beam with Stardust Particle Trail
+    // Positioned physically right below the soles of the books (y = -0.82) and slightly in front (z = -0.80)
+    const COMET_Y = -0.82;
+    const COMET_Z = -0.80;
+
+    // A. Luminous Horizon Beam Line
+    const beamCanvas = document.createElement("canvas");
+    beamCanvas.width = 512;
+    beamCanvas.height = 32;
+    const beamCtx = beamCanvas.getContext("2d");
+    if (beamCtx) {
+      const grad = beamCtx.createLinearGradient(0, 0, 512, 0);
+      grad.addColorStop(0, "rgba(56, 189, 248, 0)");
+      grad.addColorStop(0.2, "rgba(56, 189, 248, 0.45)");
+      grad.addColorStop(0.5, "rgba(129, 140, 248, 0.7)");
+      grad.addColorStop(0.8, "rgba(56, 189, 248, 0.45)");
+      grad.addColorStop(1, "rgba(56, 189, 248, 0)");
+      beamCtx.fillStyle = grad;
+      beamCtx.fillRect(0, 14, 512, 4);
+    }
+    const beamTex = new THREE.CanvasTexture(beamCanvas);
+    const beamGeo = new THREE.PlaneGeometry(18, 0.04);
+    const beamMat = new THREE.MeshBasicMaterial({
+      map: beamTex,
+      transparent: true,
+      opacity: isDark ? 0.85 : 0.65,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const shelfBeamMesh = new THREE.Mesh(beamGeo, beamMat);
+    shelfBeamMesh.position.set(0, COMET_Y, COMET_Z);
+    scene.add(shelfBeamMesh);
+
+    // B. Shooting Comet Head & Tapered Dust Tail
+    const cometGroup = new THREE.Group();
+    cometGroup.position.set(-6.0, COMET_Y, COMET_Z + 0.02);
+
+    // Comet Head Core
+    const headGeo = new THREE.SphereGeometry(0.026, 16, 16);
+    const headMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      blending: THREE.AdditiveBlending,
+    });
+    const cometHead = new THREE.Mesh(headGeo, headMat);
+    cometGroup.add(cometHead);
+
+    // Comet Glow Halo
+    const haloGeo = new THREE.SphereGeometry(0.065, 16, 16);
+    const haloMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.65,
+      blending: THREE.AdditiveBlending,
+    });
+    const cometHalo = new THREE.Mesh(haloGeo, haloMat);
+    cometGroup.add(cometHalo);
+
+    // Tapered Shimmering Dust Tail
+    const tailCanvas = document.createElement("canvas");
+    tailCanvas.width = 256;
+    tailCanvas.height = 32;
+    const tailCtx = tailCanvas.getContext("2d");
+    if (tailCtx) {
+      const grad = tailCtx.createLinearGradient(0, 0, 256, 0);
+      grad.addColorStop(0, "rgba(56, 189, 248, 0)");
+      grad.addColorStop(0.5, "rgba(129, 140, 248, 0.5)");
+      grad.addColorStop(0.9, "rgba(56, 189, 248, 0.9)");
+      grad.addColorStop(1, "rgba(255, 255, 255, 1)");
+      tailCtx.fillStyle = grad;
+      tailCtx.beginPath();
+      tailCtx.moveTo(0, 16);
+      tailCtx.lineTo(256, 12);
+      tailCtx.lineTo(256, 20);
+      tailCtx.closePath();
+      tailCtx.fill();
+    }
+    const tailTex = new THREE.CanvasTexture(tailCanvas);
+    const tailGeo = new THREE.PlaneGeometry(1.6, 0.07);
+    const tailMat = new THREE.MeshBasicMaterial({
+      map: tailTex,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const cometTail = new THREE.Mesh(tailGeo, tailMat);
+    cometTail.position.x = -0.8;
+    cometGroup.add(cometTail);
+
+    // Sparkling Stardust Particles Trailing the Comet
+    const DUST_COUNT = 24;
+    const dustPositions = new Float32Array(DUST_COUNT * 3);
+    const dustOffsets = new Float32Array(DUST_COUNT);
+    for (let i = 0; i < DUST_COUNT; i++) {
+      dustPositions[i * 3 + 0] = -(Math.random() * 1.5 + 0.1);
+      dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
+      dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.03;
+      dustOffsets[i] = Math.random() * Math.PI * 2;
+    }
+    const dustGeo = new THREE.BufferGeometry();
+    dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPositions, 3));
+    const dustMat = new THREE.PointsMaterial({
+      color: 0x7dd3fc,
+      size: 0.035,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const dustPoints = new THREE.Points(dustGeo, dustMat);
+    cometGroup.add(dustPoints);
+
+    scene.add(cometGroup);
+
     // 7. Animation Loop with Smooth Slerp Damping
     let animId: number;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
+
+      // Animate 3D Celestial Comet smoothly along the shelf horizon
+      const activeItem = selectedBookRef.current;
+      const targetCometOpacity = activeItem ? 0.2 : 1.0;
+      cometTail.material.opacity += (targetCometOpacity * 0.9 - cometTail.material.opacity) * 0.05;
+      shelfBeamMesh.material.opacity += (targetCometOpacity * (isDark ? 0.85 : 0.65) - shelfBeamMesh.material.opacity) * 0.05;
+
+      cometGroup.position.x += 0.035;
+      if (cometGroup.position.x > 8.0) {
+        cometGroup.position.x = -8.0;
+      }
+
+      // Stardust particle twinkling
+      const posAttr = dustGeo.attributes.position as THREE.BufferAttribute;
+      const time = performance.now() * 0.003;
+      for (let i = 0; i < DUST_COUNT; i++) {
+        const py = Math.sin(time + dustOffsets[i]) * 0.02;
+        posAttr.setY(i, py);
+      }
+      posAttr.needsUpdate = true;
 
       // Damping on interactive rotation
       activeBookRot.current.x += (activeBookRotTarget.current.x - activeBookRot.current.x) * 0.1;
@@ -363,24 +497,21 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       // Smooth horizontal scroll position damping
       scrollPosRef.current += (scrollTargetRef.current - scrollPosRef.current) * 0.12;
 
-      const activeItem = selectedBookRef.current;
-
-
       meshes.forEach((anchor, idx) => {
         const item = booksList[idx];
         const isSelected = activeItem?.id === item.id;
         const isHovered = hoveredIndexRef.current === idx && !activeItem;
 
         if (isSelected) {
-          // Responsive 3D layout: upper stage on mobile, left-center stage on desktop
+          // Responsive 3D layout: upper stage on mobile with plenty of gap above details modal, left-center stage on desktop
           const isSmall = window.innerWidth < 768;
           const targetX = isSmall ? 0 : -0.55;
-          const targetY = isSmall ? 0.52 : -0.05;
-          const targetZ = isSmall ? 3.4 : 2.40;
+          const targetY = isSmall ? 0.72 : -0.05;
+          const targetZ = isSmall ? 3.6 : 2.40;
           const targetPos = new THREE.Vector3(targetX, targetY, targetZ);
           anchor.position.lerp(targetPos, 0.08);
 
-          const targetScale = isSmall ? 1.15 : 1.40;
+          const targetScale = isSmall ? 1.30 : 1.40;
           anchor.scale.set(
             anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
             anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
@@ -627,6 +758,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
       onPointerCancel={() => {
         isDragging.current = false;
       }}
+      style={{ touchAction: "none" }}
       className={`relative w-full h-full select-none cursor-default ${className}`}
     />
   );
