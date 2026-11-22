@@ -198,10 +198,10 @@ export default function BooksSection() {
                 duration: 0.4,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[56vw] md:w-[58vw] lg:w-[60vw] max-w-[780px] pointer-events-auto flex flex-col justify-between overflow-y-auto"
+              className="absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[48vw] lg:w-[46vw] max-w-[640px] pointer-events-auto flex flex-col justify-between overflow-y-auto"
             >
               {/* FOREGROUND CONTENT LAYER (100% UNMASKED, CRISP & RAZOR-SHARP) */}
-              <div className="relative z-10 pt-10 sm:pt-14 pb-8 sm:pb-10 pl-8 sm:pl-12 lg:pl-16 pr-6 sm:pr-12 flex flex-col justify-between min-h-full">
+              <div className="relative z-10 pt-10 sm:pt-14 pb-8 sm:pb-10 pl-6 sm:pl-10 lg:pl-12 pr-6 sm:pr-10 flex flex-col justify-between min-h-full">
               {/* Top Bar: Archival Tag, Big Title & Close Button aligned at top */}
               <div>
               <div className="flex items-start justify-between">
@@ -263,20 +263,20 @@ export default function BooksSection() {
 
             {/* Bottom Actions & Archival Footnote */}
             <div className="pt-6 space-y-4">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <button
                   type="button"
                   onClick={() => setIsFlipped(!isFlipped)}
-                  className="flex-1 py-2.5 px-5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-[#03060f] font-mono text-xs font-bold hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-[0_0_20px_rgba(99,102,241,0.25)] flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                  className="px-4 py-2 rounded-full bg-slate-900 dark:bg-white text-white dark:text-[#03060f] font-mono text-xs font-semibold hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-sm flex items-center gap-1.5 active:scale-95 cursor-pointer"
                 >
-                  <IoSyncOutline size={15} />
-                  <span>{isFlipped ? "View Front Cover" : "Inspect Back Cover"}</span>
+                  <IoSyncOutline size={14} />
+                  <span>{isFlipped ? "Front" : "Flip 3D"}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setSelectedBook(null)}
-                  className="py-2.5 px-5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white border border-slate-300 dark:border-white/20 font-mono text-xs font-semibold transition-all active:scale-95 cursor-pointer text-center"
+                  className="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white border border-slate-300 dark:border-white/20 font-mono text-xs font-medium transition-all active:scale-95 cursor-pointer text-center"
                 >
                   Close
                 </button>

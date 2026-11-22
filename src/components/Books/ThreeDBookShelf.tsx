@@ -416,15 +416,15 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         const isHovered = hoveredIndexRef.current === idx && !activeItem;
 
         if (isSelected) {
-          // Workshop Codex layout: 3D book stands prominently in LEFT-CENTER viewport leaving clean breathing space for right panel
+          // Workshop Codex layout: 3D book stands prominently in left-center viewport (not pushed off to the edge)
           const isSmall = window.innerWidth < 768;
-          const targetX = isSmall ? 0 : -1.25;
+          const targetX = isSmall ? 0 : -0.75;
           const targetY = isSmall ? 0.45 : -0.05;
-          const targetZ = isSmall ? 2.15 : 2.45;
+          const targetZ = isSmall ? 2.15 : 2.40;
           const targetPos = new THREE.Vector3(targetX, targetY, targetZ);
           anchor.position.lerp(targetPos, 0.08);
 
-          const targetScale = isSmall ? 1.4 : 1.62;
+          const targetScale = isSmall ? 1.35 : 1.52;
           anchor.scale.set(
             anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
             anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
