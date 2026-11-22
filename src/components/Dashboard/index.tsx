@@ -1,283 +1,258 @@
-import { CiPen } from "react-icons/ci";
-import { spotlight, type ThemeClassSet } from "../../types";
+import { memo } from "react";
+import type { ThemeClassSet } from "../../types";
 import SpotlightCard from "../SpotLightCard";
 import { MdArrowRightAlt } from "react-icons/md";
 import { RiDoubleQuotesL } from "react-icons/ri";
 import { IoCameraOutline } from "react-icons/io5";
-import { HiOutlineBriefcase, HiOutlineSparkles } from "react-icons/hi";
+import { HiOutlineBriefcase } from "react-icons/hi";
 import { HiOutlineCommandLine, HiOutlineRocketLaunch } from "react-icons/hi2";
 import { HashLink } from "react-router-hash-link";
 import { FiAward } from "react-icons/fi";
 import { useAppContext } from "../../context/AppContext";
 import { manifest } from "../../routes/manifest";
+import { scrollWithLenis } from "../../utils/scroll";
+import SectionHeader from "../SectionHeader";
 
-function Dashboard({ theme }: { theme: ThemeClassSet }) {
+function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
   const { openCollaborate } = useAppContext();
 
   return (
-    <section
-      className={`h-full w-full flex px-8 lg:px-40 py-8 ${theme.bgPrimary}`}
-    >
-      <div className="grid mt-20 justify-center md:grid-cols-3 grid-cols-2 gap-4">
-        <div className="col-span-2 lg:col-span-1 row-span-2 lg:row-span-1">
+    <section className="relative w-full flex flex-col items-center px-4 sm:px-6 lg:px-24 py-16 sm:py-24 bg-transparent">
+      <SectionHeader
+        tag="Navigation & Modules"
+        title="Curated corners of my"
+        accent="digital canvas"
+        description="Jump directly into production architecture, 3D visual journals, peer testimonials, or collaborative inquiries."
+        className="mb-10 sm:mb-14"
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 z-10 w-full max-w-6xl">
+        {/* CARD 1: Experience & Scale (Sky Theme) */}
+        <div className="col-span-1 md:col-span-2">
           <SpotlightCard
-            className="h-full lg:col-span-1 row-span-2 lg:row-span-1 col-span-2 dark:bg-white/[0.02]  justify-between flex flex-col
-           bg-gradient-to-br from-indigo-50 via-white/50 to-indigo-100 dark:bg-none
-            "
-            spotlightColor={spotlight.ARTICLE}
+            className="h-full rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-sky-400 hover:shadow-[0_4px_20px_rgba(56,189,248,0.12)] flex flex-col justify-between transition-all duration-300"
+            spotlightColor="rgba(56, 189, 248, 0.45)"
           >
             <div>
-              <h2
-                className="lg:text-lg text-base font-semibold tracking-tight mb-2 text-indigo-500/80
-          group-hover:text-indigo-500/90
-          "
-              >
-                Thoughts & Writings
-              </h2>
-              <p className="lg:text-sm text-xs dark:text-slate-300 text-gray-900 mt-4">
-                Thoughts shaped by code, curiosity, and continuous learning.
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+                <span className="font-mono text-xs uppercase tracking-wider text-sky-600 dark:text-sky-400 font-semibold">
+                  // 01 · CAREER & IMPACT
+                </span>
+                <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-sky-400/40 bg-sky-500/10 text-sky-600 dark:text-sky-300 font-semibold">
+                  5+ Yrs Production
+                </span>
+              </div>
+
+              <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
+                My Journey in Shipping at Scale
+              </h3>
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+                From core frontend architectures and zero-latency state systems to enterprise engineering at TCS and Paperflite. Discover how I build for performance.
               </p>
             </div>
-            <a
-              href={"https://dev.to/gokul369"}
-              className={`text-indigo-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
-            >
-              Read my thoughts{" "}
-              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </a>
-            <CiPen
-              className={`h-24 w-24 dark:text-white/5  absolute -right-3 -bottom-3 text-indigo-500/25
-              group-hover:text-indigo-500/25 transition
-              `}
-            />
-          </SpotlightCard>
-        </div>
-        <div className="col-span-2 lg:col-span-1 row-span-2 lg:row-span-1  ">
-          <SpotlightCard
-            className="h-full justify-between col-span-2 row-span-2 lg:row-span-1 lg:col-span-1 flex flex-col dark:bg-white/[0.02] dark:bg-none
-            bg-gradient-to-br from-blue-50 via-white/50 to-blue-100"
-            spotlightColor={spotlight.TESTIMONIALS}
-          >
-            <div>
-              <h2
-                className="lg:text-lg text-base font-semibold tracking-tight mb-2 text-blue-500/80
-                    group-hover:text-blue-500/90
-          "
+
+            <div className="mt-8 flex items-center justify-between">
+              <HashLink
+                to={manifest.experience}
+                scroll={scrollWithLenis}
+                className="inline-flex items-center gap-2 text-xs font-mono font-medium text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors cursor-pointer group"
               >
-                Hear what people say about me
-              </h2>
-              <p className="mt-4 lg:text-sm text-xs dark:text-slate-300 text-gray-900">
-                Real feedback from people I’ve built, learned, and grown with.
-              </p>
+                <span>Explore career timeline</span>
+                <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
+              </HashLink>
+              <HiOutlineBriefcase className="h-9 w-9 text-sky-500/30" />
             </div>
-            <HashLink
-              to={manifest.testimonials}
-              smooth
-              className={`text-blue-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
-            >
-              Check out testimonials
-              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </HashLink>
-            <RiDoubleQuotesL
-              className={`h-24 w-24 absolute -bottom-3 right-3 text-blue-500/25 dark:text-white/5 group-hover:text-blue-500/25 transition`}
-            />
-          </SpotlightCard>
-        </div>
-        <div className="col-span-2 lg:col-span-1 row-span-2 lg:row-span-1">
-          <SpotlightCard
-            className="h-full dark:bg-white/[0.02] 
-            bg-gradient-to-br from-amber-50 via-white/50 to-amber-100
-            dark:bg-none justify-between flex flex-col"
-            spotlightColor={spotlight.PHOTOGRAPHY}
-          >
-            <div>
-              <h2
-                className="lg:text-lg text-base font-semibold tracking-tight mb-2 text-amber-500/80
-                    group-hover:text-amber-500/90
-          "
-              >
-                World through my lens
-              </h2>
-              <p className="lg:text-sm mt-4 text-xs max-w-64 dark:text-slate-300 text-gray-900">
-                Moments, moods, and stories I choose to freeze in time. And yet
-                at some times I just don't click
-              </p>
-            </div>
-            <HashLink
-              to={manifest.gallery}
-              smooth
-              className={`text-amber-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
-            >
-              View my photo grid
-              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </HashLink>
-            <IoCameraOutline
-              className={`h-24 w-24 absolute bottom-1 right-3 dark:text-white/5 text-amber-500/25 group-hover:text-amber-500/25 transition`}
-            />
           </SpotlightCard>
         </div>
 
-        <div className="col-span-2 row-span-2">
+        {/* CARD 2: Tech Matrix / Skills (Indigo Theme) */}
+        <div className="col-span-1">
           <SpotlightCard
-            className="h-full dark:bg-white/[0.02] 
-            bg-gradient-to-br from-sky-50 via-white/50 to-sky-100 dark:bg-none justify-between  flex flex-col"
-            spotlightColor={spotlight.EXPERIENCE}
+            className="h-full rounded-3xl p-7 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-indigo-400 hover:shadow-[0_4px_20px_rgba(99,102,241,0.12)] flex flex-col justify-between transition-all duration-300"
+            spotlightColor="rgba(99, 102, 241, 0.45)"
           >
             <div>
-              <h2
-                className="lg:text-lg text-base font-semibold tracking-tight mb-2 text-sky-500/80
-                    group-hover:text-sky-500/90
-          "
-              >
-                My Journey in tech
-              </h2>
-              <p className="pt-4 lg:text-sm text-xs dark:text-slate-300 text-gray-900 max-w-lg">
-                From curiosity to craft and one step, one lesson, one
-                breakthrough at a time. Check out my experience in the world of
-                tech
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+                <span className="font-mono text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-semibold">
+                  // 02 · STACK MATRIX
+                </span>
+                <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-indigo-400/40 bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 font-semibold">
+                  35+ Tech
+                </span>
+              </div>
+
+              <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
+                Architectural Tooling
+              </h3>
+              <p className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+                React, TypeScript, Next.js, GenAI MCP servers, Docker, and distributed realtime interfaces.
               </p>
             </div>
-            <HashLink
-              to={manifest.experience}
-              smooth
-              className={`text-sky-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
-            >
-              View my work experience
-              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </HashLink>
-            <HiOutlineBriefcase
-              className={`h-24 w-24 absolute bottom-1 right-3 dark:text-white/5 text-sky-500/25 group-hover:text-sky-500/25 transition`}
-            />
+
+            <div className="mt-6 flex items-center justify-between">
+              <HashLink
+                to={manifest.skills}
+                scroll={scrollWithLenis}
+                className="inline-flex items-center gap-2 text-xs font-mono font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors cursor-pointer group"
+              >
+                <span>View stack cockpit</span>
+                <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
+              </HashLink>
+              <HiOutlineCommandLine className="h-8 w-8 text-indigo-500/30" />
+            </div>
           </SpotlightCard>
         </div>
 
-        <div className="lg:row-span-2 row-span-2 col-span-2 lg:col-span-1">
+        {/* CARD 3: 3D Visual Journal (Amber Theme) */}
+        <div className="col-span-1">
           <SpotlightCard
-            className="h-full dark:bg-white/[0.02] bg-gradient-to-br from-sky-50 via-white/50 to-sky-100 dark:bg-none justify-between  flex flex-col"
-            spotlightColor={spotlight.WORKS}
+            className="h-full rounded-3xl p-7 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-amber-400 hover:shadow-[0_4px_20px_rgba(245,158,11,0.12)] flex flex-col justify-between transition-all duration-300"
+            spotlightColor="rgba(245, 158, 11, 0.45)"
           >
             <div>
-              <h2
-                className="lg:text-lg text-base font-semibold tracking-tight mb-2 text-cyan-500/80
-                    group-hover:text-cyan-500/90"
-              >
-                Tools, Tech & Things I Build
-              </h2>
-              <p className="lg:text-sm text-xs  mt-4 dark:text-slate-300 text-gray-900">
-                Where ideas meet implementation, and curiosity turns into craft,
-                shaping thoughtful, performant, and human-centered digital
-                experiences, powered by the tools and technologies I love.
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+                <span className="font-mono text-xs uppercase tracking-wider text-amber-600 dark:text-amber-400 font-semibold">
+                  // 03 · 3D GALLERY
+                </span>
+                <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-amber-400/40 bg-amber-500/10 text-amber-600 dark:text-amber-300 font-semibold">
+                  35mm RAW
+                </span>
+              </div>
+
+              <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
+                Visual Journal
+              </h3>
+              <p className="mt-2 font-caveat text-xl text-amber-600 dark:text-amber-400">
+                "Moments I chose to freeze in time."
+              </p>
+              <p className="mt-1 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                A 3D interactive collection of light, street, and compositions captured through prime glass.
               </p>
             </div>
-            <HashLink
-              to={manifest.skills}
-              smooth
-              className={`text-cyan-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
-            >
-              View my tech stack
-              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </HashLink>
-            <HiOutlineCommandLine
-              className={`h-24 w-24 absolute bottom-1 right-3 dark:text-white/5 text-cyan-500/25 group-hover:text-cyan-500/25 transition`}
-            />
+
+            <div className="mt-6 flex items-center justify-between">
+              <HashLink
+                to={manifest.gallery}
+                scroll={scrollWithLenis}
+                className="inline-flex items-center gap-2 text-xs font-mono font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors cursor-pointer group"
+              >
+                <span>Enter 3D gallery</span>
+                <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
+              </HashLink>
+              <IoCameraOutline className="h-8 w-8 text-amber-500/30" />
+            </div>
           </SpotlightCard>
         </div>
 
-        <div className="col-span-2 lg:col-span-1 row-span-2 lg:row-span-1">
+        {/* CARD 4: Voices & Testimonials (Blue Theme) */}
+        <div className="col-span-1">
           <SpotlightCard
-            className="h-full dark:bg-white/[0.02] bg-gradient-to-br from-yellow-50 via-white/50 to-yellow-100 justify-between
-            dark:bg-none
-            flex flex-col"
-            spotlightColor={spotlight.COLLABORATE}
+            className="h-full rounded-3xl p-7 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-blue-400 hover:shadow-[0_4px_20px_rgba(59,130,246,0.12)] flex flex-col justify-between transition-all duration-300"
+            spotlightColor="rgba(59, 130, 246, 0.45)"
           >
             <div>
-              <h2
-                className="lg:text-lg text-base font-semibold tracking-tight mb-2 text-yellow-500/80
-                    group-hover:text-yellow-500/90
-          "
-              >
-                Let's Collaborate
-              </h2>
-              <p className="lg:text-sm text-xs  mt-4 dark:text-slate-300 text-gray-900">
-                Have a project in mind, a problem to solve, or an idea to
-                explore? Let’s connect and build something impactful.
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+                <span className="font-mono text-xs uppercase tracking-wider text-blue-600 dark:text-blue-400 font-semibold">
+                  // 04 · PERSPECTIVES
+                </span>
+                <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-blue-400/40 bg-blue-500/10 text-blue-600 dark:text-blue-300 font-semibold">
+                  Peer Reviews
+                </span>
+              </div>
+
+              <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
+                Voices & Feedback
+              </h3>
+              <p className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+                Unfiltered testimonials and recommendations from colleagues, tech leads, and teammates I’ve built with.
               </p>
             </div>
-            <span
-              className={`text-yellow-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
-              onClick={openCollaborate}
-            >
-              Get in touch
-              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </span>
-            <HiOutlineRocketLaunch
-              className={`h-24 w-24 absolute bottom-1 right-3 dark:text-white/5 text-yellow-500/25 group-hover:text-yellow-500/25 transition`}
-            />
+
+            <div className="mt-6 flex items-center justify-between">
+              <HashLink
+                to={manifest.testimonials}
+                scroll={scrollWithLenis}
+                className="inline-flex items-center gap-2 text-xs font-mono font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer group"
+              >
+                <span>Read testimonials</span>
+                <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
+              </HashLink>
+              <RiDoubleQuotesL className="h-8 w-8 text-blue-500/30" />
+            </div>
           </SpotlightCard>
         </div>
 
-        <div className="col-span-2 lg:col-span-1 row-span-2 lg:row-span-1">
+        {/* CARD 5: Recognition & Honors (Purple Theme) */}
+        <div className="col-span-1">
           <SpotlightCard
-            className="h-full dark:bg-white/[0.02] 
-            bg-gradient-to-br from-slate-50 via-white/50 to-slate-100
-            dark:bg-none justify-between  flex flex-col"
-            spotlightColor={spotlight.AWARDS}
+            className="h-full rounded-3xl p-7 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-purple-400 hover:shadow-[0_4px_20px_rgba(168,85,247,0.12)] flex flex-col justify-between transition-all duration-300"
+            spotlightColor="rgba(168, 85, 247, 0.45)"
           >
             <div>
-              <h2
-                className="lg:text-lg text-base font-semibold tracking-tight mb-2 dark:text-white/80 text-gray-800
-                    group-hover:text-white-500/90
-          "
-              >
-                Achievements & Milestones
-              </h2>
-              <p className="lg:text-sm text-xs  mt-4 dark:text-slate-300 text-slate-900">
-                Moments of recognition that mark my growth, discipline, and
-                pursuit of excellence.
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+                <span className="font-mono text-xs uppercase tracking-wider text-purple-600 dark:text-purple-400 font-semibold">
+                  // 05 · RECOGNITION
+                </span>
+                <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-purple-400/40 bg-purple-500/10 text-purple-600 dark:text-purple-300 font-semibold">
+                  9 Milestones
+                </span>
+              </div>
+
+              <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
+                Honors & Accolades
+              </h3>
+              <p className="mt-3 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+                Department topper, physics symposium medalist, hackathon winner, and outstanding enterprise contributions.
               </p>
             </div>
-            <HashLink
-              to={manifest.awards}
-              className={`dark:text-white/60 text-gray-800 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
-              smooth
-            >
-              View my award gallery
-              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </HashLink>
-            <FiAward
-              className={`h-24 w-24 absolute bottom-1 right-3 dark:text-white/5 text-gray-800/60 dark:group-hover:text-white/25 transition`}
-            />
+
+            <div className="mt-6 flex items-center justify-between">
+              <HashLink
+                to={manifest.awards}
+                scroll={scrollWithLenis}
+                className="inline-flex items-center gap-2 text-xs font-mono font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors cursor-pointer group"
+              >
+                <span>Explore honors</span>
+                <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
+              </HashLink>
+              <FiAward className="h-8 w-8 text-purple-500/30" />
+            </div>
           </SpotlightCard>
         </div>
 
-        <div className="col-span-2 lg:col-span-1 row-span-2 lg:row-span-1">
+        {/* CARD 6: Interactive Terminal / Direct Inquiries (Emerald Theme) */}
+        <div className="col-span-1 md:col-span-2 lg:col-span-3">
           <SpotlightCard
-            className="h-full dark:bg-white/[0.02] bg-gradient-to-br from-green-50 via-white/50 to-green-100 dark:bg-none justify-between  flex flex-col"
-            spotlightColor={spotlight.INSPIRATIONS}
+            onClick={openCollaborate}
+            spotlightColor="rgba(16, 185, 129, 0.45)"
+            className="w-full rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-emerald-400 hover:shadow-[0_4px_20px_rgba(16,185,129,0.12)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 cursor-pointer transition-all duration-300 select-none overflow-hidden hover:-translate-y-1 group"
           >
-            <div>
-              <h2
-                className="lg:text-lg text-base font-semibold tracking-tight mb-2 text-green-500/80
-                    group-hover:text-green-500/90
-          "
-              >
-                People I look up to
-              </h2>
-              <p className="lg:text-sm mt-4 text-xs dark:text-slate-300 text-gray-900 max-w-lg">
-                The minds and mentalities that forged my discipline, resilience,
-                ambition, and uncompromising standards for growth.
-              </p>
+            <div className="relative z-10 flex items-center gap-5">
+              <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-400/40 dark:border-emerald-400/30 text-emerald-600 dark:text-emerald-400 shadow-sm group-hover:scale-105 transition-transform">
+                <HiOutlineRocketLaunch className="h-7 w-7" />
+              </div>
+              <div>
+                <span className="font-mono text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold">
+                  // 06 · INITIATE TRANSMISSION
+                </span>
+                <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white mt-1">
+                  Have a challenging product or architecture in mind?
+                </h3>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
+                  Open the collaborative inquiry terminal to connect directly with me.
+                </p>
+              </div>
             </div>
-            <HashLink
-              to={manifest.rolemodels}
-              className={`text-green-500/60 inline-flex text-xs text-left animated-links items-center mt-4 underline link`}
-            >
-              These are the people I look up to
-              <MdArrowRightAlt className="w-7 arrow text-2xl flex items-center font-extralight transition m-0 " />
-            </HashLink>
-            <HiOutlineSparkles
-              className={`h-24 w-24 absolute bottom-1 right-3 dark:text-white/5 text-green-500/25 group-hover:text-green-500/25 transition`}
-            />
+
+            <div className="relative z-10 flex-shrink-0">
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 text-white font-mono text-xs font-semibold shadow-md shadow-emerald-500/25 group-hover:bg-emerald-500 transition-colors pointer-events-none"
+              >
+                <span>Send Dispatch</span>
+                <MdArrowRightAlt className="text-base group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
           </SpotlightCard>
         </div>
       </div>
@@ -285,4 +260,4 @@ function Dashboard({ theme }: { theme: ThemeClassSet }) {
   );
 }
 
-export default Dashboard;
+export default memo(Dashboard);

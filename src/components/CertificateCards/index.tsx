@@ -1,6 +1,10 @@
+import { memo } from "react";
 import type { IconType } from "react-icons";
-import { spotlight, type achievement } from "../../types";
-import SpotlightCard from "../SpotLightCard";
+import type { achievement } from "../../types";
+
+interface CertificateCardProps extends achievement {
+  index?: number;
+}
 
 function CertificateCard({
   title,
@@ -9,55 +13,65 @@ function CertificateCard({
   year,
   type,
   icon: iconData,
-}: achievement) {
+  index = 0,
+}: CertificateCardProps) {
   const Icon: IconType = iconData;
-  return (
-    <SpotlightCard
-      className="relative h-full w-full overflow-hidden rounded-2xl border border-gray-200/30 
-             bg-white/60 dark:bg-black/20 px-4 py-3 shadow-lg backdrop-blur-md md:px-5 md:py-4"
-      spotlightColor={spotlight.INSPIRATIONS}
-    >
-      <article className="relative flex h-full min-h-[150px] flex-col justify-between gap-3">
-        <div className="flex items-start justify-between gap-3">
-          {/* Icon background gradient */}
-          <div
-            className="absolute bottom-0 right-0 h-20 w-20 rounded-full"
-            style={{
-              background: `linear-gradient(135deg, ${spotlight.INSPIRATIONS[0]} 0%, ${spotlight.INSPIRATIONS[1]} 100%)`,
-              opacity: 0.2,
-            }}
-          >
-            <Icon className="h-20 w-20 text-green-500" />
-          </div>
+  const isAward = type === "award";
+  const num = (index + 1).toString().padStart(2, "0");
 
-          <div>
-            <p
-              className="lg:text-[12px] text-[10px] font-semibold uppercase tracking-[0.25em] 
-                      text-gray-500 dark:text-gray-400"
-            >
-              {type}
-            </p>
-            <h3 className="mt-1 text-sm font-medium text-gray-900 dark:text-white md:text-base">
-              {title}
-            </h3>
-            <p className="mt-1 text-xs text-gray-600 dark:text-gray-300">
-              {company}
-            </p>
-          </div>
-          <div className="inline-flex h-7 items-center rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2.5 text-[10px] font-medium dark:text-emerald-200 text-emerald-700">
-            <span className="mr-1 h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            {year}
-          </div>
+  return (
+    <article
+      style={{ isolation: "isolate", backfaceVisibility: "hidden" }}
+      className="group relative flex flex-col justify-between rounded-3xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-[#0e1017] p-6 transition-all duration-200 hover:border-indigo-500/70 hover:shadow-[0_8px_30px_rgba(99,102,241,0.12)] dark:hover:shadow-[0_8px_30px_rgba(99,102,241,0.2)] select-none will-change-[border-color,box-shadow]"
+    >
+      {/* Top Header: Index & Year Badge */}
+      <div className="flex items-center justify-between pb-3">
+        <span className="font-mono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          // {num} · {type.toUpperCase()}
+        </span>
+        <span
+          className={`font-mono text-[11px] px-3 py-1 rounded-full border font-semibold transition-colors duration-200 ${
+            isAward
+              ? "border-amber-300/60 dark:border-amber-400/30 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-300 group-hover:border-amber-400"
+              : "border-indigo-200 dark:border-indigo-400/30 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 group-hover:border-indigo-400"
+          }`}
+        >
+          {year}
+        </span>
+      </div>
+
+      {/* Main Info */}
+      <div className="my-4 flex items-start gap-4">
+        <div
+          className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border transition-colors duration-200 shadow-sm ${
+            isAward
+              ? "border-amber-300/60 dark:border-amber-400/30 bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-300 group-hover:border-amber-400"
+              : "border-indigo-200 dark:border-indigo-400/30 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:border-indigo-400"
+          }`}
+        >
+          <Icon className="h-6 w-6" />
         </div>
 
-        {subTitle && (
-          <p className="mt-1 max-w-64 text-xs leading-relaxed text-gray-600 dark:text-gray-300">
+        <div className="flex-1 min-w-0">
+          <h3 className="font-space text-lg font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-200">
+            {title}
+          </h3>
+          <p className="mt-1 font-mono text-xs font-medium uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            {company}
+          </p>
+        </div>
+      </div>
+
+      {/* Editorial Subtitle */}
+      {subTitle && (
+        <div className="mt-2 rounded-2xl border border-slate-200/80 dark:border-white/5 bg-slate-50 dark:bg-white/[0.02] p-3.5 transition-colors duration-200 group-hover:border-indigo-500/30">
+          <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300 font-light">
             {subTitle}
           </p>
-        )}
-      </article>
-    </SpotlightCard>
+        </div>
+      )}
+    </article>
   );
 }
 
-export default CertificateCard;
+export default memo(CertificateCard);

@@ -1,12 +1,10 @@
-import BlurText from "../../animations/Text/BlurText";
 import ScrollingRow from "../../animations/Scroller";
 import { testimonials } from "../../data";
 import { divideArray } from "../../utils/divideArray";
 import TestimonialCard from "./TestimonialCard";
-import useTheme from "../../hooks/useTheme";
+import SectionHeader from "../SectionHeader";
 
 function Testimonials() {
-  const { themeClassSet: theme } = useTheme();
   const testimonialData = testimonials;
   const [right, left] = divideArray(testimonialData);
 
@@ -17,17 +15,12 @@ function Testimonials() {
                  min-h-dvh w-full py-10 md:py-32"
     >
       <div className="w-full lg:px-20 px-8 flex flex-col items-center">
-        <BlurText
-          className="uppercase text-center tracking-widest"
-          delay={200}
-          animateBy="tags"
-          direction="top"
-        >
-          <p className={theme.textPrimary}>Voices from people</p>
-          <span className={`${theme.textMainAccent1} ml-3`}>
-            I’ve built with
-          </span>
-        </BlurText>
+        <SectionHeader
+          tag="Words & Perspectives"
+          title="Voices from people"
+          accent="I’ve built with"
+          description="Unfiltered feedback and recommendations from colleagues, engineering leads, and teammates."
+        />
       </div>
 
       <div className="mt-16 flex flex-col w-full">

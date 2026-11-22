@@ -1,16 +1,18 @@
 import type { ThemeClassSet } from "../../types";
-import LiquidEther from "../Backgrounds/LiquidEther";
 import { hero } from "../../data";
 import Fade from "../../animations/Fade";
 import Button from "../Button";
 import BlurText from "../../animations/Text/BlurText";
 import { HashLink } from "react-router-hash-link";
+import { scrollWithLenis } from "../../utils/scroll";
 
 import { IoChevronDownOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
 import { useAppContext } from "../../context/AppContext";
 import { LuMail } from "react-icons/lu";
 import { HiOutlineBriefcase } from "react-icons/hi2";
+
+import LiquidEther from "../Backgrounds/LiquidEther";
 import { isMobile } from "../../utils/styleFactory";
 
 type HeroProps = {
@@ -21,17 +23,27 @@ type HeroProps = {
 function Hero({ theme, colors }: HeroProps) {
   const navigate = useNavigate();
   const { openCollaborate } = useAppContext();
+
   return (
-    <section id={"home"} className={`h-dvh relative w-full ${theme.bgPrimary}`}>
-      <div className="fixed top-0 h-[100dvh] w-full left-0 right-0 -z-0">
+    <section id={"home"} className="h-dvh relative w-full bg-transparent overflow-hidden">
+      {/* LiquidEther with smooth feathered bottom dissolve into Home ambient background */}
+      <div
+        className="absolute inset-0 h-full w-full pointer-events-none -z-0"
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 98%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 98%)",
+        }}
+      >
         <LiquidEther
           colors={colors}
-          mouseForce={isMobile ? 8 : 13}
+          mouseForce={isMobile ? 7 : 11}
           isViscous
-          iterationsViscous={isMobile ? 24 : 30}
-          resolution={0.25}
-          // autoDemo={isMobile ? false : true}
-          autoIntensity={isMobile ? 1.6 : 2.2}
+          iterationsViscous={isMobile ? 6 : 8}
+          iterationsPoisson={isMobile ? 8 : 12}
+          resolution={0.2}
+          autoIntensity={isMobile ? 1.2 : 1.6}
           autoResumeDelay={1500}
           autoRampDuration={0.3}
           isBounce
@@ -52,9 +64,9 @@ function Hero({ theme, colors }: HeroProps) {
               dangerouslySetInnerHTML={{ __html: hero.title }}
             />
           </BlurText>
-          <Fade variant="fade-up" delay={300} className={"mt-3 text-center"}>
+          <Fade variant="fade-up" delay={300} className={"mt-2 text-center"}>
             <h3
-              className={`${theme.headerGradient} bg-clip-text text-4xl lg:text-6xl font-extrabold lg:font-bold text-transparent`}
+              className={`${theme.headerGradient} bg-clip-text text-5xl md:text-7xl lg:text-8xl font-sacramento font-normal tracking-normal text-transparent leading-[1.5] md:leading-[1.6] py-6 px-4 -my-4 inline-block overflow-visible`}
             >
               {hero.punchLine}
             </h3>
@@ -87,9 +99,9 @@ function Hero({ theme, colors }: HeroProps) {
           </Fade>
         </main>
 
-        <HashLink to={"/#about"} smooth>
+        <HashLink to={"/#about"} scroll={scrollWithLenis}>
           <IoChevronDownOutline
-            className={`absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce ${theme.textPrimary}`}
+            className={`absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-20 ${theme.textPrimary}`}
           />
         </HashLink>
       </div>

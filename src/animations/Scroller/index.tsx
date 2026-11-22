@@ -13,10 +13,13 @@ function ScrollingRow({
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const controls = useRef<ReturnType<typeof animate> | null>(null);
+  const isHoveredRef = useRef(false);
 
   useEffect(() => {
     const element = containerRef.current;
     if (!element) return;
+
+    let isVisible = true;
 
     const startAnimation = () => {
       const width = element.scrollWidth / 2;
@@ -34,6 +37,10 @@ function ScrollingRow({
         duration: speed,
         repeat: Infinity,
       });
+
+      if (!isVisible || isHoveredRef.current) {
+        controls.current?.pause();
+      }
     };
 
     startAnimation();
@@ -44,11 +51,26 @@ function ScrollingRow({
 
     resizeObserver.observe(element);
 
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !isHoveredRef.current) {
+          controls.current?.play();
+        } else {
+          controls.current?.pause();
+        }
+      },
+      { threshold: 0.02 },
+    );
+
+    intersectionObserver.observe(element);
+
     return () => {
       controls.current?.stop();
       resizeObserver.disconnect();
+      intersectionObserver.disconnect();
     };
-  }, [direction, speed]);
+  }, [direction, speed, x]);
 
   return (
     <div className="relative py-4 w-full overflow-hidden">
@@ -60,8 +82,14 @@ function ScrollingRow({
           width: "max-content",
           willChange: "transform",
         }}
-        onMouseEnter={() => controls.current?.pause()}
-        onMouseLeave={() => controls.current?.play()}
+        onMouseEnter={() => {
+          isHoveredRef.current = true;
+          controls.current?.pause();
+        }}
+        onMouseLeave={() => {
+          isHoveredRef.current = false;
+          controls.current?.play();
+        }}
       >
         {children}
         {children}

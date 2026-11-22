@@ -1,8 +1,9 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
 import CustomSelect from "../Select";
 import { LuCircleCheckBig, LuLoaderCircle } from "react-icons/lu";
 import { IoCloseOutline } from "react-icons/io5";
+import { HiOutlineRocketLaunch } from "react-icons/hi2";
 
 interface Props {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface FormData {
 
 export default function CollaboratePanel({ isOpen, onClose }: Props) {
   const [emailSent, setEmailSent] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -26,21 +28,24 @@ export default function CollaboratePanel({ isOpen, onClose }: Props) {
   });
   const [loading, setLoading] = useState(false);
 
-  // Lock scroll
+  // Close on Escape key
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "auto";
-  }, [isOpen]);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   // Auto-close panel after sending
   useEffect(() => {
     if (!emailSent) return;
-
     const timer = setTimeout(() => {
       onClose();
       setEmailSent(false);
+      setErrorMsg(null);
       setFormData({ name: "", email: "", idea: "", message: "" });
-    }, 1500);
-
+    }, 1800);
     return () => clearTimeout(timer);
   }, [emailSent, onClose]);
 
@@ -48,192 +53,208 @@ export default function CollaboratePanel({ isOpen, onClose }: Props) {
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  ) => {
+    setErrorMsg(null);
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then((data) => data)
-      .catch((error) => {
-        setLoading(false);
-        setEmailSent(false);
-        return { error };
-      })
-      .finally(() => {
-        setLoading(false);
-        setEmailSent(false);
+    setErrorMsg(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
       });
-    if (response?.emailSent) setEmailSent(true);
+      const data = await res.json();
+      if (res.ok && data?.emailSent) {
+        setEmailSent(true);
+      } else {
+        setErrorMsg(data?.error || "Failed to dispatch. Please check your network.");
+      }
+    } catch (err: unknown) {
+      console.error(err);
+      setErrorMsg("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          {/* Backdrop with smooth fade */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-slate-950/60 dark:bg-black/75 backdrop-blur-md"
           />
 
+          {/* Centered Glass Command Dialogue (Non-Jittery) */}
           <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", stiffness: 120, damping: 18 }}
-            className="fixed bottom-0 left-0 right-0 z-50
-                       bg-white/5 backdrop-blur-2xl md:backdrop-blur-3xl
-                       border-t border-white/10
-                       rounded-t-3xl
-                       shadow-[0_-20px_60px_rgba(0,0,0,0.6)]
-                       max-h-[85vh] overflow-hidden"
+            initial={{ opacity: 0, scale: 0.94, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: 16 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10 w-full max-w-lg rounded-3xl border border-slate-200/90 dark:border-white/15 bg-white/95 dark:bg-[#090b12]/95 backdrop-blur-2xl shadow-2xl p-5 sm:p-8 my-auto max-h-[92vh] overflow-y-auto text-slate-900 dark:text-white"
           >
-            <div className="max-w-3xl mx-auto px-6 py-12 relative h-full flex flex-col justify-center">
+            {/* Header Telemetry Pill */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-white/10">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span className="font-mono text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold">
+                  // INITIATE TRANSMISSION
+                </span>
+              </div>
+
               <button
+                type="button"
                 onClick={onClose}
-                className="absolute top-6 right-6 text-white/60 hover:text-white transition"
+                className="p-1.5 rounded-full text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                aria-label="Close"
               >
-                <IoCloseOutline size={24} />
+                <IoCloseOutline size={20} />
               </button>
-              <h2
-                className={`text-3xl md:text-4xl font-semibold text-white mb-4 ${emailSent ? "text-center" : "text-left"}`}
-              >
-                {emailSent
-                  ? "Thank you!"
-                  : "Have an Idea ? Let’s Make It Real."}
-              </h2>
+            </div>
 
-              <p
-                className={`text-white/60 mb-10 ${emailSent ? "text-center" : "text-left"}`}
-              >
+            {/* Title & Subtitle */}
+            <div className="mt-5">
+              <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                {emailSent ? "Dispatch Transmitted" : "Send Direct Dispatch"}
+              </h3>
+              <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
                 {emailSent
-                  ? "Your message has been sent successfully."
-                  : "Great products start with clear ideas. Let’s define yours."}
+                  ? "Your message was sent successfully. I will follow up shortly."
+                  : "Have a product, architectural challenge, or engineering opportunity? Let's connect."}
               </p>
+            </div>
 
-              <div className="relative h-[420px]">
-                <AnimatePresence mode="wait">
-                  {!emailSent ? (
-                    <motion.form
-                      key="form"
-                      initial={{ transform: "translateY(40px)", opacity: 0 }}
-                      animate={{ transform: "translateY(0px)", opacity: 1 }}
-                      exit={{ transform: "translateY(40px)", opacity: 0 }}
-                      transition={{
-                        type: "tween",
-                        ease: "easeOut",
-                        duration: 0.35,
-                      }}
-                      style={{ willChange: "transform, opacity" }}
-                      className="space-y-6"
-                      onSubmit={handleSend}
-                    >
-                      <Input
-                        value={formData.name}
+            {/* Content Area */}
+            <div className="mt-6">
+              <AnimatePresence mode="wait">
+                {emailSent ? (
+                  <motion.div
+                    key="sent"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="py-12 flex flex-col items-center justify-center text-center space-y-4"
+                  >
+                    <div className="w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-500 flex items-center justify-center text-3xl shadow-lg shadow-emerald-500/20">
+                      <LuCircleCheckBig />
+                    </div>
+                    <div>
+                      <h4 className="font-space text-lg font-bold">Signal Locked & Received</h4>
+                      <p className="text-xs font-mono text-slate-500 dark:text-slate-400 mt-1">
+                        Closing terminal...
+                      </p>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onSubmit={handleSend}
+                    className="space-y-4"
+                  >
+                    <div className="space-y-1">
+                      <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-medium">
+                        Your Identity
+                      </label>
+                      <input
+                        required
+                        type="text"
                         name="name"
-                        placeholder="Your Name"
+                        value={formData.name}
                         onChange={handleInputChange}
+                        placeholder="Gokul or Company"
+                        className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-sans text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
                       />
-                      <Input
-                        value={formData.email}
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-medium">
+                        Direct Email
+                      </label>
+                      <input
+                        required
+                        type="email"
                         name="email"
-                        placeholder="Your Email"
+                        value={formData.email}
                         onChange={handleInputChange}
+                        placeholder="you@domain.com"
+                        className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-sans text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
                       />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-medium">
+                        Inquiry Scope
+                      </label>
                       <CustomSelect
                         selected={formData.idea}
                         onSelect={(value) =>
                           setFormData({ ...formData, idea: value })
                         }
                       />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-medium">
+                        Brief & Objectives
+                      </label>
                       <textarea
-                        rows={4}
+                        required
+                        rows={3}
                         name="message"
                         value={formData.message}
                         onChange={handleInputChange}
-                        placeholder="Tell me about the project..."
-                        className="w-full bg-white/5 border border-white/10
-                                   rounded-xl px-4 py-3
-                                   text-white placeholder-white/40
-                                   focus:outline-none focus:border-white/30
-                                   focus:bg-white/10 transition resize-none"
+                        placeholder="Briefly describe the product, problem space, or role..."
+                        className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-sans text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors resize-none"
                       />
+                    </div>
 
-                      <button
-                        type="submit"
-                        disabled={
-                          Object.values(formData).every((v) => !v) || loading
-                        }
-                        className="w-full flex items-center justify-center gap-2 disabled:cursor-not-allowed py-3 rounded-xl
-                                   bg-gradient-to-r from-indigo-500 to-amber-400
-                                   text-black font-semibold
-                                   hover:opacity-90 transition"
-                      >
-                        {loading ? "Sending Mail" : "Begin project"}
-                        {loading && (
-                          <LuLoaderCircle className="w-5 h-5 animate-spin text-black" />
-                        )}
-                      </button>
-                    </motion.form>
-                  ) : (
-                    <motion.div
-                      key="tick"
-                      initial={{ transform: "translateY(40px)", opacity: 0 }}
-                      animate={{ transform: "translateY(0px)", opacity: 1 }}
-                      exit={{ transform: "translateY(-40px)", opacity: 0 }}
-                      transition={{
-                        type: "tween",
-                        ease: "easeOut",
-                        duration: 0.35,
-                      }}
-                      style={{ willChange: "transform, opacity" }}
-                      className="flex justify-center items-center py-20"
+                    {errorMsg && (
+                      <p className="font-mono text-xs text-rose-500 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 px-3 py-2 rounded-xl">
+                        {errorMsg}
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={loading || !formData.name || !formData.email || !formData.message}
+                      className="w-full mt-2 inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-mono text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/25 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.99]"
                     >
-                      <LuCircleCheckBig className="text-green-400 w-24 h-24" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                      {loading ? (
+                        <>
+                          <LuLoaderCircle className="animate-spin text-base" />
+                          <span>Routing Dispatch...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Transmit Dispatch</span>
+                          <HiOutlineRocketLaunch className="text-base" />
+                        </>
+                      )}
+                    </button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   );
 }
-
-const Input = ({
-  value,
-  onChange,
-  name,
-  placeholder,
-}: {
-  value: string;
-  name: string;
-  placeholder: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
-  return (
-    <input
-      type="text"
-      placeholder={placeholder}
-      value={value}
-      name={name}
-      onChange={onChange}
-      className="w-full bg-white/5 border border-white/10
-                 rounded-xl px-4 py-3
-                 text-white placeholder-white/40
-                 focus:outline-none focus:border-white/30
-                 focus:bg-white/10 transition"
-    />
-  );
-};

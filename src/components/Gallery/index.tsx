@@ -199,6 +199,31 @@ function Gallery({
   const handleNextClick = () =>
     goToIndex(currentIndex === totalImages - 1 ? 0 : currentIndex + 1);
 
+  const touchStartXRef = useRef<number | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null || touchStartYRef.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartXRef.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartYRef.current;
+
+    // Minimum swipe distance of 45px, and ensure horizontal intent to avoid accidental swipes during vertical scrolling
+    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+      if (deltaX < 0) {
+        handleNextClick();
+      } else {
+        handlePrevClick();
+      }
+    }
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
+  };
+
   const controlsCSS = `w-11 h-11 
             rounded-full 
             flex items-center justify-center 
@@ -219,16 +244,29 @@ function Gallery({
     const el = sliderRef.current;
     if (!el) return;
 
+    let rafId: number | null = null;
     const handler = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const threshold = rect.bottom - 80;
-      setShowPreview(e.clientY > threshold);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const isNearBottom = e.clientY > rect.bottom - 80;
+        setShowPreview((prev) => (prev !== isNearBottom ? isNearBottom : prev));
+      });
     };
 
-    el.addEventListener("mousemove", handler);
-    el.addEventListener("mouseleave", () => setShowPreview(false));
+    el.addEventListener("mousemove", handler, { passive: true });
+    el.addEventListener("mouseleave", () => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      setShowPreview((prev) => (prev ? false : prev));
+    });
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       el.removeEventListener("mousemove", handler);
     };
   }, []);
@@ -281,6 +319,8 @@ function Gallery({
           height: fullscreen ? "100dvh" : "100%",
         }}
         ref={sliderRef}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {images[currentIndex].orientation !== "portrait" && (
           <div
@@ -297,8 +337,8 @@ function Gallery({
           })}
           ref={captionRef}
         >
-          <h3>{images[currentIndex].title}</h3>
-          <p>{images[currentIndex].description}</p>
+          <h3 className="font-space font-semibold tracking-tight">{images[currentIndex].title}</h3>
+          <p className="font-caveat text-base md:text-lg text-amber-200/90 tracking-wide mt-1">{images[currentIndex].description}</p>
         </div>
         <div className={styles.sliderimages}>
           <div className={styles.sliderimages}>

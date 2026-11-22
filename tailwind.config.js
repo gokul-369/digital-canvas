@@ -43,8 +43,11 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ["Inter", "system-ui", "sans-serif"],
-      mono: ["JetBrains Mono", "monospace"],
+      sans: ["var(--font-space-grotesk)", "Space Grotesk", "sans-serif"],
+      space: ["var(--font-space-grotesk)", "Space Grotesk", "sans-serif"],
+      sacramento: ["var(--font-sacramento)", "'Sacramento'", "cursive"],
+      caveat: ["var(--font-caveat)", "'Caveat'", "cursive"],
+      mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
     },
   },
   plugins: [],

@@ -38,7 +38,7 @@ export const navLinks: formField[] = [
   },
   {
     name: "Skills",
-    value: "/experience#skills",
+    value: "/skills",
   },
   {
     name: "Gallery",
@@ -80,7 +80,7 @@ export const workExperiences: experience[] = [
     role: "Software Engineer",
     duration: "April 2025 - Present",
     description: [
-      "One of the Designated Front-End Engineers in Lloyds Banking Group project, one of the UK’s leading financial institutions.",
+      "One of the Designated Front-End Engineers for a Premium UK Bank, leading frontend initiatives across core digital banking platforms.",
       "Contributed to the Card Controls team, developing Single Page Applications (SPAs) that enable customers to manage and restrict card usage and limits.",
       "Currently working on VISA's click to pay team, that enables customer to pay using their VISA card",
       "Actively involved in building AI-driven solutions, including developing MCP servers, designing unique tools, and crafting elicitations for seamless integration with MCP clients.",
@@ -354,15 +354,15 @@ export const skills: skill[][] = [
 
 export const educationItems: education[] = [
   {
+    title: "MBA in AI & Data Science · SRM Institute of Science and Technology",
+    subTitle: "2024 – 2028 (Expected) · Advanced AI Strategies, Data Science & Machine Learning",
+  },
+  {
     title: "B.Sc. Computer Science · RKM Vivekananda College",
-    subTitle: "2018 – 2021 · First Class with Distinction",
+    subTitle: "2018 – 2021 · First Class with Distinction · Ranked 1st in Department",
   },
   {
-    title: "High School · SBMHSS",
-    subTitle: "2017 – 2018 · First Class with Distinction",
-  },
-  {
-    title: "Beyond the classroom",
+    title: "Leadership & Honors",
     subTitle:
       "Placement coordinator in college, top scorer in my department, and district physics symposium medalist.",
   },
@@ -417,7 +417,7 @@ export const testimonials: testimonial[] = [
     name: "Nabeel Ahmed",
     jobTitle: "Lead Engineer",
     location: "Edinburg, Scotland",
-    company: "Lloyds Bank",
+    company: "Premium UK Bank",
     testimonial:
       "It was a pleasure working with Gokul. He consistently demonstarted a strong desire to learn and took initiative in addressing key challenges. His technical expertise was evident across various tasks and readily provided thoughtful support. As the team lead. I value his his collaborative spirit, effective problem solving and the positive impact he had on our deliverables.",
   },
@@ -425,7 +425,7 @@ export const testimonials: testimonial[] = [
     name: "JM Mcghee",
     jobTitle: "Software Engineer",
     location: "Edinburg, Scotland",
-    company: "Lloyds Bank",
+    company: "Premium UK Bank",
     testimonial:
       "It’s rare to come across an engineer who combines such eagerness to learn, strong attention to detail, and a genuine willingness to go the extra mile to find solutions. Gokul is one of those engineers",
   },
@@ -510,7 +510,7 @@ export const awards: achievement[] = [
     company: "Tata Consultancy Services",
     year: "2025",
     subTitle:
-      "Built AI-driven workflows for the Lloyds Banking Group project, integrating MCP servers and tools.",
+      "Built AI-driven workflows for a Premium UK Bank project, integrating MCP servers and tools.",
     icon: HiOutlineFlag,
     type: "award",
   },

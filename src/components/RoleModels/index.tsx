@@ -1,34 +1,30 @@
-import BlurText from "../../animations/Text/BlurText";
+import { memo } from "react";
 import { roleModelsData } from "../../data";
-import useTheme from "../../hooks/useTheme";
-import InspirationCard from "./InspirationCard";
+import InspirationPoster from "./InspirationCard";
+import SectionHeader from "../SectionHeader";
 
 function RoleModels() {
-  const { themeClassSet: theme } = useTheme();
   return (
     <section
       id="rolemodels"
-      className="py-32 px-8 flex flex-col lg:px-40 w-full"
+      className="py-24 px-6 lg:px-24 w-full flex flex-col items-center relative overflow-hidden"
     >
-      <BlurText
-        className="uppercase text-center tracking-widest"
-        delay={200}
-        animateBy="tags"
-        direction="top"
-      >
-        <p className={`text-center inline ${theme.textPrimary}`}> People who</p>
-        <span className={`${theme.textMainAccent1} ml-3`}>
-          shape my thinking
-        </span>
-      </BlurText>
+      <SectionHeader
+        tag="Iconic Posters & Exhibition"
+        title="Wall of Fame &"
+        accent="minds that shape mine"
+        description="Principles of design obsession, extreme discipline, visual storytelling, and non-linear architecture that govern how I engineer digital products."
+        className="mb-14"
+      />
 
-      <section className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-white">
+      {/* The Monumental Wall of Fame Poster Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
         {roleModelsData.map((item, index) => (
-          <InspirationCard key={index} item={item} />
+          <InspirationPoster key={item.name} item={item} index={index} />
         ))}
-      </section>
+      </div>
     </section>
   );
 }
 
-export default RoleModels;
+export default memo(RoleModels);

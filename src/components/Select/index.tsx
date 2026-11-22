@@ -31,19 +31,19 @@ export default function CustomSelect({
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className="w-full flex items-center justify-between
-                   bg-white/5 border border-white/10
+                   bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10
                    rounded-xl px-4 py-3
-                   hover:bg-white/10
-                   focus:outline-none focus:border-white/30
+                   hover:bg-slate-200/60 dark:hover:bg-white/10
+                   focus:outline-none focus:border-indigo-500 dark:focus:border-white/30
                    transition-all duration-200"
       >
-        <span className={selected ? "text-white" : "text-white/50"}>
+        <span className={selected ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-white/50"}>
           {selected || "What are we building?"}
         </span>
 
         <IoChevronDownOutline
           size={18}
-          className={`text-white/60 transition-transform duration-300 ${
+          className={`text-slate-400 dark:text-white/60 transition-transform duration-300 ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -52,10 +52,10 @@ export default function CustomSelect({
       {/* Dropdown */}
       <div
         className={`absolute left-0 mt-2 w-full
-                    rounded-xl border border-white/10
-                    bg-neutral-900/95 backdrop-blur-xl
+                    rounded-xl border border-slate-200 dark:border-white/10
+                    bg-white/95 dark:bg-neutral-900/95 backdrop-blur-xl
                     shadow-2xl overflow-hidden
-                    transform transition-all duration-200 origin-top
+                    transform transition-all duration-200 origin-top z-30
                     ${
                       open
                         ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
@@ -74,13 +74,13 @@ export default function CustomSelect({
               }}
               className="flex items-center justify-between
                          px-4 py-3 cursor-pointer
-                         text-white/80 hover:text-white
-                         hover:bg-white/10
+                         text-slate-700 dark:text-white/80 hover:text-slate-900 dark:hover:text-white
+                         hover:bg-slate-100 dark:hover:bg-white/10
                          transition"
             >
               <span>{option}</span>
 
-              {isActive && <HiCheck size={16} className="text-white/70" />}
+              {isActive && <HiCheck size={16} className="text-indigo-600 dark:text-white/70" />}
             </div>
           );
         })}

@@ -12,4 +12,15 @@ export default defineConfig({
     }),
   ],
   base: "/digital-canvas/",
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ["three"],
+          gsap: ["gsap", "gsap/ScrollTrigger"],
+          motion: ["motion"],
+        },
+      },
+    },
+  },
 });

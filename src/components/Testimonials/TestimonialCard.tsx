@@ -1,6 +1,5 @@
 import { RiDoubleQuotesL } from "react-icons/ri";
 import type { testimonial } from "../../types";
-import SpotlightCard from "../SpotLightCard";
 
 function TestimonialCard({ testimonial }: { testimonial: testimonial }) {
   const initials = testimonial.name
@@ -11,42 +10,48 @@ function TestimonialCard({ testimonial }: { testimonial: testimonial }) {
     .toUpperCase();
 
   return (
-    <SpotlightCard
-      className="lg:h-[350px] lg:w-[300px] flex flex-col justify-between h-[300px] w-[250px]
-             bg-gradient-to-br from-blue-50 via-white/50 to-indigo-100/50
-             dark:bg-white/5
-             dark:bg-none
-             "
-      spotlightColor="rgba(99,102,241,0.45)"
+    <div
+      style={{ isolation: "isolate" }}
+      className="group relative w-[310px] sm:w-[360px] h-[320px] flex flex-col justify-between p-6 sm:p-7 mx-3 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl shadow-[0_4px_20px_rgba(99,102,241,0.05)] dark:shadow-none hover:border-indigo-400/60 hover:shadow-[0_0_35px_rgba(99,102,241,0.22)] transition-all duration-300 select-none overflow-hidden hover:-translate-y-1"
     >
-      <RiDoubleQuotesL className="text-4xl text-blue-400/40 mb-4" />
+      {/* Specular Ambient Aura */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      <p className="text-xs lg:text-sm leading-relaxed dark:text-slate-200 text-slate-900 max-h-28 lg:max-h-36 overflow-auto">
-        {testimonial.testimonial}
-      </p>
+      {/* Top Header: Quote Icon */}
+      <div className="relative z-10 flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/5">
+        <RiDoubleQuotesL className="text-3xl text-indigo-500/80 dark:text-indigo-400/70" />
+      </div>
 
-      <div className="flex items-center gap-3 mt-3">
+      {/* Testimonial Quote */}
+      <div className="relative z-10 my-3 flex-1 overflow-y-auto scrollbar-none">
+        <p className="text-xs sm:text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-normal">
+          "{testimonial.testimonial}"
+        </p>
+      </div>
+
+      {/* Author Footer */}
+      <div className="relative z-10 pt-4 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-3">
         {testimonial.image ? (
           <img
             src={testimonial.image}
-            className="h-12 w-12 object-cover rounded-full border border-white/10"
+            alt={testimonial.name}
+            className="h-11 w-11 object-cover rounded-2xl border border-indigo-200 dark:border-white/15 shadow-sm"
           />
         ) : (
-          <div className="flex aspect-square h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 text-indigo-500 backdrop-blur-md shadow-lg">
+          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border border-indigo-200/60 dark:border-white/15 bg-indigo-50/90 dark:bg-white/10 text-indigo-600 dark:text-indigo-300 font-mono font-bold text-xs shadow-sm">
             {initials}
           </div>
         )}
-        <div>
-          <p className="text-xs lg:text-sm font-medium dark:text-white text-slate-900">
+        <div className="min-w-0 flex-1">
+          <p className="font-space text-sm font-bold text-slate-900 dark:text-white truncate">
             {testimonial.name}
           </p>
-          <p className="text-xs mt-1 text-slate-400">
-            {testimonial.jobTitle} · {testimonial.company} ·{" "}
-            {testimonial.location}
+          <p className="font-mono text-[11px] text-slate-500 dark:text-slate-400 truncate">
+            {testimonial.jobTitle} · {testimonial.company}
           </p>
         </div>
       </div>
-    </SpotlightCard>
+    </div>
   );
 }
 

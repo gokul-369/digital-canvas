@@ -1,8 +1,7 @@
-import MovingGradient from "../../components/Backgrounds/MovingGradient";
+import InteractiveAmbient from "../../components/Backgrounds/InteractiveAmbient";
 import Testimonials from "../../components/Testimonials";
 import Awards from "../../components/Awards";
 import WorkExperience from "../../components/WorkExperience/WorkExperience";
-import Skills from "../../components/Skills";
 import useNavigateTop from "../../hooks/useNavigateToTop";
 
 function Experience() {
@@ -10,11 +9,10 @@ function Experience() {
 
   return (
     <section className={`relative overflow-auto`}>
-      <MovingGradient />
+      <InteractiveAmbient variant="experience" />
       <WorkExperience />
       <Testimonials />
       <Awards />
-      <Skills />
     </section>
   );
 }

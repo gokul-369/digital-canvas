@@ -1,6 +1,7 @@
 import About from "../../components/About";
 import Dashboard from "../../components/Dashboard";
 import Hero from "../../components/Hero/Hero";
+import InteractiveAmbient from "../../components/Backgrounds/InteractiveAmbient";
 import useTheme from "../../hooks/useTheme";
 import { themeFactory } from "../../utils/styleFactory";
 
@@ -10,14 +11,17 @@ function Home() {
   const colors =
     theme === "dark"
       ? ["#9383d2", "#8998e1", "#aba7b9"]
-      : // : ["#E5F5FF", "#ffffff", "#", "#FBE8FF", "#D9F7FF"]
-        ["#F8F0E5", "#FFFFFF", "#9383d2", "#aba7b9"];
+      : ["#4f46e5", "#818cf8", "#c7d2fe"];
+
   return (
-    <section id="#home">
+    <div id="#home" className="relative w-full">
+      {/* Dynamic interactive ambient starfield & aurora background */}
+      <InteractiveAmbient variant="home" />
+
       <Hero theme={themeClass} colors={colors} />
       <About theme={themeClass} />
       <Dashboard theme={themeClass} />
-    </section>
+    </div>
   );
 }
 

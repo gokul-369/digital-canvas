@@ -132,7 +132,7 @@ const BlurText: React.FC<BlurTextProps> = ({
               }
               style={{
                 display: "inline-block",
-                willChange: "transform, filter, opacity",
+                willChange: inView ? "transform, opacity" : "auto",
               }}
             >
               {child}
@@ -167,7 +167,7 @@ const BlurText: React.FC<BlurTextProps> = ({
             }
             style={{
               display: "inline-block",
-              willChange: "transform, filter, opacity",
+              willChange: inView ? "transform, opacity" : "auto",
             }}
           >
             {segment === " " ? "\u00A0" : segment}
