@@ -9,6 +9,7 @@ interface ThreeDBookShelfProps {
   onToggleFlip: () => void;
   scrollIndex: number;
   onScrollIndexChange: (index: number) => void;
+  theme?: string;
   className?: string;
 }
 
@@ -18,6 +19,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
   isFlipped,
   scrollIndex,
   onScrollIndexChange,
+  theme = "dark",
   className = "",
 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -234,10 +236,11 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     container.appendChild(renderer.domElement);
 
     // 4. Lighting: Natural, legible studio illumination with zero blowout or glare
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    const isDark = theme === "dark";
+    const ambientLight = new THREE.AmbientLight(0xffffff, isDark ? 0.85 : 1.05);
     scene.add(ambientLight);
 
-    const keySpot = new THREE.DirectionalLight(0xffffff, 1.15);
+    const keySpot = new THREE.DirectionalLight(0xffffff, isDark ? 1.15 : 1.25);
     keySpot.position.set(3.0, 4.0, 4.5);
     keySpot.castShadow = true;
     keySpot.shadow.mapSize.width = 2048;
@@ -245,68 +248,48 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     keySpot.shadow.bias = -0.0005;
     scene.add(keySpot);
 
-    const fillLight = new THREE.DirectionalLight(0xa5b4fc, 0.45);
+    const fillLight = new THREE.DirectionalLight(isDark ? 0xa5b4fc : 0x94a3b8, isDark ? 0.45 : 0.6);
     fillLight.position.set(-3.0, 2.0, 3.0);
     scene.add(fillLight);
 
-    const softShelfLight = new THREE.PointLight(0x818cf8, 0.55, 7);
+    const softShelfLight = new THREE.PointLight(isDark ? 0x818cf8 : 0x6366f1, isDark ? 0.55 : 0.7, 7);
     softShelfLight.position.set(0, -1.2, 1.2);
     scene.add(softShelfLight);
 
-    // 5. Minimal, Elegant Floating Shelf Platform with Fading Edge Line
+    // 5. Minimal, Elegant Floating Shelf: Thin Fading Glow Line directly underneath books
     const shelfAnchor = new THREE.Group();
-    const baseY = SHELF_Y - BOOK_H / 2 - 0.04;
-
-    // Platform width matched to books (13.5 units instead of overextended 16.5)
-    const platformGeo = new THREE.BoxGeometry(13.5, 0.07, 0.95);
-    const platformMat = new THREE.MeshStandardMaterial({
-      color: 0x080d1a,
-      roughness: 0.35,
-      metalness: 0.85,
-    });
-    const platformMesh = new THREE.Mesh(platformGeo, platformMat);
-    platformMesh.position.set(0, baseY, -0.85);
-    platformMesh.receiveShadow = true;
-    shelfAnchor.add(platformMesh);
+    // The base of the books sits at SHELF_Y - BOOK_H / 2 = -0.36 - 0.675 = -1.035
+    const baseY = SHELF_Y - BOOK_H / 2;
 
     // Fading edge highlight line: smoothly fades out to transparent on both ends
     const lipCanvas = document.createElement("canvas");
-    lipCanvas.width = 512;
+    lipCanvas.width = 1024;
     lipCanvas.height = 32;
     const lipCtx = lipCanvas.getContext("2d");
     if (lipCtx) {
-      const grad = lipCtx.createLinearGradient(0, 0, 512, 0);
+      const grad = lipCtx.createLinearGradient(0, 0, 1024, 0);
       grad.addColorStop(0, "rgba(99, 102, 241, 0)");
-      grad.addColorStop(0.18, "rgba(99, 102, 241, 0.75)");
-      grad.addColorStop(0.5, "rgba(56, 189, 248, 0.95)");
-      grad.addColorStop(0.82, "rgba(99, 102, 241, 0.75)");
+      grad.addColorStop(0.12, "rgba(99, 102, 241, 0.45)");
+      grad.addColorStop(0.28, "rgba(99, 102, 241, 0.85)");
+      grad.addColorStop(0.5, "rgba(56, 189, 248, 1.0)");
+      grad.addColorStop(0.72, "rgba(99, 102, 241, 0.85)");
+      grad.addColorStop(0.88, "rgba(99, 102, 241, 0.45)");
       grad.addColorStop(1, "rgba(99, 102, 241, 0)");
       lipCtx.fillStyle = grad;
-      lipCtx.fillRect(0, 0, 512, 32);
+      lipCtx.fillRect(0, 0, 1024, 32);
     }
     const lipTex = new THREE.CanvasTexture(lipCanvas);
-    const lipGeo = new THREE.BoxGeometry(13.52, 0.012, 0.02);
+    const lipGeo = new THREE.BoxGeometry(13.2, 0.008, 0.04);
     const lipMat = new THREE.MeshBasicMaterial({
       map: lipTex,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.95,
     });
     const lipMesh = new THREE.Mesh(lipGeo, lipMat);
-    lipMesh.position.set(0, baseY + 0.032, -0.38);
+    lipMesh.position.set(0, 0, -0.85); // z = -0.85 matches the books' z
     shelfAnchor.add(lipMesh);
 
-    // Soft contact shadow plane beneath the books
-    const shadowGeo = new THREE.PlaneGeometry(13.5, 0.9);
-    const shadowMat = new THREE.MeshBasicMaterial({
-      color: 0x000000,
-      transparent: true,
-      opacity: 0.45,
-    });
-    const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
-    shadowMesh.rotation.x = -Math.PI / 2;
-    shadowMesh.position.set(0, baseY + 0.036, -0.85);
-    shelfAnchor.add(shadowMesh);
-
+    shelfAnchor.position.set(0, baseY, 0);
     scene.add(shelfAnchor);
     shelfMeshRef.current = shelfAnchor;
 
@@ -513,7 +496,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
         container.removeChild(renderer.domElement);
       }
     };
-  }, [BOOK_D, BOOK_H, BOOK_SPACING, BOOK_W, createBackCoverTexture, createPagesEdgeTexture, createSpineCanvas]);
+  }, [BOOK_D, BOOK_H, BOOK_SPACING, BOOK_W, createBackCoverTexture, createPagesEdgeTexture, createSpineCanvas, theme]);
 
   // Pointer Interaction Handlers
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {

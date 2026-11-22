@@ -38,8 +38,8 @@ export const booksList: BookItem[] = [
     review: "Kafka's dissection of opaque bureaucratic systems mirrors the terrifying complexity of undocumented legacy enterprise architectures. It taught me that clarity, observability, and transparent interfaces are moral obligations in software engineering.",
     coverImage: trialCover,
     isCurrentlyReading: true,
-    spineColor: "#1a1e28",
-    foilColor: "#a5b4fc",
+    spineColor: "#182230",
+    foilColor: "#fb923c",
   },
   {
     id: "white-nights",
@@ -50,8 +50,8 @@ export const booksList: BookItem[] = [
     quote: "A whole moment of happiness! Why, isn't that enough for a whole life?",
     review: "A masterclass in romantic idealism versus grounded reality. It reminds me to cultivate genuine human depth and empathy amidst fast-paced technical sprints and digital abstraction.",
     coverImage: whiteNightsCover,
-    spineColor: "#0f172a",
-    foilColor: "#7dd3fc",
+    spineColor: "#13203c",
+    foilColor: "#38bdf8",
   },
   {
     id: "metamorphosis",
