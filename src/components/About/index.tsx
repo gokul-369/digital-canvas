@@ -41,21 +41,21 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
   return (
     <section
       id="about"
-      className="relative w-full py-24 px-6 lg:px-24 flex flex-col items-center bg-transparent"
+      className="relative w-full py-16 sm:py-24 px-4 sm:px-6 lg:px-24 flex flex-col items-center bg-transparent"
     >
       <SectionHeader
         tag="Personal Dossier"
         title="It’s time to get to"
         accent="know me"
         description="A glimpse into who I am, where I studied, and what sparks my curiosity outside the code editor."
-        className="mb-14"
+        className="mb-8 sm:mb-12"
       />
 
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start z-10">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start z-10">
         {/* Left Column: 3D Holographic Profile Dossier */}
         <div className="lg:col-span-5 flex flex-col items-center w-full">
           <ProfileCard
-            className="w-full max-w-[340px] text-center touch-pan-y"
+            className="w-full max-w-[270px] sm:max-w-[320px] lg:max-w-[340px] text-center touch-pan-y"
             name="Gokul"
             title="Software Engineer"
             handle="gokul-369"
@@ -74,7 +74,7 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
           />
 
           {/* Dossier Status Pill */}
-          <div className="mt-5 inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/70 dark:bg-white/[0.04] backdrop-blur-xl border border-slate-200/80 dark:border-white/10 shadow-sm">
+          <div className="mt-4 sm:mt-5 inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/70 dark:bg-white/[0.04] backdrop-blur-xl border border-slate-200/80 dark:border-white/10 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="font-mono text-xs text-slate-700 dark:text-slate-300 font-medium">
               STATUS: PRODUCTION READY · ACTIVE
@@ -83,13 +83,25 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
         </div>
 
         {/* Right Column: Interactive Dossier Modules */}
-        <div className="lg:col-span-7 flex flex-col w-full">
+        <div className="lg:col-span-7 flex flex-col w-full items-center lg:items-start">
           {/* Dossier Module Selector Tabs - Cosmic Glass */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/70 dark:bg-white/[0.04] backdrop-blur-xl border border-slate-200/80 dark:border-white/10 shadow-sm mb-8 w-fit">
+          <div className="w-full max-w-sm sm:max-w-none sm:w-fit grid grid-cols-3 sm:flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-white/70 dark:bg-white/[0.04] backdrop-blur-xl border border-slate-200/80 dark:border-white/10 shadow-sm mb-6 sm:mb-8">
             {[
-              { id: "me", label: "// 01 · Identity & Core" },
-              { id: "education", label: "// 02 · Academic Pedigree" },
-              { id: "interests", label: "// 03 · Passions & Craft" },
+              {
+                id: "me",
+                shortLabel: "Identity",
+                fullLabel: "// 01 · Identity & Core",
+              },
+              {
+                id: "education",
+                shortLabel: "Academics",
+                fullLabel: "// 02 · Academic Pedigree",
+              },
+              {
+                id: "interests",
+                shortLabel: "Passions",
+                fullLabel: "// 03 · Passions & Craft",
+              },
             ].map((tab) => {
               const isSelected = activeTab === tab.id;
               return (
@@ -100,7 +112,7 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
                     setActiveTab(tab.id as typeof activeTab);
                     if (tab.id === "me") setStartTyping(false);
                   }}
-                  className={`relative px-4 py-2 rounded-xl text-xs font-mono font-medium transition-colors duration-200 cursor-pointer select-none ${
+                  className={`relative px-2 py-2 sm:px-4 sm:py-2 rounded-xl text-center text-xs font-mono font-medium transition-colors duration-200 cursor-pointer select-none ${
                     isSelected
                       ? "text-white"
                       : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -113,7 +125,12 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
                       transition={{ type: "spring", stiffness: 400, damping: 32 }}
                     />
                   )}
-                  <span className="relative z-10">{tab.label}</span>
+                  <span className="relative z-10 block sm:hidden text-[11px] font-semibold truncate">
+                    {tab.shortLabel}
+                  </span>
+                  <span className="relative z-10 hidden sm:inline whitespace-nowrap">
+                    {tab.fullLabel}
+                  </span>
                 </button>
               );
             })}
@@ -128,7 +145,7 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
-                className="flex flex-col space-y-6"
+                className="flex flex-col space-y-6 w-full"
               >
                 <div>
                   <BlurText
@@ -263,7 +280,7 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
-                className="space-y-4"
+                className="space-y-4 w-full"
               >
                 {educationItems.map((item, idx) => (
                   <div
@@ -309,7 +326,7 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
-                className="grid grid-cols-1 sm:grid-cols-2 gap-3.5"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full"
               >
                 {interestPills.map((item) => {
                   const Icon = item.icon;
