@@ -146,7 +146,7 @@ export function Timeline({ children }: { children: React.ReactNode }) {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 25%", "end 80%"],
+    offset: ["start center", "end 75%"],
   });
 
   const smooth = useSpring(scrollYProgress, {
@@ -156,21 +156,25 @@ export function Timeline({ children }: { children: React.ReactNode }) {
   });
 
   const pointerY = useTransform(smooth, [0, 1], ["0%", "100%"]);
+  const tailOpacity = useTransform(smooth, [0, 0.04], [0, 1]);
 
   return (
     <div ref={ref} className="relative max-w-4xl mx-auto w-full my-8">
       {/* Subtle Spine Track Base */}
       <div className="absolute left-3 sm:left-4 top-0 bottom-0 w-[2px] bg-slate-200 dark:bg-white/10 hidden md:block" />
 
-      {/* Orbit Rail Track Container with Overflow Clipping so the tail gracefully enters/exits */}
-      <div className="absolute left-3 sm:left-4 top-0 bottom-0 w-10 -translate-x-1/2 pointer-events-none overflow-hidden hidden md:block z-20">
+      {/* Orbit Rail Track Container - top-6 bottom-6 provides 24px padding so the comet head is never cut off at start & finish */}
+      <div className="absolute left-3 sm:left-4 top-6 bottom-6 w-10 -translate-x-1/2 pointer-events-none overflow-visible hidden md:block z-20">
         {/* Realistic Cosmic Comet with Tapered Fading Ion & Dust Tail */}
         <motion.div
           style={{ top: pointerY }}
           className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none"
         >
           {/* FADING REAL COMET TAIL: Trails upward behind the descending comet head (260px long, fading to 0 opacity) */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-6 h-64 pointer-events-none flex flex-col items-center justify-end">
+          <motion.div
+            style={{ opacity: tailOpacity }}
+            className="absolute bottom-2 left-1/2 -translate-x-1/2 w-6 h-64 pointer-events-none flex flex-col items-center justify-end"
+          >
             {/* Outer Diffuse Cometary Dust Sheath (Wide, soft gaussian blur, dissolves into dark space) */}
             <div className="w-5 h-64 bg-gradient-to-t from-cyan-400/50 via-indigo-500/20 via-30% to-transparent blur-[3px]" />
 
@@ -183,7 +187,7 @@ export function Timeline({ children }: { children: React.ReactNode }) {
             <span className="absolute bottom-24 -left-2 w-1.5 h-1.5 rounded-full bg-amber-200 shadow-[0_0_6px_#fbbf24] animate-dust-3 opacity-65" />
             <span className="absolute bottom-36 right-1.5 w-1 h-1 rounded-full bg-sky-200 shadow-[0_0_6px_#38bdf8] animate-dust-1 opacity-45" />
             <span className="absolute bottom-48 -left-1 w-1 h-1 rounded-full bg-white shadow-[0_0_6px_#ffffff] animate-dust-2 opacity-25" />
-          </div>
+          </motion.div>
 
           {/* COMET HEAD (Intense Icy Nucleus & Radiant Gas Coma) */}
           <div className="relative flex items-center justify-center">

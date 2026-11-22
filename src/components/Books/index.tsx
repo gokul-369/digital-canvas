@@ -27,17 +27,43 @@ export default function BooksSection() {
     };
   }, [selectedBook]);
 
-  // Keyboard navigation: Escape closes foreground book, Space flips, Left/Right arrows scroll shelf
+  const handleSelectPrevBook = () => {
+    if (!selectedBook) return;
+    const idx = booksList.findIndex((b) => b.id === selectedBook.id);
+    const newIdx = (idx - 1 + booksList.length) % booksList.length;
+    setSelectedBook(booksList[newIdx]);
+    setScrollIndex(newIdx);
+  };
+
+  const handleSelectNextBook = () => {
+    if (!selectedBook) return;
+    const idx = booksList.findIndex((b) => b.id === selectedBook.id);
+    const newIdx = (idx + 1) % booksList.length;
+    setSelectedBook(booksList[newIdx]);
+    setScrollIndex(newIdx);
+  };
+
+  const currentBookIndex = selectedBook ? booksList.findIndex((b) => b.id === selectedBook.id) : 0;
+
+  // Keyboard navigation: Escape closes foreground book, Space flips, Left/Right arrows switch books or scroll shelf
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setSelectedBook(null);
       } else if (e.key === " " && selectedBook) {
         setIsFlipped((prev) => !prev);
-      } else if (e.key === "ArrowRight" && !selectedBook) {
-        setScrollIndex((prev) => Math.min(booksList.length - 3, prev + 1));
-      } else if (e.key === "ArrowLeft" && !selectedBook) {
-        setScrollIndex((prev) => Math.max(0, prev - 1));
+      } else if (e.key === "ArrowRight") {
+        if (selectedBook) {
+          handleSelectNextBook();
+        } else {
+          setScrollIndex((prev) => Math.min(booksList.length - 3, prev + 1));
+        }
+      } else if (e.key === "ArrowLeft") {
+        if (selectedBook) {
+          handleSelectPrevBook();
+        } else {
+          setScrollIndex((prev) => Math.max(0, prev - 1));
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -204,6 +230,58 @@ export default function BooksSection() {
               title="Next Book"
             >
               <IoChevronForwardOutline size={16} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* FLOATING STAGE ARROWS WHEN BOOK IS SELECTED */}
+      <AnimatePresence>
+        {selectedBook && (
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 14 }}
+            transition={{ duration: 0.28 }}
+            className="absolute z-30 pointer-events-auto left-4 right-4 sm:right-auto sm:left-10 lg:left-16 bottom-[50vh] sm:bottom-10 flex items-center justify-between sm:justify-start gap-3 sm:gap-4"
+          >
+            {/* Prev Arrow */}
+            <button
+              type="button"
+              onClick={handleSelectPrevBook}
+              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full backdrop-blur-md border flex items-center justify-center transition-all cursor-pointer shadow-lg active:scale-95 hover:scale-105 ${
+                isDark
+                  ? "bg-[#080d1a]/85 border-white/20 text-white hover:bg-white/20 shadow-black/40"
+                  : "bg-white/90 border-slate-200 text-slate-800 hover:bg-slate-100 shadow-slate-200"
+              }`}
+              title="Previous Book (Left Arrow)"
+            >
+              <IoChevronBackOutline size={18} />
+            </button>
+
+            {/* Book Index Counter: e.g. "03 OF 15" */}
+            <div
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-md border font-mono text-[11px] sm:text-xs tracking-widest uppercase font-semibold select-none ${
+                isDark
+                  ? "bg-[#060a14]/85 border-white/15 text-slate-300"
+                  : "bg-white/95 border-slate-200 text-slate-700 shadow-sm"
+              }`}
+            >
+              {String(currentBookIndex + 1).padStart(2, "0")} OF {String(booksList.length).padStart(2, "0")}
+            </div>
+
+            {/* Next Arrow */}
+            <button
+              type="button"
+              onClick={handleSelectNextBook}
+              className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full backdrop-blur-md border flex items-center justify-center transition-all cursor-pointer shadow-lg active:scale-95 hover:scale-105 ${
+                isDark
+                  ? "bg-[#080d1a]/85 border-white/20 text-white hover:bg-white/20 shadow-black/40"
+                  : "bg-white/90 border-slate-200 text-slate-800 hover:bg-slate-100 shadow-slate-200"
+              }`}
+              title="Next Book (Right Arrow)"
+            >
+              <IoChevronForwardOutline size={18} />
             </button>
           </motion.div>
         )}
