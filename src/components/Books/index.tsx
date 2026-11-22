@@ -167,41 +167,26 @@ export default function BooksSection() {
         )}
       </AnimatePresence>
 
-      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Frosted Blur Extends to Book, Unmasked Crisp Text) */}
+      {/* WORKSHOP CODEX SEAMLESS IMMERSIVE DOSSIER (Panel blur strictly on right side so 3D book is never faded) */}
       <AnimatePresence>
         {selectedBook && (
-          <>
-            {/* FULL-CANVAS FROSTED BACKDROP VEIL: smoothly fades from transparent behind book to deep dark/light space glass behind text */}
-            <motion.div
-              key="workshop-codex-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className={`absolute inset-0 pointer-events-none z-30 backdrop-blur-2xl transition-colors ${
-                isDark
-                  ? "bg-gradient-to-r from-transparent via-[#030611]/70 to-[#02050f]/95"
-                  : "bg-gradient-to-r from-transparent via-white/70 to-white/95"
-              }`}
-              style={{
-                WebkitMaskImage: "linear-gradient(to right, transparent 0%, transparent 18%, black 44%, black 100%)",
-                maskImage: "linear-gradient(to right, transparent 0%, transparent 18%, black 44%, black 100%)",
-              }}
-            />
-
-            <motion.div
-              key="workshop-codex-immersive-dossier"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 30 }}
-              transition={{
-                duration: 0.4,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[48vw] lg:w-[46vw] max-w-[640px] pointer-events-auto flex flex-col justify-between overflow-y-auto"
-            >
-              {/* FOREGROUND CONTENT LAYER (100% UNMASKED, CRISP & RAZOR-SHARP) */}
-              <div className="relative z-10 pt-10 sm:pt-14 pb-8 sm:pb-10 pl-6 sm:pl-10 lg:pl-12 pr-6 sm:pr-10 flex flex-col justify-between min-h-full">
+          <motion.div
+            key="workshop-codex-immersive-dossier"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 30 }}
+            transition={{
+              duration: 0.4,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+            className={`absolute top-0 right-0 bottom-0 z-50 w-full sm:w-[48vw] md:w-[48vw] lg:w-[46vw] max-w-[640px] pointer-events-auto flex flex-col justify-between overflow-y-auto ${
+              isDark
+                ? "bg-gradient-to-l from-[#02050f]/95 via-[#030611]/85 to-transparent backdrop-blur-xl"
+                : "bg-gradient-to-l from-white/95 via-white/85 to-transparent backdrop-blur-xl"
+            }`}
+          >
+            {/* FOREGROUND CONTENT LAYER (100% UNMASKED, CRISP & RAZOR-SHARP) */}
+            <div className="relative z-10 pt-10 sm:pt-14 pb-8 sm:pb-10 pl-6 sm:pl-10 lg:pl-12 pr-6 sm:pr-10 flex flex-col justify-between min-h-full">
               {/* Top Bar: Archival Tag, Big Title & Close Button aligned at top */}
               <div>
               <div className="flex items-start justify-between">
@@ -289,7 +274,6 @@ export default function BooksSection() {
             </div>
           </div>
         </motion.div>
-        </>
         )}
       </AnimatePresence>
     </section>

@@ -28,7 +28,6 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
 
   const bookMeshesRef = useRef<THREE.Group[]>([]);
-  const shelfMeshRef = useRef<THREE.Group | null>(null);
   const hoveredIndexRef = useRef<number | null>(null);
   const raycaster = useRef<THREE.Raycaster>(new THREE.Raycaster());
 
@@ -256,42 +255,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     softShelfLight.position.set(0, -1.2, 1.2);
     scene.add(softShelfLight);
 
-    // 5. Minimal, Elegant Floating Shelf: Thin Fading Glow Line directly underneath books
-    const shelfAnchor = new THREE.Group();
-    // The base of the books sits at SHELF_Y - BOOK_H / 2 = -0.36 - 0.675 = -1.035
-    const baseY = SHELF_Y - BOOK_H / 2;
-
-    // Fading edge highlight line: smoothly fades out to transparent on both ends
-    const lipCanvas = document.createElement("canvas");
-    lipCanvas.width = 1024;
-    lipCanvas.height = 32;
-    const lipCtx = lipCanvas.getContext("2d");
-    if (lipCtx) {
-      const grad = lipCtx.createLinearGradient(0, 0, 1024, 0);
-      grad.addColorStop(0, "rgba(99, 102, 241, 0)");
-      grad.addColorStop(0.12, "rgba(99, 102, 241, 0.45)");
-      grad.addColorStop(0.28, "rgba(99, 102, 241, 0.85)");
-      grad.addColorStop(0.5, "rgba(56, 189, 248, 1.0)");
-      grad.addColorStop(0.72, "rgba(99, 102, 241, 0.85)");
-      grad.addColorStop(0.88, "rgba(99, 102, 241, 0.45)");
-      grad.addColorStop(1, "rgba(99, 102, 241, 0)");
-      lipCtx.fillStyle = grad;
-      lipCtx.fillRect(0, 0, 1024, 32);
-    }
-    const lipTex = new THREE.CanvasTexture(lipCanvas);
-    const lipGeo = new THREE.BoxGeometry(13.2, 0.008, 0.04);
-    const lipMat = new THREE.MeshBasicMaterial({
-      map: lipTex,
-      transparent: true,
-      opacity: 0.95,
-    });
-    const lipMesh = new THREE.Mesh(lipGeo, lipMat);
-    lipMesh.position.set(0, 0, -0.85); // z = -0.85 matches the books' z
-    shelfAnchor.add(lipMesh);
-
-    shelfAnchor.position.set(0, baseY, 0);
-    scene.add(shelfAnchor);
-    shelfMeshRef.current = shelfAnchor;
+    // 5. Floating Volumes (No line as requested - books float cleanly with natural contact shadows and cosmic parallax)
 
     // 6. Build the 12 3D Books with Authentic Published Covers
     const texLoader = new THREE.TextureLoader();
@@ -396,19 +360,6 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
       const activeItem = selectedBookRef.current;
 
-      // Shelf platform moves slightly with scroll for natural parallax, and gracefully slides away when inspecting a volume
-      if (shelfMeshRef.current) {
-        const shelfTargetX = -scrollPosRef.current * 0.35;
-        const shelfTargetY = activeItem ? baseY - 3.0 : baseY;
-        const shelfTargetScale = activeItem ? 0.001 : 1.0;
-        shelfMeshRef.current.position.x += (shelfTargetX - shelfMeshRef.current.position.x) * 0.1;
-        shelfMeshRef.current.position.y += (shelfTargetY - shelfMeshRef.current.position.y) * 0.08;
-        shelfMeshRef.current.scale.set(
-          shelfMeshRef.current.scale.x + (shelfTargetScale - shelfMeshRef.current.scale.x) * 0.08,
-          shelfMeshRef.current.scale.y + (shelfTargetScale - shelfMeshRef.current.scale.y) * 0.08,
-          shelfMeshRef.current.scale.z + (shelfTargetScale - shelfMeshRef.current.scale.z) * 0.08
-        );
-      }
 
       meshes.forEach((anchor, idx) => {
         const item = booksList[idx];
