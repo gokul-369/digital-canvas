@@ -160,8 +160,8 @@ export function Timeline({ children }: { children: React.ReactNode }) {
 
   return (
     <div ref={ref} className="relative max-w-4xl mx-auto w-full my-8">
-      {/* Subtle Spine Track Base */}
-      <div className="absolute left-3 sm:left-4 top-0 bottom-0 w-[2px] bg-slate-200 dark:bg-white/10 hidden md:block" />
+      {/* Subtle Spine Track Base - perfectly matches comet travel bounds (top-6 bottom-6) so no line protrudes past the comet */}
+      <div className="absolute left-3 sm:left-4 top-6 bottom-6 w-[2px] bg-slate-200 dark:bg-white/10 rounded-full hidden md:block" />
 
       {/* Orbit Rail Track Container - top-6 bottom-6 provides 24px padding so the comet head is never cut off at start & finish */}
       <div className="absolute left-3 sm:left-4 top-6 bottom-6 w-10 -translate-x-1/2 pointer-events-none overflow-visible hidden md:block z-20">
