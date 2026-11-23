@@ -423,7 +423,7 @@ export const testimonials: testimonial[] = [
     location: "Edinburg, Scotland",
     company: "Lloyds Bank",
     testimonial:
-      "It was a pleasure working with Gokul. He consistently demonstarted a strong desire to learn and took initiative in addressing key challenges. His technical expertise was evident across various tasks and readily provided thoughtful support. As the team lead. I value his his collaborative spirit, effective problem solving and the positive impact he had on our deliverables.",
+      "It was a pleasure working with Gokul. He consistently demonstrated a strong desire to learn and took initiative in addressing key challenges. His technical expertise was evident across various tasks and readily provided thoughtful support. As the team lead, I value his collaborative spirit, effective problem solving and the positive impact he had on our deliverables.",
   },
   {
     name: "JM Mcghee",
@@ -438,9 +438,8 @@ export const testimonials: testimonial[] = [
     jobTitle: "Software Engineer",
     location: "Chennai, India",
     company: "TCS",
-    testimonial: `I had the opportunity to work closely with Gokul on our project, and his front-end expertise consistently stood out. He has a strong eye for detail and a deep understanding of building responsive, user friendly interfaces.
-    What impressed me most was his ability to translate complex backend requirements into clean, intuitive UI experiences. He is highly collaborative, proactive in communication, and always focused on performance and maintainability.
-    Any team would benefit from his technical skill, ownership mindset, and commitment to delivering high-quality work.`,
+    testimonial:
+      "I had the opportunity to work closely with Gokul on our project, and his front-end expertise consistently stood out. He has a strong eye for detail and a deep understanding of building responsive, user-friendly interfaces. What impressed me most was his ability to translate complex backend requirements into clean, intuitive UI experiences. He is highly collaborative, proactive in communication, and always focused on performance and maintainability. Any team would benefit from his technical skill, ownership mindset, and commitment to delivering high-quality work.",
     image:
       "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/steephen.png",
   },
@@ -449,7 +448,8 @@ export const testimonials: testimonial[] = [
     jobTitle: "Software Engineer",
     location: "Chennai, India",
     company: "Agilysis",
-    testimonial: `I’ve had the pleasure of working with him and can confidently say he is both highly professional and genuinely easy to collaborate with. He approaches every project with a strong sense of responsibility and consistently delivers quality work.What stands out most is his open-minded attitude, he welcomes feedback. He works collaboratively and  communicates clearly`,
+    testimonial:
+      "I’ve had the pleasure of working with him and can confidently say he is both highly professional and genuinely easy to collaborate with. He approaches every project with a strong sense of responsibility and consistently delivers quality work. What stands out most is his open-minded attitude, he welcomes feedback. He works collaboratively and communicates clearly.",
     image:
       "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/Ak.png",
   },
