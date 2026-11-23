@@ -272,7 +272,7 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
                 <span>Enter 3D library</span>
                 <MdArrowRightAlt className="text-base group-hover:translate-x-1.5 transition-transform" />
               </HashLink>
-              <IoBookOutline className="h-10 w-10 text-indigo-500/30 hidden sm:block" />
+              <IoBookOutline className="h-8 w-8 sm:h-10 sm:w-10 text-indigo-500/40 block flex-shrink-0" />
             </div>
           </SpotlightCard>
         </div>

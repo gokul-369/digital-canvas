@@ -185,17 +185,17 @@ export default function BooksSection() {
               type="button"
               onClick={handlePrev}
               disabled={scrollIndex <= 0}
-              className={`sm:hidden w-8 h-8 rounded-full backdrop-blur-md border flex items-center justify-center transition-all pointer-events-auto cursor-pointer shadow-md active:scale-95 ${
+              className={`sm:hidden w-10 h-10 rounded-full backdrop-blur-md border flex items-center justify-center transition-all pointer-events-auto cursor-pointer shadow-md active:scale-95 ${
                 isDark
                   ? "bg-[#080d1a]/90 border-white/15 text-white"
                   : "bg-white/95 border-slate-200 text-slate-800"
               } ${scrollIndex <= 0 ? "opacity-25 cursor-not-allowed" : ""}`}
               title="Previous Book"
             >
-              <IoChevronBackOutline size={16} />
+              <IoChevronBackOutline size={18} />
             </button>
 
-            <div className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-md border pointer-events-auto transition-colors max-w-[70vw] sm:max-w-[92vw] overflow-x-auto scrollbar-none ${
+            <div className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full backdrop-blur-md border pointer-events-auto transition-colors max-w-[70vw] sm:max-w-[92vw] overflow-x-auto scrollbar-none ${
               isDark
                 ? "bg-[#060a14]/70 border-white/10"
                 : "bg-white/85 border-slate-200 shadow-sm"
@@ -205,9 +205,9 @@ export default function BooksSection() {
                   key={i}
                   type="button"
                   onClick={() => setScrollIndex(i)}
-                  className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all cursor-pointer flex-shrink-0 ${
+                  className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all cursor-pointer flex-shrink-0 ${
                     Math.round(scrollIndex) === i
-                      ? "w-5 sm:w-6 bg-indigo-500"
+                      ? "w-6 sm:w-7 bg-indigo-500"
                       : isDark
                         ? "bg-white/25 hover:bg-white/50"
                         : "bg-slate-300 hover:bg-slate-400"
@@ -222,14 +222,14 @@ export default function BooksSection() {
               type="button"
               onClick={handleNext}
               disabled={scrollIndex >= maxScroll}
-              className={`sm:hidden w-8 h-8 rounded-full backdrop-blur-md border flex items-center justify-center transition-all pointer-events-auto cursor-pointer shadow-md active:scale-95 ${
+              className={`sm:hidden w-10 h-10 rounded-full backdrop-blur-md border flex items-center justify-center transition-all pointer-events-auto cursor-pointer shadow-md active:scale-95 ${
                 isDark
                   ? "bg-[#080d1a]/90 border-white/15 text-white"
                   : "bg-white/95 border-slate-200 text-slate-800"
               } ${scrollIndex >= maxScroll ? "opacity-25 cursor-not-allowed" : ""}`}
               title="Next Book"
             >
-              <IoChevronForwardOutline size={16} />
+              <IoChevronForwardOutline size={18} />
             </button>
           </motion.div>
         )}
