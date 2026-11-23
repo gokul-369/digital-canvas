@@ -215,7 +215,7 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
     // 2. Camera: fov = 26, dynamically positioned for responsive multi-device framing
     const getCameraZ = (w: number, h: number) => {
       const aspect = w / h;
-      if (aspect < 0.65) return 7.6; // Mobile phones: closer framing so the book on the shelf is prominent & bold, not a tiny icon!
+      if (aspect < 0.65) return 8.6; // Mobile phones: clean framing with ample margins
       if (aspect < 1.0) return 8.6;   // Tablet portrait
       if (w < 1200) return 8.0;      // Small laptop / landscape tablet
       return 7.2;                    // Standard & wide desktop
@@ -279,13 +279,13 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
 
       // Responsive initial position along the horizontal shelf
       const isSmall = typeof window !== "undefined" && window.innerWidth < 640;
-      const spacing = isSmall ? 1.35 : BOOK_SPACING;
+      const spacing = isSmall ? 1.18 : BOOK_SPACING;
       const defaultX = isSmall ? idx * spacing : (idx - 1.5) * spacing;
       const x = defaultX - scrollIndex * spacing;
-      const initialY = isSmall ? -0.15 : SHELF_Y;
+      const initialY = isSmall ? 0.08 : SHELF_Y;
       bookAnchor.position.set(x, initialY, -0.85);
       if (isSmall) {
-        bookAnchor.scale.set(1.45, 1.45, 1.45);
+        bookAnchor.scale.set(1.05, 1.05, 1.05);
       }
 
       const leanTiltX = -0.14 + ((idx * 2) % 4) * 0.012;
@@ -381,12 +381,12 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
           // Responsive 3D layout: upper stage on mobile with plenty of gap above details modal, left-center stage on desktop
           const isSmall = window.innerWidth < 768;
           const targetX = isSmall ? 0 : -0.55;
-          const targetY = isSmall ? 0.72 : -0.05;
-          const targetZ = isSmall ? 2.8 : 2.40;
+          const targetY = isSmall ? 0.88 : -0.05;
+          const targetZ = isSmall ? 1.15 : 2.40;
           const targetPos = new THREE.Vector3(targetX, targetY, targetZ);
           anchor.position.lerp(targetPos, 0.08);
 
-          const targetScale = isSmall ? 1.45 : 1.40;
+          const targetScale = isSmall ? 1.0 : 1.40;
           anchor.scale.set(
             anchor.scale.x + (targetScale - anchor.scale.x) * 0.08,
             anchor.scale.y + (targetScale - anchor.scale.y) * 0.08,
@@ -402,9 +402,8 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
           anchor.rotation.z += (targetRotZ - anchor.rotation.z) * 0.1;
         } else {
           // When a book is selected, ALL OTHER BOOKS scale smoothly down to 0 so they vanish completely!
-          // On mobile shelf view, scale up to 1.45 so the book is large, bold, and prominent (not a tiny icon!)
           const isSmall = window.innerWidth < 640;
-          const targetScale = activeItem ? 0.0 : isSmall ? 1.45 : 1.0;
+          const targetScale = activeItem ? 0.0 : isSmall ? 1.05 : 1.0;
           anchor.scale.set(
             anchor.scale.x + (targetScale - anchor.scale.x) * 0.1,
             anchor.scale.y + (targetScale - anchor.scale.y) * 0.1,
@@ -412,10 +411,10 @@ export const ThreeDBookShelf: FC<ThreeDBookShelfProps> = ({
           );
 
           // Horizontal shelf position shifted by scrollPosRef (responsive centering on mobile)
-          const spacing = isSmall ? 1.35 : BOOK_SPACING;
+          const spacing = isSmall ? 1.18 : BOOK_SPACING;
           const defaultX = isSmall ? idx * spacing : (idx - 1.5) * spacing;
           let targetX = defaultX - scrollPosRef.current * spacing;
-          let targetY = isSmall ? -0.15 : SHELF_Y;
+          let targetY = isSmall ? 0.08 : SHELF_Y;
           let targetZ = activeItem ? -4.0 : -0.85;
 
           const defaultRot = anchor.userData.defaultRot;
