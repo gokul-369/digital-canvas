@@ -426,10 +426,6 @@ body {
 }
 
 /* Smooth image rendering globally */
-img {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
 img[loading="lazy"] {
   content-visibility: auto;
 }

@@ -260,10 +260,10 @@ export default function WorkExperience() {
                     )}
                     <div className="flex items-center justify-between mb-3 relative z-10">
                       <div
-                        className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl font-mono font-bold text-xs sm:text-sm border transition-transform group-hover:scale-105 ${
+                        className={`flex h-10 sm:h-11 min-w-[2.75rem] px-2 items-center justify-center rounded-xl font-mono font-bold text-xs sm:text-sm border transition-transform group-hover:scale-105 bg-white/95 ${
                           isSelected
-                            ? "bg-indigo-50 dark:bg-white/10 border-indigo-300 dark:border-white/20 text-indigo-600 dark:text-indigo-400"
-                            : "bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300"
+                            ? "border-indigo-400 dark:border-indigo-400/60 shadow-sm"
+                            : "border-slate-200 dark:border-white/15"
                         }`}
                       >
                         <CompanyLogo company={item.company} fallback={companyMeta.monogram} />

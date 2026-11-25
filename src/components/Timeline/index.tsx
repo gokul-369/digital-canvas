@@ -3,9 +3,9 @@ import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import type { experience } from "../../types";
 import { HiOutlineCalendar } from "react-icons/hi2";
 import { IoSparklesOutline } from "react-icons/io5";
-import tcsLogo from "../../assets/companies/tcs.png";
+import tcsLogo from "../../assets/companies/tcs.svg";
 import paperfliteLogo from "../../assets/companies/paperflite.png";
-import novacLogo from "../../assets/companies/novac.png";
+import novacLogo from "../../assets/companies/novac-mark.svg";
 
 interface CompanyMetadata {
   monogram: string;
@@ -49,12 +49,17 @@ export function CompanyLogo({ company, fallback }: { company: string; fallback: 
   const logoSrc = COMPANY_LOGOS[company];
 
   if (logoSrc) {
+    const isWide = company === "Novac Technology Solutions" || company === "Tata Consultancy Services";
     return (
       <img
         src={logoSrc}
         alt={`${company} logo`}
         loading="lazy"
-        className="w-7 h-7 sm:w-8 sm:h-8 object-contain rounded-lg"
+        className={
+          isWide
+            ? "h-6 sm:h-7 w-auto max-w-[88px] object-contain"
+            : "w-7 h-7 sm:w-8 sm:h-8 object-contain rounded-lg"
+        }
       />
     );
   }
@@ -98,7 +103,7 @@ export function TimelineItem({
         {/* Company Header Plaque */}
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 sm:pb-6 border-b border-slate-200/60 dark:border-white/5">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border border-indigo-200/60 dark:border-white/10 bg-indigo-50/80 dark:bg-white/[0.06] font-mono font-bold text-sm text-indigo-600 dark:text-indigo-400 shadow-sm group-hover:scale-105 transition-transform">
+            <div className="flex h-12 min-w-[3rem] px-2.5 flex-shrink-0 items-center justify-center rounded-2xl border border-slate-200/80 dark:border-white/15 bg-white/95 font-mono font-bold text-sm text-indigo-600 shadow-sm group-hover:scale-105 transition-transform">
               <CompanyLogo company={company} fallback={config.monogram} />
             </div>
             <div>
