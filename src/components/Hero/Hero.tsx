@@ -55,7 +55,7 @@ function Hero({ theme, colors }: HeroProps) {
 
       <div className="absolute inset-0 flex items-center justify-center">
         {/* main hero content */}
-        <main className="content flex flex-col gap-6 px-8 lg:px-44">
+        <main className="content flex flex-col gap-4 sm:gap-6 px-5 sm:px-8 lg:px-44">
           <BlurText
             className="text-center"
             animateBy="tags"
@@ -69,7 +69,7 @@ function Hero({ theme, colors }: HeroProps) {
           </BlurText>
           <Fade variant="fade-up" delay={300} className={"mt-2 text-center"}>
             <h3
-              className={`${theme.headerGradient} bg-clip-text text-5xl md:text-7xl lg:text-8xl font-sacramento font-normal tracking-normal text-transparent leading-[1.5] md:leading-[1.6] py-6 px-4 -my-4 inline-block overflow-visible`}
+              className={`${theme.headerGradient} bg-clip-text text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-sacramento font-normal tracking-normal text-transparent leading-[1.45] md:leading-[1.6] py-4 sm:py-6 px-2 sm:px-4 -my-3 sm:-my-4 inline-block overflow-visible`}
             >
               {hero.punchLine}
             </h3>
@@ -83,7 +83,7 @@ function Hero({ theme, colors }: HeroProps) {
               className={`${theme.textSecondary} max-w-2xl lg:text-base text-xs mx-auto leading-relaxed`}
               dangerouslySetInnerHTML={{ __html: hero.longDescription }}
             />
-            <div className="inline-flex gap-5 items-center justify-center mt-10">
+            <div className="inline-flex flex-wrap gap-3 sm:gap-5 items-center justify-center mt-8 sm:mt-10">
               <Button
                 text="Get in touch"
                 variant="primary"

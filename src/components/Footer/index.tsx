@@ -17,12 +17,12 @@ function Footer() {
       {/* Radiant Top Luminous Accent Border */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/40 dark:via-indigo-400/30 to-transparent" />
 
-      <div className="mx-auto max-w-6xl px-8 md:px-6">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8 md:px-6">
         {/* Main Grid */}
-        <div className="grid gap-12 md:grid-cols-4">
+        <div className="grid gap-10 sm:gap-12 md:grid-cols-4">
           {/* Profile */}
           <div className="md:col-span-2 space-y-6">
-            <div className="flex items-center gap-5">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
               <div className="relative h-20 w-20 rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/10 shadow-lg">
                 <img
                   src={avatar}

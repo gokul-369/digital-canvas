@@ -1,4 +1,11 @@
-import { useState, useEffect, useCallback, lazy, Suspense, type FC } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  lazy,
+  Suspense,
+  type FC,
+} from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
 import { manifest } from "../../routes/manifest";
@@ -9,8 +16,19 @@ import SectionHeader from "../../components/SectionHeader";
 import useTheme from "../../hooks/useTheme";
 
 const GitHubGraph = lazy(() => import("../../components/GitHubGraph"));
-import { HiOutlineServer, HiOutlineRadio, HiOutlineSparkles, HiOutlineBriefcase } from "react-icons/hi2";
-import { FiCheckCircle, FiExternalLink, FiGithub, FiLock, FiArrowRight } from "react-icons/fi";
+import {
+  HiOutlineServer,
+  HiOutlineRadio,
+  HiOutlineSparkles,
+  HiOutlineBriefcase,
+} from "react-icons/hi2";
+import {
+  FiCheckCircle,
+  FiExternalLink,
+  FiGithub,
+  FiLock,
+  FiArrowRight,
+} from "react-icons/fi";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 const ProjectsPage: FC = () => {
@@ -18,7 +36,8 @@ const ProjectsPage: FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
 
-  const selectedProject: ProjectItem = projectsList[currentIndex] || projectsList[0];
+  const selectedProject: ProjectItem =
+    projectsList[currentIndex] || projectsList[0];
 
   const handleNext = useCallback(() => {
     setDirection("next");
@@ -27,13 +46,18 @@ const ProjectsPage: FC = () => {
 
   const handlePrev = useCallback(() => {
     setDirection("prev");
-    setCurrentIndex((prev) => (prev - 1 + projectsList.length) % projectsList.length);
+    setCurrentIndex(
+      (prev) => (prev - 1 + projectsList.length) % projectsList.length,
+    );
   }, []);
 
-  const handleSelectIndex = useCallback((index: number) => {
-    setDirection(index > currentIndex ? "next" : "prev");
-    setCurrentIndex(index);
-  }, [currentIndex]);
+  const handleSelectIndex = useCallback(
+    (index: number) => {
+      setDirection(index > currentIndex ? "next" : "prev");
+      setCurrentIndex(index);
+    },
+    [currentIndex],
+  );
 
   // Keyboard navigation listener (Left / Right arrow keys)
   useEffect(() => {
@@ -52,7 +76,10 @@ const ProjectsPage: FC = () => {
     if (category.toLowerCase().includes("observability")) {
       return <HiOutlineRadio className="w-4 h-4 text-sky-400" />;
     }
-    if (category.toLowerCase().includes("creative") || category.toLowerCase().includes("webgl")) {
+    if (
+      category.toLowerCase().includes("creative") ||
+      category.toLowerCase().includes("webgl")
+    ) {
       return <HiOutlineSparkles className="w-4 h-4 text-emerald-400" />;
     }
     return <HiOutlineServer className="w-4 h-4 text-purple-400" />;
@@ -66,7 +93,7 @@ const ProjectsPage: FC = () => {
       {/* Header Section */}
       <div className="w-full max-w-5xl z-10 flex flex-col items-center text-center mb-6">
         <SectionHeader
-          tag="// AUTONOMOUS LABS & PERSONAL SYSTEMS"
+          tag="AUTONOMOUS LABS & PERSONAL SYSTEMS"
           title="Personal Projects &"
           accent="Systems Architecture"
           description="A curated look into personal engineering platforms, endpoint observability tooling, and hardened cloud infrastructure. Professional & enterprise systems are cataloged separately."
@@ -301,7 +328,9 @@ const ProjectsPage: FC = () => {
                         <div className="flex items-center gap-2.5">
                           <FiLock className="w-4 h-4 text-amber-500 shrink-0" />
                           <div>
-                            <span className="font-semibold text-slate-800 dark:text-slate-200">Repository: </span>
+                            <span className="font-semibold text-slate-800 dark:text-slate-200">
+                              Repository:{" "}
+                            </span>
                             <span>Closed Source</span>
                           </div>
                         </div>
@@ -325,8 +354,12 @@ const ProjectsPage: FC = () => {
 
                 {/* Quick Summary Note */}
                 <div className="p-5 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/75 dark:bg-white/[0.03] backdrop-blur-2xl shadow-xl font-mono text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  <span className="text-sky-500 font-bold block mb-1">// SECURE NETWORKING</span>
-                  All container clusters are provisioned through Dokploy on Oracle Cloud Infrastructure with strict ingress boundaries and SSL encryption.
+                  <span className="text-sky-500 font-bold block mb-1">
+                    // SECURE NETWORKING
+                  </span>
+                  All container clusters are provisioned through Dokploy on
+                  Oracle Cloud Infrastructure with strict ingress boundaries and
+                  SSL encryption.
                 </div>
               </div>
             </motion.div>
@@ -359,7 +392,14 @@ const ProjectsPage: FC = () => {
               Looking for Professional Engineering & Client Platforms?
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-              The projects above represent independent engineering labs and autonomous infrastructure. Commercial production work—including front-end platforms for a tier-1 UK Bank, VISA Click to Pay integrations, and AI MCP servers at <strong>Tata Consultancy Services</strong>, <strong>Paperflite</strong>, and <strong>Novac Technology Solutions</strong>—is documented in the Professional Experience timeline.
+              The projects above represent independent engineering labs and
+              autonomous infrastructure. Commercial production work—including
+              front-end platforms for a tier-1 UK Bank, VISA Click to Pay
+              integrations, and AI MCP servers at{" "}
+              <strong>Tata Consultancy Services</strong>,{" "}
+              <strong>Paperflite</strong>, and{" "}
+              <strong>Novac Technology Solutions</strong>—is documented in the
+              Professional Experience timeline.
             </p>
           </div>
 
