@@ -262,47 +262,33 @@ function InteractiveAmbient({
           const proximity = Math.max(0, 1 - dist / 140);
 
           if (proximity > 0) {
-            // SHINE EFFECT: Star blooms into a radiant starlight flare
+            // SHINE EFFECT: Star blooms into a radiant starlight flare (Fast hardware blit, zero allocations)
             const shineAlpha = Math.min(1.0, currentAlpha + proximity * 0.7);
-            const haloRadius = s.radius * (3.5 + proximity * 5.0);
+            const haloRadius = s.radius * (2.8 + proximity * 3.5);
 
-            const gradient = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, haloRadius);
-            gradient.addColorStop(0, `rgba(255, 255, 255, ${shineAlpha})`);
-            gradient.addColorStop(0.3, `rgba(224, 242, 254, ${shineAlpha * 0.7})`);
-            gradient.addColorStop(1, "transparent");
-
-            ctx.fillStyle = gradient;
+            // Optical halo
             ctx.beginPath();
             ctx.arc(s.x, s.y, haloRadius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(186, 230, 253, ${shineAlpha * 0.35})`;
             ctx.fill();
 
             // Brilliant Core
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.radius * (1 + proximity * 0.4), 0, Math.PI * 2);
             ctx.fillStyle = "#ffffff";
-            ctx.globalAlpha = shineAlpha;
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.radius * (1 + proximity * 0.5), 0, Math.PI * 2);
             ctx.fill();
-            ctx.globalAlpha = 1.0;
           } else if (s.hasGlowHalo) {
-            // Focal star optical corona halo
-            const haloRadius = s.radius * 3.0;
-            const gradient = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, haloRadius);
-            gradient.addColorStop(0, `rgba(255, 255, 255, ${currentAlpha})`);
-            gradient.addColorStop(0.4, `rgba(224, 242, 254, ${currentAlpha * 0.35})`);
-            gradient.addColorStop(1, "transparent");
-
-            ctx.fillStyle = gradient;
+            // Optical corona halo
             ctx.beginPath();
-            ctx.arc(s.x, s.y, haloRadius, 0, Math.PI * 2);
+            ctx.arc(s.x, s.y, s.radius * 2.6, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(224, 242, 254, ${currentAlpha * 0.25})`;
             ctx.fill();
 
             // Core
-            ctx.fillStyle = "#ffffff";
-            ctx.globalAlpha = currentAlpha;
             ctx.beginPath();
             ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
             ctx.fill();
-            ctx.globalAlpha = 1.0;
           } else {
             // ALL FIELD STARS RENDERED: Clean, crisp, lightweight pinpricks
             ctx.fillStyle = s.color;
@@ -314,7 +300,7 @@ function InteractiveAmbient({
           }
         }
       } else {
-        // RENDER LIGHT MODE: Luminous Sunlight Motes with Shimmer & Proximity Bloom
+        // RENDER LIGHT MODE: Luminous Sunlight Motes with Shimmer (Fast hardware blit, zero allocations)
         for (let i = 0; i < moteCount; i++) {
           const m = motes[i];
 
@@ -340,14 +326,15 @@ function InteractiveAmbient({
           const alpha = Math.max(0.25, Math.min(0.95, m.baseAlpha + shimmer + proximity * 0.45));
           const currentRadius = m.radius * (1 + proximity * 0.35);
 
-          const gradient = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, currentRadius);
-          gradient.addColorStop(0, `rgba(${m.rgb}, ${alpha})`);
-          gradient.addColorStop(0.5, `rgba(${m.rgb}, ${alpha * 0.6})`);
-          gradient.addColorStop(1, `rgba(${m.rgb}, 0)`);
+          // Fast two-pass glow: soft aura + luminous center
+          ctx.beginPath();
+          ctx.arc(m.x, m.y, currentRadius * 1.8, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${m.rgb}, ${alpha * 0.28})`;
+          ctx.fill();
 
-          ctx.fillStyle = gradient;
           ctx.beginPath();
           ctx.arc(m.x, m.y, currentRadius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${m.rgb}, ${alpha * 0.9})`;
           ctx.fill();
         }
       }

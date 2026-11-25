@@ -1,211 +1,180 @@
-import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import useTheme from "../../hooks/useTheme";
+
+const CREATIVE_PHRASES = [
+  "Interfaces that breathe",
+  "Composing digital light & form",
+  "Architecting seamless experiences",
+  "Refining for scale & delight",
+];
 
 export function Loader() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [phraseIndex, setPhraseIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIndex((prev) => (prev + 1) % CREATIVE_PHRASES.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div
       className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center select-none overflow-hidden transition-colors duration-500 ${
-        isDark ? "bg-[#020306]" : "bg-[#f8fafc]"
+        isDark ? "bg-[#030712]" : "bg-[#f8fafc]"
       }`}
     >
-      {/* Deep Space Subtle Gravitational Warp Distortion Aura */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        <div
-          className={`w-[520px] h-[520px] rounded-full blur-[100px] animate-pulse ${
-            isDark
-              ? "bg-gradient-to-tr from-amber-500/[0.04] via-indigo-500/[0.03] to-cyan-500/[0.03]"
-              : "bg-gradient-to-tr from-amber-500/[0.10] via-indigo-500/[0.08] to-cyan-500/[0.08]"
-          }`}
-        />
-      </div>
+      {/* Dynamic Ambient Aura */}
+      <div
+        className="absolute inset-0 pointer-events-none flex items-center justify-center"
+        style={{
+          background: isDark
+            ? "radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.14) 0%, rgba(56, 189, 248, 0.07) 40%, transparent 70%)"
+            : "radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.08) 0%, rgba(56, 189, 248, 0.05) 40%, transparent 70%)",
+        }}
+      />
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 1.04 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        exit={{ opacity: 0, scale: 1.05 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 flex flex-col items-center"
       >
-        {/* INTERSTELLAR MINIMALIST GARGANTUA & ENDURANCE RING */}
-        <div className="relative w-44 h-44 flex items-center justify-center">
-          {/* Gravitational Lensing Outer Halo */}
+        {/* Creative Dual-Orbit Lens / Breathing Monogram */}
+        <div className="relative w-28 h-28 flex items-center justify-center">
+          {/* Outer Pulsing Glow */}
           <div
-            className={`absolute inset-3 rounded-full border blur-[1px] ${
-              isDark ? "border-amber-400/20" : "border-amber-500/30"
-            }`}
-          />
-          <div
-            className={`absolute inset-2 rounded-full border blur-[2px] ${
-              isDark ? "border-amber-300/10" : "border-indigo-400/20"
+            className={`absolute inset-0 rounded-full blur-xl transition-opacity duration-700 ${
+              isDark ? "bg-indigo-500/20" : "bg-indigo-500/15"
             }`}
           />
 
-          {/* Upper Gravitational Lensing Arc (Bending light behind the singularity) */}
+          {/* Precision SVG Orbital Rings */}
           <svg
-            className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-            viewBox="0 0 176 176"
+            className="absolute inset-0 w-full h-full animate-spin"
+            style={{ animationDuration: "14s", animationTimingFunction: "linear" }}
+            viewBox="0 0 112 112"
           >
-            <defs>
-              <linearGradient id="gargantuaLensDark" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#f59e0b" stopOpacity="0" />
-                <stop offset="25%" stopColor="#fbbf24" stopOpacity="0.8" />
-                <stop offset="50%" stopColor="#ffffff" stopOpacity="0.95" />
-                <stop offset="75%" stopColor="#f59e0b" stopOpacity="0.6" />
-                <stop offset="100%" stopColor="#d97706" stopOpacity="0" />
-              </linearGradient>
-              <linearGradient id="gargantuaLensLight" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#6366f1" stopOpacity="0" />
-                <stop offset="25%" stopColor="#818cf8" stopOpacity="0.75" />
-                <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.9" />
-                <stop offset="75%" stopColor="#6366f1" stopOpacity="0.6" />
-                <stop offset="100%" stopColor="#4f46e5" stopOpacity="0" />
-              </linearGradient>
-
-              <linearGradient id="accretionGradDark" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#d97706" stopOpacity="0.1" />
-                <stop offset="30%" stopColor="#fbbf24" stopOpacity="0.9" />
-                <stop offset="50%" stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#b45309" stopOpacity="0.1" />
-              </linearGradient>
-              <linearGradient id="accretionGradLight" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#4f46e5" stopOpacity="0.1" />
-                <stop offset="30%" stopColor="#6366f1" stopOpacity="0.8" />
-                <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.95" />
-                <stop offset="70%" stopColor="#818cf8" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.1" />
-              </linearGradient>
-            </defs>
-
-            {/* Upper warped arc */}
-            <path
-              d="M 28 88 C 28 42, 148 42, 148 88"
+            <circle
+              cx="56"
+              cy="56"
+              r="48"
               fill="none"
-              stroke={isDark ? "url(#gargantuaLensDark)" : "url(#gargantuaLensLight)"}
-              strokeWidth="1.75"
-              className={isDark ? "opacity-80 blur-[0.5px]" : "opacity-75 blur-[0.5px]"}
-            />
-            {/* Lower subtle counter-lensing arc */}
-            <path
-              d="M 38 88 C 38 124, 138 124, 138 88"
-              fill="none"
-              stroke={isDark ? "url(#gargantuaLensDark)" : "url(#gargantuaLensLight)"}
-              strokeWidth="1"
-              className={isDark ? "opacity-40" : "opacity-35"}
-            />
-
-            {/* Horizontal Accretion Disk Ring */}
-            <ellipse
-              cx="88"
-              cy="88"
-              rx="76"
-              ry="16"
-              fill="none"
-              stroke={isDark ? "url(#accretionGradDark)" : "url(#accretionGradLight)"}
+              stroke={isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(15, 23, 42, 0.10)"}
               strokeWidth="1.5"
-              className="blur-[0.5px]"
+            />
+            <circle
+              cx="56"
+              cy="56"
+              r="48"
+              fill="none"
+              stroke={isDark ? "#818cf8" : "#6366f1"}
+              strokeWidth="1.5"
+              strokeDasharray="60 240"
+              strokeLinecap="round"
             />
           </svg>
 
-          {/* Rotating Endurance Module Ring (Minimalist 12-pod clockwork orbit) */}
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
+          {/* Counter-spinning Inner Satellite Ring */}
+          <svg
+            className="absolute inset-0 w-full h-full animate-spin"
+            style={{
+              animationDuration: "8s",
+              animationDirection: "reverse",
+              animationTimingFunction: "linear",
+            }}
+            viewBox="0 0 112 112"
           >
-            {Array.from({ length: 12 }).map((_, i) => {
-              const angle = (i * 30 * Math.PI) / 180;
-              const r = 74;
-              const x = Math.cos(angle) * r;
-              const y = Math.sin(angle) * r;
-              const isCommandModule = i === 0;
+            <circle
+              cx="56"
+              cy="56"
+              r="34"
+              fill="none"
+              stroke={isDark ? "rgba(56, 189, 248, 0.25)" : "rgba(99, 102, 241, 0.20)"}
+              strokeWidth="1"
+              strokeDasharray="30 180"
+              strokeLinecap="round"
+            />
+          </svg>
 
-              return (
-                <div
-                  key={i}
-                  style={{
-                    transform: `translate(${x}px, ${y}px)`,
-                  }}
-                  className="absolute flex items-center justify-center"
-                >
-                  <span
-                    className={`block rounded-full transition-all ${
-                      isDark
-                        ? isCommandModule
-                          ? "w-1.5 h-1.5 bg-amber-200 shadow-[0_0_8px_#fbbf24]"
-                          : "w-1 h-1 bg-white/70 shadow-[0_0_4px_rgba(255,255,255,0.8)]"
-                        : isCommandModule
-                          ? "w-1.5 h-1.5 bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]"
-                          : "w-1 h-1 bg-slate-500/80 shadow-[0_0_3px_rgba(100,116,139,0.5)]"
-                    }`}
-                  />
-                </div>
-              );
-            })}
-          </motion.div>
-
-          {/* Singularity / Central Core Body */}
-          <div
-            className={`relative w-20 h-20 rounded-full flex items-center justify-center border transition-all ${
+          {/* Breathing Core Prism Diamond */}
+          <motion.div
+            animate={{
+              scale: [0.92, 1.08, 0.92],
+              rotate: [45, 45, 45],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 2.4,
+              ease: "easeInOut",
+            }}
+            className={`w-7 h-7 rounded-md flex items-center justify-center shadow-lg transition-colors ${
               isDark
-                ? "bg-[#000000] border-amber-400/40 shadow-[0_0_24px_rgba(251,191,36,0.25),inset_0_0_12px_rgba(0,0,0,1)]"
-                : "bg-white border-slate-200/90 shadow-[0_8px_28px_rgba(99,102,241,0.12),inset_0_0_12px_rgba(255,255,255,1)]"
+                ? "bg-gradient-to-tr from-indigo-500 to-cyan-400 shadow-[0_0_20px_rgba(99,102,241,0.5)]"
+                : "bg-gradient-to-tr from-indigo-600 to-sky-500 shadow-[0_0_16px_rgba(79,70,229,0.35)]"
             }`}
           >
-            {/* Photon Sphere Rim */}
-            <div
-              className={`absolute inset-0 rounded-full border ${
-                isDark
-                  ? "border-amber-200/50 shadow-[0_0_10px_rgba(251,191,36,0.6)]"
-                  : "border-indigo-400/40 shadow-[0_0_8px_rgba(99,102,241,0.35)]"
-              }`}
-            />
-
-            {/* Core Center */}
-            <div
-              className={`w-16 h-16 rounded-full ${
-                isDark ? "bg-black" : "bg-slate-50"
-              }`}
-            />
-          </div>
+            <div className={`w-2.5 h-2.5 rounded-sm ${isDark ? "bg-black/60" : "bg-white/80"}`} />
+          </motion.div>
         </div>
 
-        {/* Minimalist Interstellar Typography & Hairline Telemetry */}
-        <div className="mt-8 flex flex-col items-center gap-2 text-center">
+        {/* Creative Text Section */}
+        <div className="mt-7 flex flex-col items-center gap-2.5 text-center min-w-[280px]">
+          {/* Studio Tag */}
           <span
-            className={`font-mono text-[11px] tracking-[0.45em] uppercase font-light pl-[0.45em] ${
-              isDark ? "text-white/90" : "text-slate-800"
+            className={`font-mono text-[10px] tracking-[0.35em] uppercase font-semibold pl-[0.35em] ${
+              isDark ? "text-indigo-400" : "text-indigo-600"
             }`}
           >
-            G A R G A N T U A
+            // GOKUL'S DIGITAL CANVAS
           </span>
 
-          {/* Minimal 1px Hairline Slingshot Progress */}
+          {/* Dynamic Animated Creative Phrase */}
+          <div className="h-7 flex items-center justify-center overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={phraseIndex}
+                initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className={`font-space text-sm sm:text-base font-medium tracking-tight ${
+                  isDark ? "text-white" : "text-slate-900"
+                }`}
+              >
+                {CREATIVE_PHRASES[phraseIndex]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          {/* Minimalist 1px Precision Progress Shimmer Line */}
           <div
-            className={`w-36 h-[1px] relative overflow-hidden my-1 ${
+            className={`w-44 h-[2px] rounded-full relative overflow-hidden mt-1 ${
               isDark ? "bg-white/10" : "bg-slate-200"
             }`}
           >
             <motion.div
-              className={`absolute inset-y-0 left-0 w-12 ${
+              className={`absolute inset-y-0 w-20 rounded-full ${
                 isDark
-                  ? "bg-gradient-to-r from-transparent via-amber-300 to-transparent"
-                  : "bg-gradient-to-r from-transparent via-indigo-500 to-transparent"
+                  ? "bg-gradient-to-r from-transparent via-cyan-400 to-indigo-500"
+                  : "bg-gradient-to-r from-transparent via-indigo-600 to-sky-500"
               }`}
-              animate={{ x: [-50, 150] }}
-              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+              animate={{ x: [-80, 180] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
             />
           </div>
 
+          {/* Telemetry Status Hint */}
           <span
-            className={`font-mono text-[9px] tracking-[0.25em] uppercase ${
+            className={`font-mono text-[9px] tracking-[0.2em] uppercase mt-1 ${
               isDark ? "text-white/40" : "text-slate-400"
             }`}
           >
-            {isDark ? "EVENT HORIZON // T-MINUS" : "SOLAR EQUINOX // SYNCHRONIZING"}
+            INITIALIZING CANVAS · READY
           </span>
         </div>
       </motion.div>

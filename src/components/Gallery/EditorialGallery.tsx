@@ -32,7 +32,6 @@ export default function EditorialGallery({
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isInViewport, setIsInViewport] = useState(true);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef<number | null>(null);
@@ -56,27 +55,6 @@ export default function EditorialGallery({
     setDirection("prev");
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [currentIndex, total]);
-
-  // Seamless scroll-aware background:
-  // Smoothly illuminates the blurred photo background while viewing the gallery,
-  // and smoothly resets back to the clean ambient canvas when scrolling to Inspirations.
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInViewport(entry.isIntersecting && entry.intersectionRatio > 0.1);
-      },
-      {
-        threshold: [0, 0.1, 0.25],
-        rootMargin: "-20px 0px -20px 0px",
-      }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   // Keyboard navigation
   useEffect(() => {
@@ -112,63 +90,6 @@ export default function EditorialGallery({
 
   return (
     <>
-      {/* Dynamic Ambient Blurred Page Background in sync with 3D slide direction */}
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 pointer-events-none -z-10 transition-opacity duration-700 ease-out overflow-hidden"
-        style={{
-          opacity: isFullscreen ? 1 : isInViewport ? 1 : 0,
-          maskImage: isFullscreen
-            ? "none"
-            : "linear-gradient(to bottom, transparent 0%, transparent 22%, rgba(0,0,0,0.15) 27%, rgba(0,0,0,1) 36%, rgba(0,0,0,1) 85%, transparent 100%)",
-          WebkitMaskImage: isFullscreen
-            ? "none"
-            : "linear-gradient(to bottom, transparent 0%, transparent 22%, rgba(0,0,0,0.15) 27%, rgba(0,0,0,1) 36%, rgba(0,0,0,1) 85%, transparent 100%)",
-        }}
-      >
-        <AnimatePresence mode="popLayout" custom={direction}>
-          <motion.div
-            key={current.medium || current.full || current.thumb}
-            custom={direction}
-            variants={{
-              initial: (dir: "next" | "prev") => ({
-                x: dir === "next" ? "14%" : "-14%",
-                opacity: 0,
-                scale: 1.08,
-              }),
-              animate: {
-                x: "0%",
-                opacity: 1,
-                scale: 1.05,
-                transition: {
-                  duration: 0.75,
-                  ease: [0.45, 0, 0.55, 1], // exact power2.inOut matching 3D viewport
-                },
-              },
-              exit: (dir: "next" | "prev") => ({
-                x: dir === "next" ? "-14%" : "14%",
-                opacity: 0,
-                scale: 1.02,
-                transition: {
-                  duration: 0.75,
-                  ease: [0.45, 0, 0.55, 1],
-                },
-              }),
-            }}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className="absolute inset-[-20%] bg-cover bg-center will-change-transform"
-            style={{
-              backgroundImage: `url(${current.medium || current.thumb})`,
-              filter: "blur(50px) brightness(0.85) saturate(1.4)",
-            }}
-          />
-        </AnimatePresence>
-        <div className="absolute inset-0 bg-slate-900/15 dark:bg-black/35 backdrop-blur-2xl" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/5 to-slate-950/20 dark:via-black/20 dark:to-black/50 pointer-events-none" />
-      </div>
-
       <div
         ref={containerRef}
         className="relative w-full max-w-7xl mx-auto px-6 lg:px-12 py-4 flex flex-col justify-center"
