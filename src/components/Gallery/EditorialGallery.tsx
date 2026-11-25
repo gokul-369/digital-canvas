@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   IoChevronBack,
   IoChevronForward,
@@ -34,16 +34,35 @@ export default function EditorialGallery({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const bgRef = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef<number | null>(null);
 
-  // Continuous scroll-scrubbed background opacity:
-  // Gradually dissolves from 1 -> 0 as the user scrolls from 15% to 70% past the gallery,
-  // avoiding any sudden binary switch while ensuring it disappears before the next section.
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-  const scrollBgOpacity = useTransform(scrollYProgress, [0.15, 0.7], [1, 0]);
+  // Continuous, strictly clamped scroll-driven background opacity:
+  // Smoothly fades 1 -> 0 between 10% and 55% of viewport height scrolled,
+  // and stays strictly 0 for the rest of the page.
+  useEffect(() => {
+    const updateOpacity = () => {
+      const bg = bgRef.current;
+      if (!bg) return;
+      if (isFullscreen) {
+        bg.style.opacity = "1";
+        return;
+      }
+      const vh = window.innerHeight || 800;
+      const start = vh * 0.1;
+      const range = vh * 0.45;
+      const progress = Math.min(1, Math.max(0, (window.scrollY - start) / range));
+      bg.style.opacity = String(1 - progress);
+    };
+
+    updateOpacity();
+    window.addEventListener("scroll", updateOpacity, { passive: true });
+    window.addEventListener("resize", updateOpacity, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", updateOpacity);
+      window.removeEventListener("resize", updateOpacity);
+    };
+  }, [isFullscreen]);
 
   // Two persistent slots for ultra-smooth 60fps full-screen background crossfade with zero jitter
   const [bgSlots, setBgSlots] = useState<{
@@ -121,12 +140,10 @@ export default function EditorialGallery({
   return (
     <>
       {/* 100% Full-Screen MacBook-Style Shallow Frosted Glass Blurred Photo Background */}
-      <motion.div
+      <div
+        ref={bgRef}
         aria-hidden="true"
         className="fixed inset-[-5%] w-[110%] h-[110%] pointer-events-none -z-10 overflow-hidden transform-gpu bg-[#030712] will-change-opacity"
-        style={{
-          opacity: isFullscreen ? 1 : scrollBgOpacity,
-        }}
       >
         {/* Solid Base to 100% block space stars from showing behind */}
         <div className="absolute inset-0 bg-slate-950 dark:bg-[#030712]" />
@@ -155,7 +172,7 @@ export default function EditorialGallery({
         {/* MacBook-Style Frosted Glass Glaze: Perfectly balances photo visibility and title legibility */}
         <div className="absolute inset-0 bg-white/[0.08] dark:bg-black/[0.22] pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-transparent to-white/50 dark:from-black/60 dark:via-black/20 dark:to-black/60 pointer-events-none transition-colors duration-500" />
-      </motion.div>
+      </div>
 
       <div
         ref={containerRef}
