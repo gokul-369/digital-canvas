@@ -1,9 +1,11 @@
 import { useEffect, useRef, type FC } from "react";
 import * as THREE from "three";
+import gsap from "gsap";
 import type { ProjectItem } from "../../data/projects";
 
 interface ProjectShowcase3DProps {
   project: ProjectItem;
+  direction?: "next" | "prev";
   theme?: string;
   className?: string;
   onOpenLive?: () => void;
@@ -11,6 +13,7 @@ interface ProjectShowcase3DProps {
 
 export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
   project,
+  direction = "next",
   theme = "dark",
   className = "",
   onOpenLive,
@@ -22,6 +25,7 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
   const deviceGroupRef = useRef<THREE.Group | null>(null);
   const screenMeshRef = useRef<THREE.Mesh | null>(null);
   const animFrameRef = useRef<number>(0);
+  const isTransitioningRef = useRef<boolean>(false);
 
   const isDark = theme === "dark";
 
@@ -37,9 +41,18 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
   const textureLoader = useRef<THREE.TextureLoader>(new THREE.TextureLoader());
   const currentTextureRef = useRef<THREE.Texture | null>(null);
 
-  // Update screen texture when project changes
+  // Smooth 3D animation when project changes
+  const isFirstMount = useRef(true);
   useEffect(() => {
-    if (!screenMeshRef.current || !project.previewImage) return;
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+
+    const deviceGroup = deviceGroupRef.current;
+    if (!deviceGroup || !project.previewImage) return;
+
+    isTransitioningRef.current = true;
 
     textureLoader.current.load(project.previewImage, (texture) => {
       texture.generateMipmaps = true;
@@ -49,14 +62,55 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
       texture.wrapS = THREE.ClampToEdgeWrapping;
       texture.wrapT = THREE.ClampToEdgeWrapping;
 
-      const mat = screenMeshRef.current?.material as THREE.MeshBasicMaterial;
-      if (mat) {
-        mat.map = texture;
-        mat.needsUpdate = true;
-      }
-      currentTextureRef.current = texture;
+      gsap.killTweensOf(deviceGroup.position);
+      gsap.killTweensOf(deviceGroup.rotation);
+
+      const xExit = direction === "next" ? -1.4 : 1.4;
+      const rotYExit = direction === "next" ? -0.24 : 0.24;
+
+      // 1. Exit animation: smooth 3D depth slide
+      gsap.to(deviceGroup.position, {
+        x: xExit,
+        z: -0.5,
+        duration: 0.2,
+        ease: "power2.in",
+      });
+      gsap.to(deviceGroup.rotation, {
+        y: rotYExit,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: () => {
+          // Switch texture while at peak exit
+          const mat = screenMeshRef.current?.material as THREE.MeshBasicMaterial;
+          if (mat) {
+            mat.map = texture;
+            mat.needsUpdate = true;
+          }
+          currentTextureRef.current = texture;
+
+          // 2. Enter animation: glide in smoothly from opposite side
+          gsap.fromTo(
+            deviceGroup.position,
+            { x: -xExit, z: -0.5 },
+            {
+              x: 0,
+              z: 0,
+              duration: 0.36,
+              ease: "power2.out",
+              onComplete: () => {
+                isTransitioningRef.current = false;
+              },
+            }
+          );
+          gsap.fromTo(
+            deviceGroup.rotation,
+            { y: -rotYExit },
+            { y: 0, duration: 0.36, ease: "power2.out" }
+          );
+        },
+      });
     });
-  }, [project.previewImage]);
+  }, [project.id, project.previewImage, direction]);
 
   // Setup Three.js 3D viewport
   useEffect(() => {
@@ -220,7 +274,7 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
       mouse.current.x += (mouse.current.targetX - mouse.current.x) * 0.08;
       mouse.current.y += (mouse.current.targetY - mouse.current.y) * 0.08;
 
-      if (deviceGroupRef.current) {
+      if (deviceGroupRef.current && !isTransitioningRef.current) {
         deviceGroupRef.current.rotation.y = mouse.current.x * 0.22;
         deviceGroupRef.current.rotation.x = -mouse.current.y * 0.18;
         // Subtle floating breath
