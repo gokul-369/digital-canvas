@@ -22,6 +22,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Experience = lazy(() => import("../pages/Experience"));
 const SkillsPage = lazy(() => import("../pages/SkillsPage"));
+const ProjectsPage = lazy(() => import("../pages/ProjectsPage"));
 const ImageGallery = lazy(() => import("../pages/ImageGallery"));
 const BooksPage = lazy(() => import("../pages/BooksPage"));
 
@@ -81,6 +82,14 @@ export function AppRoutes() {
           element={
             <Suspense fallback={<Loader />}>
               <SkillsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path={manifest.projects}
+          element={
+            <Suspense fallback={<Loader />}>
+              <ProjectsPage />
             </Suspense>
           }
         />

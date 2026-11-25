@@ -5,7 +5,7 @@ import { MdArrowRightAlt } from "react-icons/md";
 import { RiDoubleQuotesL } from "react-icons/ri";
 import { IoCameraOutline, IoBookOutline } from "react-icons/io5";
 import { HiOutlineBriefcase } from "react-icons/hi";
-import { HiOutlineCommandLine, HiOutlineRocketLaunch } from "react-icons/hi2";
+import { HiOutlineCommandLine, HiOutlineRocketLaunch, HiOutlineRadio } from "react-icons/hi2";
 import { HashLink } from "react-router-hash-link";
 import { FiAward } from "react-icons/fi";
 import { useAppContext } from "../../context/AppContext";
@@ -228,6 +228,51 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
                 <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
               </HashLink>
               <FiAward className="h-8 w-8 text-purple-500/30" />
+            </div>
+          </SpotlightCard>
+        </div>
+
+        {/* CARD: 3D Orbital Hardware & Projects (Full width banner) */}
+        <div className="col-span-1 md:col-span-2 lg:col-span-3">
+          <SpotlightCard
+            className="h-full rounded-3xl p-7 sm:p-8 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-sky-400 hover:shadow-[0_4px_20px_rgba(56,189,248,0.15)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 transition-all duration-300"
+            spotlightColor="rgba(56, 189, 248, 0.45)"
+          >
+            <div className="flex-1">
+              <div className="flex items-center gap-3 pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+                <span className="font-mono text-xs uppercase tracking-wider text-sky-600 dark:text-sky-400 font-semibold">
+                  // PRODUCTION SYSTEMS & HARDWARE
+                </span>
+                <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-sky-400/40 bg-sky-500/10 text-sky-600 dark:text-sky-300 font-semibold flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  VigiLens & VPS Live
+                </span>
+              </div>
+
+              <div className="mt-4 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
+                <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  Orbital Telemetry & Projects
+                </h3>
+                <p className="font-caveat text-xl text-sky-600 dark:text-sky-400">
+                  "Tools forged for scale, observed in real time."
+                </p>
+              </div>
+
+              <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+                An interactive 3D space-grade avionics console monitoring VigiLens (autonomous endpoint telemetry & request tracing), self-hosted hardened cloud VPS infrastructure, and distributed production web applications.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4 flex-shrink-0">
+              <HashLink
+                to={manifest.projects}
+                scroll={scrollWithLenis}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-mono text-xs font-semibold shadow-md shadow-sky-500/25 transition-all group cursor-pointer"
+              >
+                <span>Launch 3D Console</span>
+                <MdArrowRightAlt className="text-base group-hover:translate-x-1.5 transition-transform" />
+              </HashLink>
+              <HiOutlineRadio className="h-8 w-8 sm:h-10 sm:w-10 text-sky-500/40 block flex-shrink-0" />
             </div>
           </SpotlightCard>
         </div>

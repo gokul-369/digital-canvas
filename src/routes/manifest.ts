@@ -3,6 +3,7 @@ export const manifest = {
   about: "/#about",
   experience: "/experience",
   skills: "/skills",
+  projects: "/projects",
   testimonials: "/experience/#testimonials",
   awards: "/experience/#awards",
   gallery: "/gallery",

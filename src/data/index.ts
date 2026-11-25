@@ -41,6 +41,10 @@ export const navLinks: formField[] = [
     value: "/skills",
   },
   {
+    name: "Projects",
+    value: "/projects",
+  },
+  {
     name: "Gallery",
     value: "/gallery",
   },
