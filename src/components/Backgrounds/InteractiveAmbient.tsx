@@ -352,82 +352,71 @@ function InteractiveAmbient({
         }
       }
 
-      // RENDER SHINING COMETS IN BOTH MODES (Dark: Electric Cyan/White, Light: Iridescent Prismatic Flare)
-      cometCooldown--;
-      if (cometCooldown <= 0 && activeComet === null) {
-        activeComet = spawnComet();
-        cometCooldown = Math.floor(Math.random() * 260 + 180);
-      }
-
-      if (activeComet && activeComet.active) {
-        const c = activeComet;
-        c.progress++;
-
-        c.x += Math.cos(c.angle) * c.speed;
-        c.y += Math.sin(c.angle) * c.speed;
-
-        const p = c.progress / c.duration;
-        if (p < 0.15) {
-          c.alpha = (p / 0.15) * c.maxAlpha;
-        } else if (p > 0.65) {
-          c.alpha = ((1 - p) / 0.35) * c.maxAlpha;
-        } else {
-          c.alpha = c.maxAlpha;
+      // RENDER SHINING COMETS ONLY IN NIGHT/DARK MODE
+      if (isDark) {
+        cometCooldown--;
+        if (cometCooldown <= 0 && activeComet === null) {
+          activeComet = spawnComet();
+          cometCooldown = Math.floor(Math.random() * 260 + 180);
         }
 
-        if (p >= 1 || c.x > width + 250 || c.y > height + 250) {
-          c.active = false;
-          activeComet = null;
-        } else {
-          const tailX = c.x - Math.cos(c.angle) * c.length;
-          const tailY = c.y - Math.sin(c.angle) * c.length;
+        if (activeComet && activeComet.active) {
+          const c = activeComet;
+          c.progress++;
 
-          const tailGrad = ctx.createLinearGradient(c.x, c.y, tailX, tailY);
-          if (isDark) {
+          c.x += Math.cos(c.angle) * c.speed;
+          c.y += Math.sin(c.angle) * c.speed;
+
+          const p = c.progress / c.duration;
+          if (p < 0.15) {
+            c.alpha = (p / 0.15) * c.maxAlpha;
+          } else if (p > 0.65) {
+            c.alpha = ((1 - p) / 0.35) * c.maxAlpha;
+          } else {
+            c.alpha = c.maxAlpha;
+          }
+
+          if (p >= 1 || c.x > width + 250 || c.y > height + 250) {
+            c.active = false;
+            activeComet = null;
+          } else {
+            const tailX = c.x - Math.cos(c.angle) * c.length;
+            const tailY = c.y - Math.sin(c.angle) * c.length;
+
+            const tailGrad = ctx.createLinearGradient(c.x, c.y, tailX, tailY);
             tailGrad.addColorStop(0, `rgba(255, 255, 255, ${c.alpha * 0.95})`);
             tailGrad.addColorStop(0.15, `rgba(224, 242, 254, ${c.alpha * 0.75})`);
             tailGrad.addColorStop(0.4, `rgba(56, 189, 248, ${c.alpha * 0.4})`);
             tailGrad.addColorStop(0.75, `rgba(99, 102, 241, ${c.alpha * 0.15})`);
             tailGrad.addColorStop(1, "transparent");
-          } else {
-            tailGrad.addColorStop(0, `rgba(79, 70, 229, ${c.alpha * 0.9})`);
-            tailGrad.addColorStop(0.2, `rgba(99, 102, 241, ${c.alpha * 0.75})`);
-            tailGrad.addColorStop(0.5, `rgba(56, 189, 248, ${c.alpha * 0.45})`);
-            tailGrad.addColorStop(1, "transparent");
-          }
 
-          ctx.strokeStyle = tailGrad;
-          ctx.lineWidth = c.headRadius * 1.5;
-          ctx.lineCap = "round";
-          ctx.beginPath();
-          ctx.moveTo(c.x, c.y);
-          ctx.lineTo(tailX, tailY);
-          ctx.stroke();
+            ctx.strokeStyle = tailGrad;
+            ctx.lineWidth = c.headRadius * 1.5;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(c.x, c.y);
+            ctx.lineTo(tailX, tailY);
+            ctx.stroke();
 
-          // Coma flare
-          const flareGrad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.headRadius * 5);
-          if (isDark) {
+            // Coma flare
+            const flareGrad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.headRadius * 5);
             flareGrad.addColorStop(0, `rgba(255, 255, 255, ${c.alpha * 0.9})`);
             flareGrad.addColorStop(0.3, `rgba(186, 230, 253, ${c.alpha * 0.6})`);
             flareGrad.addColorStop(1, "transparent");
-          } else {
-            flareGrad.addColorStop(0, `rgba(79, 70, 229, ${c.alpha * 0.85})`);
-            flareGrad.addColorStop(0.3, `rgba(129, 140, 248, ${c.alpha * 0.55})`);
-            flareGrad.addColorStop(1, "transparent");
+
+            ctx.fillStyle = flareGrad;
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, c.headRadius * 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Core
+            ctx.fillStyle = "#ffffff";
+            ctx.globalAlpha = c.alpha;
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, c.headRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
           }
-
-          ctx.fillStyle = flareGrad;
-          ctx.beginPath();
-          ctx.arc(c.x, c.y, c.headRadius * 5, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Core
-          ctx.fillStyle = isDark ? "#ffffff" : "#4f46e5";
-          ctx.globalAlpha = c.alpha;
-          ctx.beginPath();
-          ctx.arc(c.x, c.y, c.headRadius, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1.0;
         }
       }
 

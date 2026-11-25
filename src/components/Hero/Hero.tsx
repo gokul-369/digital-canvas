@@ -14,6 +14,7 @@ import { HiOutlineBriefcase } from "react-icons/hi2";
 
 import LiquidEther from "../Backgrounds/LiquidEther";
 import { isMobile } from "../../utils/styleFactory";
+import useTheme from "../../hooks/useTheme";
 
 type HeroProps = {
   theme: ThemeClassSet;
@@ -23,12 +24,14 @@ type HeroProps = {
 function Hero({ theme, colors }: HeroProps) {
   const navigate = useNavigate();
   const { openCollaborate } = useAppContext();
+  const { theme: currentTheme } = useTheme();
+  const isDark = currentTheme === "dark";
 
   return (
     <section id={"home"} className="h-dvh relative w-full bg-transparent overflow-hidden">
       {/* LiquidEther with smooth feathered bottom dissolve into Home ambient background */}
       <div
-        className="absolute inset-0 h-full w-full pointer-events-none -z-0"
+        className="absolute inset-0 h-full w-full pointer-events-none -z-0 opacity-40 dark:opacity-100 transition-opacity duration-500"
         style={{
           maskImage:
             "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 98%)",
@@ -38,12 +41,12 @@ function Hero({ theme, colors }: HeroProps) {
       >
         <LiquidEther
           colors={colors}
-          mouseForce={isMobile ? 7 : 11}
+          mouseForce={isMobile ? (isDark ? 7 : 4) : (isDark ? 11 : 6)}
           isViscous
           iterationsViscous={isMobile ? 6 : 8}
           iterationsPoisson={isMobile ? 8 : 12}
           resolution={0.2}
-          autoIntensity={isMobile ? 1.2 : 1.6}
+          autoIntensity={isDark ? (isMobile ? 1.2 : 1.6) : (isMobile ? 0.5 : 0.7)}
           autoResumeDelay={1500}
           autoRampDuration={0.3}
           isBounce

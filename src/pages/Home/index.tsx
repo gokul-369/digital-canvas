@@ -11,7 +11,7 @@ function Home() {
   const colors =
     theme === "dark"
       ? ["#9383d2", "#8998e1", "#aba7b9"]
-      : ["#4f46e5", "#818cf8", "#c7d2fe"];
+      : ["#cbd5e1", "#e2e8f0", "#e0e7ff"];
 
   return (
     <div id="#home" className="relative w-full">

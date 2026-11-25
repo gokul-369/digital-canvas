@@ -118,6 +118,12 @@ export default function EditorialGallery({
         className="fixed inset-0 pointer-events-none -z-10 transition-opacity duration-700 ease-out overflow-hidden"
         style={{
           opacity: isFullscreen ? 1 : isInViewport ? 1 : 0,
+          maskImage: isFullscreen
+            ? "none"
+            : "linear-gradient(to bottom, transparent 0%, transparent 22%, rgba(0,0,0,0.15) 27%, rgba(0,0,0,1) 36%, rgba(0,0,0,1) 85%, transparent 100%)",
+          WebkitMaskImage: isFullscreen
+            ? "none"
+            : "linear-gradient(to bottom, transparent 0%, transparent 22%, rgba(0,0,0,0.15) 27%, rgba(0,0,0,1) 36%, rgba(0,0,0,1) 85%, transparent 100%)",
         }}
       >
         <AnimatePresence mode="popLayout" custom={direction}>
@@ -358,54 +364,78 @@ export default function EditorialGallery({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-6 sm:p-10 select-none"
+              className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col justify-between p-4 sm:p-10 select-none"
               onClick={() => setIsFullscreen(false)}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
             >
-              {/* Top Header: Counter & Close */}
+              {/* Top Header: Counter, Navigation & Close */}
               <div
                 className="relative z-50 flex items-center justify-between w-full"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <span className="font-mono text-xs uppercase tracking-[0.25em] text-indigo-400 font-semibold">
                     // Frame {numFormatted} / {totalFormatted}
                   </span>
                   <span className="text-white/40 text-xs">·</span>
-                  <span className="font-space text-sm font-bold text-white">
+                  <span className="font-space text-xs sm:text-sm font-bold text-white truncate max-w-[140px] sm:max-w-none">
                     {current.title}
                   </span>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setIsFullscreen(false)}
-                  className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
-                  aria-label="Close fullscreen"
-                >
-                  <IoClose size={22} />
-                </button>
+                <div className="flex items-center gap-1.5 sm:gap-3">
+                  {/* Mobile-Only Header Navigation Arrows: Never Overlaps Photo */}
+                  <div className="flex sm:hidden items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={goToPrev}
+                      className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
+                      aria-label="Previous image"
+                    >
+                      <IoChevronBack size={18} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={goToNext}
+                      className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
+                      aria-label="Next image"
+                    >
+                      <IoChevronForward size={18} />
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsFullscreen(false)}
+                    className="p-2 sm:p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer ml-1"
+                    aria-label="Close fullscreen"
+                  >
+                    <IoClose size={20} />
+                  </button>
+                </div>
               </div>
 
               {/* Center Main Image Viewport with Floating Prev/Next Buttons */}
               <div
-                className="relative flex-1 flex items-center justify-center my-4 overflow-hidden"
+                className="relative flex-1 flex items-center justify-center my-2 sm:my-4 overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Floating Left Arrow */}
+                {/* Desktop Floating Left Arrow: Hidden on mobile so it NEVER obstructs the photo */}
                 <button
                   type="button"
                   onClick={goToPrev}
-                  className="absolute left-2 sm:left-6 z-50 p-4 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white transition-all cursor-pointer shadow-xl backdrop-blur-md hover:scale-110 active:scale-95"
+                  className="hidden sm:flex absolute left-4 sm:left-8 z-50 p-4 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white transition-all cursor-pointer shadow-xl backdrop-blur-md hover:scale-110 active:scale-95"
                   aria-label="Previous image"
                 >
                   <IoChevronBack size={24} />
                 </button>
 
-                {/* Floating Right Arrow */}
+                {/* Desktop Floating Right Arrow: Hidden on mobile so it NEVER obstructs the photo */}
                 <button
                   type="button"
                   onClick={goToNext}
-                  className="absolute right-2 sm:right-6 z-50 p-4 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white transition-all cursor-pointer shadow-xl backdrop-blur-md hover:scale-110 active:scale-95"
+                  className="hidden sm:flex absolute right-4 sm:right-8 z-50 p-4 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white transition-all cursor-pointer shadow-xl backdrop-blur-md hover:scale-110 active:scale-95"
                   aria-label="Next image"
                 >
                   <IoChevronForward size={24} />
@@ -419,10 +449,10 @@ export default function EditorialGallery({
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="flex flex-col items-center justify-center max-h-full max-w-full px-6 sm:px-12"
+                    className="flex flex-col items-center justify-center max-h-full max-w-full px-2 sm:px-12"
                   >
                     {/* Guaranteed Proportional Viewport Frame - Never Cuts Text or Overflows */}
-                    <div className="relative flex items-center justify-center h-[48vh] sm:h-[55vh] w-[90vw] max-w-[850px] overflow-hidden rounded-2xl">
+                    <div className="relative flex items-center justify-center h-[56vh] sm:h-[62vh] w-[94vw] sm:w-[90vw] max-w-[900px] overflow-hidden rounded-2xl">
                       {/* Progressive Blurred Preview + Cool Atmospheric Developing Skeleton */}
                       {!isFullImageLoaded && (
                         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gemini-skeleton">
@@ -447,7 +477,7 @@ export default function EditorialGallery({
                       <img
                         src={current.medium || current.full}
                         srcSet={`${current.thumb} 320w, ${current.medium} 768w, ${current.full} 1400w`}
-                        sizes="(max-width: 640px) 90vw, (max-width: 1024px) 75vw, 850px"
+                        sizes="(max-width: 640px) 94vw, (max-width: 1024px) 75vw, 900px"
                         alt={current.title}
                         loading="eager"
                         decoding="async"
@@ -459,7 +489,7 @@ export default function EditorialGallery({
                     </div>
 
                     {/* Description and EXIF Area with Guaranteed Breathing Room */}
-                    <div className="mt-3 text-center min-h-[50px] flex flex-col items-center justify-center">
+                    <div className="mt-2 sm:mt-3 text-center min-h-[46px] flex flex-col items-center justify-center">
                       <motion.div
                         key={currentIndex}
                         initial={{ opacity: 0, y: 6 }}
@@ -467,10 +497,10 @@ export default function EditorialGallery({
                         transition={{ duration: 0.35, ease: "easeOut" }}
                         className="flex flex-col items-center"
                       >
-                        <p className="font-caveat text-xl sm:text-2xl text-indigo-300 drop-shadow-sm">
+                        <p className="font-caveat text-lg sm:text-2xl text-indigo-300 drop-shadow-sm">
                           "{current.description}"
                         </p>
-                        <p className="font-mono text-[11px] text-white/60 mt-1 tracking-wider">
+                        <p className="font-mono text-[10px] sm:text-[11px] text-white/60 mt-0.5 tracking-wider">
                           📷 {currentExif}
                         </p>
                       </motion.div>
@@ -481,10 +511,10 @@ export default function EditorialGallery({
 
               {/* Bottom Navigation Hint & Thumbnail Strip */}
               <div
-                className="relative z-50 flex flex-col items-center gap-3 w-full"
+                className="relative z-50 flex flex-col items-center gap-2 sm:gap-3 w-full"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex justify-center gap-2 overflow-x-auto max-w-full py-2 scrollbar-none px-4">
+                <div className="flex justify-center gap-2 overflow-x-auto max-w-full py-1.5 scrollbar-none px-2 sm:px-4">
                   {images.map((img: prcocessedimages, idx: number) => {
                     const isActive = idx === currentIndex;
                     return (
@@ -496,9 +526,9 @@ export default function EditorialGallery({
                           setDirection(idx > currentIndex ? "next" : "prev");
                           setCurrentIndex(idx);
                         }}
-                        className={`relative flex-shrink-0 w-12 h-12 rounded-xl overflow-hidden border transition-all cursor-pointer ${
+                        className={`relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden border transition-all cursor-pointer ${
                           isActive
-                            ? "border-indigo-400 ring-2 ring-indigo-400 scale-110"
+                            ? "border-indigo-400 ring-2 ring-indigo-400 scale-105 sm:scale-110"
                             : "border-white/20 opacity-50 hover:opacity-100"
                         }`}
                       >
@@ -513,7 +543,7 @@ export default function EditorialGallery({
                   })}
                 </div>
 
-                <p className="font-mono text-[11px] text-white/50 tracking-wider">
+                <p className="hidden sm:block font-mono text-[11px] text-white/50 tracking-wider">
                   Use ← / → keys or arrows to navigate · Click anywhere outside to close
                 </p>
               </div>
