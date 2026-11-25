@@ -27,14 +27,14 @@ export default function SectionHeader({
           // {tag}
         </p>
       )}
-      <h2 className="text-3xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+      <h2 className="text-3xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white drop-shadow-sm">
         {title}{" "}
-        <span className="font-caveat text-4xl lg:text-6xl text-indigo-600 dark:text-indigo-400 font-bold tracking-normal inline-block">
+        <span className="font-caveat text-4xl lg:text-6xl text-indigo-600 dark:text-indigo-400 font-bold tracking-normal inline-block drop-shadow-sm">
           {accent}
         </span>
       </h2>
       {description && (
-        <p className="mt-4 text-xs lg:text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-light">
+        <p className="mt-4 text-xs lg:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-light drop-shadow-sm">
           {description}
         </p>
       )}

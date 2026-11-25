@@ -32,9 +32,31 @@ export default function EditorialGallery({
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(true);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef<number | null>(null);
+
+  // Seamless scroll-aware background:
+  // Smoothly illuminates the blurred photo background while viewing the gallery,
+  // and smoothly fades out back to the clean ambient canvas when scrolling to other sections.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInViewport(entry.isIntersecting);
+      },
+      {
+        threshold: 0.05,
+        rootMargin: "-20px 0px -20px 0px",
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Two persistent slots for ultra-smooth 60fps full-screen background crossfade with zero jitter
   const [bgSlots, setBgSlots] = useState<{ activeSlot: 0 | 1; slot0: string; slot1: string }>({
@@ -107,18 +129,21 @@ export default function EditorialGallery({
 
   return (
     <>
-      {/* 100% Full-Screen Ambient Blurred Photo Background - Edge to edge, zero jitter, locked 60fps */}
+      {/* 100% Full-Screen Ambient Blurred Photo Background - Rich photo blur with 700ms scroll fade-out */}
       <div
         aria-hidden="true"
-        className="fixed inset-[-8%] w-[116%] h-[116%] pointer-events-none -z-10 overflow-hidden transform-gpu"
+        className="fixed inset-[-8%] w-[116%] h-[116%] pointer-events-none -z-10 overflow-hidden transform-gpu transition-opacity duration-700 ease-out"
+        style={{
+          opacity: isFullscreen ? 1 : isInViewport ? 1 : 0,
+        }}
       >
         {/* Slot 0 */}
         {bgSlots.slot0 && (
           <img
             src={bgSlots.slot0}
             alt=""
-            className={`absolute inset-0 w-full h-full object-cover filter blur-[64px] sm:blur-[80px] saturate-150 contrast-110 transition-opacity duration-700 ease-out ${
-              bgSlots.activeSlot === 0 ? "opacity-45 dark:opacity-35" : "opacity-0"
+            className={`absolute inset-0 w-full h-full object-cover filter blur-[55px] sm:blur-[75px] saturate-160 contrast-120 dark:brightness-90 transition-opacity duration-700 ease-out ${
+              bgSlots.activeSlot === 0 ? "opacity-75 dark:opacity-70" : "opacity-0"
             }`}
           />
         )}
@@ -127,15 +152,15 @@ export default function EditorialGallery({
           <img
             src={bgSlots.slot1}
             alt=""
-            className={`absolute inset-0 w-full h-full object-cover filter blur-[64px] sm:blur-[80px] saturate-150 contrast-110 transition-opacity duration-700 ease-out ${
-              bgSlots.activeSlot === 1 ? "opacity-45 dark:opacity-35" : "opacity-0"
+            className={`absolute inset-0 w-full h-full object-cover filter blur-[55px] sm:blur-[75px] saturate-160 contrast-120 dark:brightness-90 transition-opacity duration-700 ease-out ${
+              bgSlots.activeSlot === 1 ? "opacity-75 dark:opacity-70" : "opacity-0"
             }`}
           />
         )}
 
-        {/* Seamless full-screen atmospheric tint ensuring 100% header contrast with zero mask cutoffs */}
-        <div className="absolute inset-0 bg-[#f8fafc]/70 dark:bg-[#030712]/60 backdrop-blur-[2px] transition-colors duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f8fafc]/75 via-transparent to-[#f8fafc]/85 dark:from-[#030712]/75 dark:via-transparent dark:to-[#030712]/85 pointer-events-none transition-colors duration-500" />
+        {/* Subtle Atmospheric Depth Tint: Ensures section title is clear while preserving rich full-screen blur */}
+        <div className="absolute inset-0 bg-[#f8fafc]/30 dark:bg-[#030712]/30 backdrop-blur-[1px] transition-colors duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f8fafc]/55 via-transparent to-[#f8fafc]/45 dark:from-[#030712]/55 dark:via-transparent dark:to-[#030712]/45 pointer-events-none transition-colors duration-500" />
       </div>
 
       <div
@@ -354,26 +379,6 @@ export default function EditorialGallery({
                 </div>
 
                 <div className="flex items-center gap-1.5 sm:gap-3">
-                  {/* Mobile-Only Header Navigation Arrows: Never Overlaps Photo */}
-                  <div className="flex sm:hidden items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={goToPrev}
-                      className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
-                      aria-label="Previous image"
-                    >
-                      <IoChevronBack size={18} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={goToNext}
-                      className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
-                      aria-label="Next image"
-                    >
-                      <IoChevronForward size={18} />
-                    </button>
-                  </div>
-
                   <button
                     type="button"
                     onClick={() => setIsFullscreen(false)}
@@ -483,6 +488,33 @@ export default function EditorialGallery({
                 className="relative z-50 flex flex-col items-center gap-2 sm:gap-3 w-full"
                 onClick={(e) => e.stopPropagation()}
               >
+                {/* Mobile Accessible Image Change Controls (Positioned at bottom for thumb accessibility) */}
+                <div className="flex sm:hidden items-center justify-between w-full px-4 max-w-xs">
+                  <button
+                    type="button"
+                    onClick={goToPrev}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/15 active:scale-95 text-white font-mono text-xs border border-white/20 backdrop-blur-md transition-all cursor-pointer shadow-lg"
+                    aria-label="Previous image"
+                  >
+                    <IoChevronBack size={16} />
+                    <span>Prev</span>
+                  </button>
+
+                  <span className="font-mono text-xs text-white/70 tracking-widest uppercase">
+                    {numFormatted} / {totalFormatted}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={goToNext}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/15 active:scale-95 text-white font-mono text-xs border border-white/20 backdrop-blur-md transition-all cursor-pointer shadow-lg"
+                    aria-label="Next image"
+                  >
+                    <span>Next</span>
+                    <IoChevronForward size={16} />
+                  </button>
+                </div>
+
                 <div className="flex justify-center gap-2 overflow-x-auto max-w-full py-1.5 scrollbar-none px-2 sm:px-4">
                   {images.map((img: prcocessedimages, idx: number) => {
                     const isActive = idx === currentIndex;

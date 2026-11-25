@@ -109,14 +109,14 @@ function InteractiveAmbient({
 
     const stars: CosmicStar[] = isDark
       ? Array.from({ length: starCount }, (_, idx) => {
-          const isBright = idx < Math.floor(starCount * 0.12); // 12% focal bright stars
-          const isMedium = !isBright && idx < Math.floor(starCount * 0.35); // 23% medium stars
+          const isBright = idx < Math.floor(starCount * 0.08); // 8% primary bright stars
+          const isMedium = !isBright && idx < Math.floor(starCount * 0.30); // 22% medium stars
 
           const radius = isBright
-            ? Math.random() * 0.6 + 1.6 // 1.6px - 2.2px
+            ? Math.random() * 0.4 + 1.2 // 1.2px - 1.6px
             : isMedium
-              ? Math.random() * 0.4 + 1.0 // 1.0px - 1.4px
-              : Math.random() * 0.35 + 0.6; // 0.6px - 0.95px field stars
+              ? Math.random() * 0.3 + 0.8 // 0.8px - 1.1px
+              : Math.random() * 0.3 + 0.45; // 0.45px - 0.75px sharp pinprick stars
 
           return {
             x: Math.random() * width,
@@ -262,35 +262,50 @@ function InteractiveAmbient({
           const proximity = Math.max(0, 1 - dist / 140);
 
           if (proximity > 0) {
-            // SHINE EFFECT: Star blooms into a radiant starlight flare (Fast hardware blit, zero allocations)
-            const shineAlpha = Math.min(1.0, currentAlpha + proximity * 0.7);
-            const haloRadius = s.radius * (2.8 + proximity * 3.5);
+            // REALISTIC STELLAR LUMINANCE BLOOM (Authentic Astrophotography Airy Glow)
+            const bloomAlpha = Math.min(1.0, currentAlpha + proximity * 0.75);
+            const coronaRadius = s.radius * (2.2 + proximity * 2.6);
 
-            // Optical halo
+            // Subtle, silky optical corona
+            const corona = ctx.createRadialGradient(s.x, s.y, s.radius * 0.3, s.x, s.y, coronaRadius);
+            corona.addColorStop(0, `rgba(255, 255, 255, ${bloomAlpha * 0.65})`);
+            corona.addColorStop(0.35, `rgba(224, 242, 254, ${bloomAlpha * 0.25})`);
+            corona.addColorStop(1, "rgba(224, 242, 254, 0)");
+
+            ctx.fillStyle = corona;
             ctx.beginPath();
-            ctx.arc(s.x, s.y, haloRadius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(186, 230, 253, ${shineAlpha * 0.35})`;
+            ctx.arc(s.x, s.y, coronaRadius, 0, Math.PI * 2);
             ctx.fill();
 
-            // Brilliant Core
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.radius * (1 + proximity * 0.4), 0, Math.PI * 2);
+            // Diamond White Stellar Core
             ctx.fillStyle = "#ffffff";
-            ctx.fill();
-          } else if (s.hasGlowHalo) {
-            // Optical corona halo
+            ctx.globalAlpha = bloomAlpha;
             ctx.beginPath();
-            ctx.arc(s.x, s.y, s.radius * 2.6, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(224, 242, 254, ${currentAlpha * 0.25})`;
+            ctx.arc(s.x, s.y, s.radius * (1 + proximity * 0.2), 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+          } else if (s.hasGlowHalo) {
+            // Subtle corona for primary bright stars
+            const coronaRadius = s.radius * 2.2;
+            const corona = ctx.createRadialGradient(s.x, s.y, s.radius * 0.3, s.x, s.y, coronaRadius);
+            corona.addColorStop(0, `rgba(255, 255, 255, ${currentAlpha * 0.5})`);
+            corona.addColorStop(0.4, `rgba(224, 242, 254, ${currentAlpha * 0.15})`);
+            corona.addColorStop(1, "rgba(224, 242, 254, 0)");
+
+            ctx.fillStyle = corona;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, coronaRadius, 0, Math.PI * 2);
             ctx.fill();
 
             // Core
+            ctx.fillStyle = s.color;
+            ctx.globalAlpha = currentAlpha;
             ctx.beginPath();
             ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-            ctx.fillStyle = "#ffffff";
             ctx.fill();
+            ctx.globalAlpha = 1.0;
           } else {
-            // ALL FIELD STARS RENDERED: Clean, crisp, lightweight pinpricks
+            // Clean, crisp pinprick
             ctx.fillStyle = s.color;
             ctx.globalAlpha = currentAlpha;
             ctx.beginPath();
@@ -450,13 +465,7 @@ function InteractiveAmbient({
         }}
       />
 
-      {/* Luminous Authentic Particle Canvas */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-100"
-      />
-
-      {/* Atmospheric Vignette Depth */}
+      {/* Atmospheric Vignette Depth (Behind canvas so stars & flares shine with 100% brilliance) */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -464,6 +473,12 @@ function InteractiveAmbient({
             ? "radial-gradient(circle at 50% 50%, transparent 35%, rgba(3, 4, 7, 0.65) 100%)"
             : "radial-gradient(circle at 50% 50%, transparent 60%, rgba(226, 232, 240, 0.25) 100%)",
         }}
+      />
+
+      {/* Luminous Authentic Particle Canvas */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-100"
       />
     </div>
   );
