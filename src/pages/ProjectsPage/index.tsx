@@ -74,7 +74,7 @@ const ProjectsPage: FC = () => {
       {/* 3D Showcase & Project Dossier Container */}
       <div className="w-full max-w-5xl z-10 flex flex-col items-center gap-8">
         {/* 3D Interactive Project Canvas (Shows real screenshot with interactive tilt) */}
-        <div className="w-full rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/60 dark:bg-white/[0.02] backdrop-blur-xl p-3 sm:p-4 shadow-2xl">
+        <div className="w-full">
           <ProjectShowcase3D
             project={selectedProject}
             theme={theme}
