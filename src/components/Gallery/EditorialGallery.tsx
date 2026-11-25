@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import {
   IoChevronBack,
   IoChevronForward,
@@ -32,30 +32,18 @@ export default function EditorialGallery({
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isInViewport, setIsInViewport] = useState(true);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef<number | null>(null);
 
-  // Seamless scroll-aware background:
-  // Smoothly illuminates the blurred photo background while viewing the gallery,
-  // and smoothly fades out back to the clean ambient canvas when scrolling to other sections.
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInViewport(entry.isIntersecting);
-      },
-      {
-        threshold: 0.55,
-      },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  // Continuous scroll-scrubbed background opacity:
+  // Gradually dissolves from 1 -> 0 as the user scrolls from 15% to 70% past the gallery,
+  // avoiding any sudden binary switch while ensuring it disappears before the next section.
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+  const scrollBgOpacity = useTransform(scrollYProgress, [0.15, 0.7], [1, 0]);
 
   // Two persistent slots for ultra-smooth 60fps full-screen background crossfade with zero jitter
   const [bgSlots, setBgSlots] = useState<{
@@ -133,11 +121,11 @@ export default function EditorialGallery({
   return (
     <>
       {/* 100% Full-Screen MacBook-Style Shallow Frosted Glass Blurred Photo Background */}
-      <div
+      <motion.div
         aria-hidden="true"
-        className="fixed inset-[-5%] w-[110%] h-[110%] pointer-events-none -z-10 overflow-hidden transform-gpu transition-opacity duration-400 ease-out bg-[#030712]"
+        className="fixed inset-[-5%] w-[110%] h-[110%] pointer-events-none -z-10 overflow-hidden transform-gpu bg-[#030712] will-change-opacity"
         style={{
-          opacity: isFullscreen ? 1 : isInViewport ? 1 : 0,
+          opacity: isFullscreen ? 1 : scrollBgOpacity,
         }}
       >
         {/* Solid Base to 100% block space stars from showing behind */}
@@ -167,7 +155,7 @@ export default function EditorialGallery({
         {/* MacBook-Style Frosted Glass Glaze: Perfectly balances photo visibility and title legibility */}
         <div className="absolute inset-0 bg-white/[0.08] dark:bg-black/[0.22] pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-transparent to-white/50 dark:from-black/60 dark:via-black/20 dark:to-black/60 pointer-events-none transition-colors duration-500" />
-      </div>
+      </motion.div>
 
       <div
         ref={containerRef}
