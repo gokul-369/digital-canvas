@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark" style="background-color: #030407;">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" loading="lazy" type="image/svg+xml" href="/favicon.webp" />
@@ -18,10 +18,14 @@
     <title>Gokul's Digital Canvas</title>
     <style>
       html, body {
-        background-color: #030407;
-        color: #f8fafc;
         margin: 0;
         padding: 0;
+        min-height: 100%;
+        transition: background-color 0.3s ease;
+      }
+      html.dark, html.dark body {
+        background-color: #030407;
+        color: #f8fafc;
       }
       html:not(.dark), html:not(.dark) body {
         background-color: #f8fafc;
@@ -49,7 +53,7 @@
       rel="stylesheet"
     />
   </head>
-  <body style="background-color: #030407;">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

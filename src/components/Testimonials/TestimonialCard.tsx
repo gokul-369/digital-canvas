@@ -12,19 +12,19 @@ function TestimonialCard({ testimonial }: { testimonial: testimonial }) {
   return (
     <div
       style={{ isolation: "isolate" }}
-      className="group relative w-[330px] sm:w-[420px] md:w-[450px] h-[410px] sm:h-[395px] flex flex-col justify-between p-5 sm:p-6 mx-3 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl shadow-[0_4px_20px_rgba(99,102,241,0.05)] dark:shadow-none hover:border-indigo-400/60 hover:shadow-[0_0_35px_rgba(99,102,241,0.22)] transition-all duration-300 select-none overflow-hidden hover:-translate-y-1"
+      className="group relative w-[330px] sm:w-[420px] md:w-[460px] h-[480px] sm:h-[450px] md:h-[440px] flex flex-col justify-between p-6 sm:p-7 mx-3 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl shadow-[0_4px_20px_rgba(99,102,241,0.05)] dark:shadow-none hover:border-indigo-400/60 hover:shadow-[0_0_35px_rgba(99,102,241,0.22)] transition-all duration-300 select-none overflow-hidden hover:-translate-y-1"
     >
       {/* Specular Ambient Aura */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       {/* Top Header: Quote Icon */}
-      <div className="relative z-10 flex items-center justify-between pb-2 border-b border-slate-200/60 dark:border-white/5">
+      <div className="relative z-10 flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/5">
         <RiDoubleQuotesL className="text-2xl text-indigo-500/80 dark:text-indigo-400/70" />
       </div>
 
-      {/* Testimonial Quote */}
-      <div className="relative z-10 my-2 flex-1 overflow-y-auto scrollbar-none">
-        <p className="text-xs sm:text-[12.5px] leading-relaxed text-slate-700 dark:text-slate-300 font-normal">
+      {/* Testimonial Quote - Fully visible with generous breathing room and zero cutoff */}
+      <div className="relative z-10 my-3 flex-1 flex flex-col justify-center">
+        <p className="text-xs sm:text-[13px] md:text-[13.5px] leading-relaxed text-slate-700 dark:text-slate-300 font-normal">
           "{testimonial.testimonial}"
         </p>
       </div>
