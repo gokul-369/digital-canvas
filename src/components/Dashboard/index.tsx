@@ -232,14 +232,14 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
           </SpotlightCard>
         </div>
 
-        {/* CARD: 3D Orbital Hardware & Projects (Full width banner) */}
-        <div className="col-span-1 md:col-span-2 lg:col-span-3">
+        {/* CARD: 3D Production Systems & Projects (2 columns on desktop) */}
+        <div className="col-span-1 md:col-span-1 lg:col-span-2">
           <SpotlightCard
-            className="h-full rounded-3xl p-7 sm:p-8 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-sky-400 hover:shadow-[0_4px_20px_rgba(56,189,248,0.15)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 transition-all duration-300"
+            className="h-full rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-sky-400 hover:shadow-[0_4px_20px_rgba(56,189,248,0.15)] flex flex-col justify-between transition-all duration-300"
             spotlightColor="rgba(56, 189, 248, 0.45)"
           >
-            <div className="flex-1">
-              <div className="flex items-center gap-3 pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+            <div>
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
                 <span className="font-mono text-xs uppercase tracking-wider text-sky-600 dark:text-sky-400 font-semibold">
                   // PRODUCTION SYSTEMS & INFRASTRUCTURE
                 </span>
@@ -249,42 +249,39 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
                 </span>
               </div>
 
-              <div className="mt-4 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
-                <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                  Featured Projects & Systems
-                </h3>
-                <p className="font-caveat text-xl text-sky-600 dark:text-sky-400">
-                  "Architecture built for endurance, deployed to scale."
-                </p>
-              </div>
-
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
+              <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
+                Featured Projects & Systems
+              </h3>
+              <p className="mt-2 font-caveat text-xl text-sky-600 dark:text-sky-400">
+                "Architecture built for endurance, deployed to scale."
+              </p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
                 Explore VigiLens (full-stack endpoint tracking & isolated database architecture) and hardened Oracle Cloud (OCI) VPS infrastructure running Dokploy. View live project canvases in 3D.
               </p>
             </div>
 
-            <div className="flex items-center gap-4 flex-shrink-0">
+            <div className="mt-6 flex items-center justify-between">
               <HashLink
                 to={manifest.projects}
                 scroll={scrollWithLenis}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-mono text-xs font-semibold shadow-md shadow-sky-500/25 transition-all group cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs font-mono font-medium text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors cursor-pointer group"
               >
                 <span>View 3D Projects</span>
-                <MdArrowRightAlt className="text-base group-hover:translate-x-1.5 transition-transform" />
+                <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
               </HashLink>
-              <HiOutlineRadio className="h-8 w-8 sm:h-10 sm:w-10 text-sky-500/40 block flex-shrink-0" />
+              <HiOutlineRadio className="h-8 w-8 text-sky-500/30" />
             </div>
           </SpotlightCard>
         </div>
 
-        {/* CARD 6: 3D Literary Codex / Reading Shelf (Full width banner matching Card 7) */}
-        <div className="col-span-1 md:col-span-2 lg:col-span-3">
+        {/* CARD 6: 3D Literary Codex / Reading Shelf (1 column, sharing row with Projects) */}
+        <div className="col-span-1 md:col-span-1 lg:col-span-1">
           <SpotlightCard
-            className="h-full rounded-3xl p-7 sm:p-8 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-indigo-400 hover:shadow-[0_4px_20px_rgba(99,102,241,0.12)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 transition-all duration-300"
+            className="h-full rounded-3xl p-7 border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl hover:border-indigo-400 hover:shadow-[0_4px_20px_rgba(99,102,241,0.12)] flex flex-col justify-between transition-all duration-300"
             spotlightColor="rgba(99, 102, 241, 0.45)"
           >
-            <div className="flex-1">
-              <div className="flex items-center gap-3 pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
+            <div>
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
                 <span className="font-mono text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-semibold">
                   // 06 · 3D LIBRARY
                 </span>
@@ -294,30 +291,27 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
                 </span>
               </div>
 
-              <div className="mt-4 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
-                <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                  Literary Codex
-                </h3>
-                <p className="font-caveat text-xl text-indigo-600 dark:text-indigo-400">
-                  "Ideas that shaped how I think."
-                </p>
-              </div>
-
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-                A tactile 3D interactive bookshelf of existential classics, Russian literature, Eastern philosophy, and behavioral psychology.
+              <h3 className="font-space text-xl font-bold tracking-tight text-slate-900 dark:text-white mt-4">
+                Literary Codex
+              </h3>
+              <p className="mt-2 font-caveat text-xl text-indigo-600 dark:text-indigo-400">
+                "Ideas that shaped how I think."
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+                A tactile 3D interactive bookshelf of existential classics, Russian literature, and Eastern philosophy.
               </p>
             </div>
 
-            <div className="flex items-center gap-4 flex-shrink-0">
+            <div className="mt-6 flex items-center justify-between">
               <HashLink
                 to={manifest.books}
                 scroll={scrollWithLenis}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-mono text-xs font-semibold shadow-md shadow-indigo-500/25 transition-all group"
+                className="inline-flex items-center gap-2 text-xs font-mono font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors cursor-pointer group"
               >
                 <span>Enter 3D library</span>
-                <MdArrowRightAlt className="text-base group-hover:translate-x-1.5 transition-transform" />
+                <MdArrowRightAlt className="text-lg group-hover:translate-x-1.5 transition-transform" />
               </HashLink>
-              <IoBookOutline className="h-8 w-8 sm:h-10 sm:w-10 text-indigo-500/40 block flex-shrink-0" />
+              <IoBookOutline className="h-8 w-8 text-indigo-500/30" />
             </div>
           </SpotlightCard>
         </div>
