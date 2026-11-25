@@ -8,7 +8,7 @@ import { scrollWithLenis } from "../../utils/scroll";
 
 function Footer() {
   return (
-    <footer className="relative w-full text-slate-800 dark:text-white overflow-hidden bg-transparent pt-16 pb-12">
+    <footer className="relative w-full text-slate-800 dark:text-white overflow-hidden bg-transparent pt-16 pb-24 md:pb-12">
       {/* Seamless Soft Atmospheric Gradient Blend */}
       <div
         className="absolute inset-0 -z-10 pointer-events-none bg-gradient-to-b from-transparent via-slate-100/30 to-slate-200/40 dark:via-black/40 dark:to-black/80"

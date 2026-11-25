@@ -178,7 +178,7 @@ export default function BooksSection() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3 }}
-            className="relative z-20 w-full pb-6 px-4 flex items-center justify-center gap-2.5 sm:gap-3 pointer-events-none"
+            className="relative z-20 w-full pb-24 md:pb-6 px-4 flex items-center justify-center gap-2.5 sm:gap-3 pointer-events-none"
           >
             {/* Mobile Prev Button */}
             <button
