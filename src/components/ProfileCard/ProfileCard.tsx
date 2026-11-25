@@ -573,25 +573,14 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
               />
               {showUserInfo && (
                 <div
-                  className="absolute z-[2] flex items-center justify-between backdrop-blur-[30px] border border-white/10 pointer-events-auto"
-                  style={
-                    {
-                      "--ui-inset": "20px",
-                      "--ui-radius-bias": "6px",
-                      bottom: "var(--ui-inset)",
-                      left: "var(--ui-inset)",
-                      right: "var(--ui-inset)",
-                      background: "rgba(255, 255, 255, 0.1)",
-                      borderRadius: cardRadius,
-                      padding: "12px 14px",
-                    } as React.CSSProperties
-                  }
+                  className="absolute z-[2] bottom-3 left-3 right-3 sm:bottom-5 sm:left-5 sm:right-5 px-2.5 py-2 sm:px-3.5 sm:py-3 flex items-center justify-between gap-2 backdrop-blur-[30px] border border-white/10 pointer-events-auto"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.1)",
+                    borderRadius: "16px",
+                  }}
                 >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="rounded-full overflow-hidden border border-white/10 flex-shrink-0"
-                      style={{ width: "48px", height: "48px" }}
-                    >
+                  <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                    <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full overflow-hidden border border-white/10 flex-shrink-0">
                       <img
                         className="w-full h-full object-cover rounded-full"
                         src={miniAvatarUrl || avatarUrl}
@@ -610,23 +599,22 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                         }}
                       />
                     </div>
-                    <div className="flex flex-col items-start gap-1.5">
-                      <div className="text-sm font-medium text-white/90 leading-none">
+                    <div className="flex flex-col items-start gap-1 min-w-0">
+                      <div className="text-xs sm:text-sm font-medium text-white/90 leading-none whitespace-nowrap truncate">
                         @{handle}
                       </div>
-                      <div className="text-sm text-white/70 leading-none">
+                      <div className="text-[11px] sm:text-xs text-white/70 leading-none whitespace-nowrap">
                         {status}
                       </div>
                     </div>
                   </div>
                   <button
-                    className="border border-white/10 rounded-lg px-4 py-3 text-xs font-semibold text-white/90 cursor-pointer backdrop-blur-[10px] transition-all duration-200 ease-out hover:border-white/40 hover:-translate-y-px"
+                    className="border border-white/15 bg-white/[0.06] rounded-lg px-2.5 py-2 sm:px-4 sm:py-2.5 text-[11px] sm:text-xs font-semibold text-white/95 cursor-pointer backdrop-blur-[10px] transition-all duration-200 ease-out hover:border-white/40 hover:bg-white/[0.12] hover:-translate-y-px whitespace-nowrap shrink-0"
                     onClick={handleContactClick}
                     style={{
                       pointerEvents: "auto",
                       display: "block",
                       gridArea: "auto",
-                      borderRadius: "8px",
                     }}
                     type="button"
                     aria-label={`Contact ${name || "user"}`}

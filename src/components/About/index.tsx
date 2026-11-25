@@ -55,7 +55,7 @@ function About({ theme: _theme }: { theme?: ThemeClassSet }) {
         {/* Left Column: 3D Holographic Profile Dossier */}
         <div className="lg:col-span-5 flex flex-col items-center w-full">
           <ProfileCard
-            className="w-full max-w-[270px] sm:max-w-[320px] lg:max-w-[340px] text-center touch-pan-y"
+            className="w-full max-w-[300px] sm:max-w-[320px] lg:max-w-[340px] text-center touch-pan-y"
             name="Gokul"
             title="Software Engineer"
             handle="gokul-369"

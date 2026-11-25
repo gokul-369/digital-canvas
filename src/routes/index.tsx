@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router";
 import Home from "../pages/Home";
 
-import Fade from "../animations/Fade";
 import Nav from "../components/Nav";
 import ReactLenis, { useLenis } from "lenis/react";
 import { Loader } from "../components/Loader";
@@ -60,13 +59,7 @@ export function AppRoutes() {
       <CollaboratePanel isOpen={isCollaborateOpen} onClose={closeCollaborate} />
       <Analytics />
       <SpeedInsights />
-      <Fade
-        className="fixed w-full flex items-center justify-center top-7 z-40"
-        variant="fade-down"
-        delay={100}
-      >
-        <Nav />
-      </Fade>
+      <Nav />
       <Routes>
         <Route path={manifest.home} element={<Home />} />
         <Route

@@ -104,7 +104,7 @@ function Hero({ theme, colors }: HeroProps) {
 
         <HashLink to={"/#about"} scroll={scrollWithLenis}>
           <IoChevronDownOutline
-            className={`absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-20 ${theme.textPrimary}`}
+            className={`absolute bottom-20 md:bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-20 ${theme.textPrimary}`}
           />
         </HashLink>
       </div>
