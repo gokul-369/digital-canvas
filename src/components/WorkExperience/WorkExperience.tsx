@@ -260,7 +260,7 @@ export default function WorkExperience() {
                     )}
                     <div className="flex items-center justify-between mb-3 relative z-10">
                       <div
-                        className={`flex h-10 sm:h-11 min-w-[2.75rem] px-2 items-center justify-center rounded-xl font-mono font-bold text-xs sm:text-sm border transition-transform group-hover:scale-105 bg-white/95 ${
+                        className={`flex h-10 w-10 sm:h-11 sm:w-11 p-1.5 items-center justify-center rounded-xl font-mono font-bold text-xs sm:text-sm border transition-transform group-hover:scale-105 bg-white/95 overflow-hidden ${
                           isSelected
                             ? "border-indigo-400 dark:border-indigo-400/60 shadow-sm"
                             : "border-slate-200 dark:border-white/15"

@@ -84,13 +84,6 @@ function Nav() {
                   }`}
                 >
                   {link.name}
-                  {active && (
-                    <motion.span
-                      layoutId="nav-active-dot"
-                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-indigo-500"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
                 </HashLink>
               );
             })}
