@@ -93,7 +93,7 @@ function InteractiveAmbient({
 
     // Responsive particle densities
     const starCount = isMobile ? 65 : isTablet ? 110 : 160;
-    const moteCount = isMobile ? 24 : isTablet ? 38 : 55;
+    const moteCount = isMobile ? 42 : isTablet ? 65 : 95;
 
     // Authentic astronomical stellar classes
     const darkStarColors = [
@@ -181,8 +181,8 @@ function InteractiveAmbient({
           y: Math.random() * height,
           vx: (Math.random() - 0.5) * 0.08,
           vy: -(Math.random() * 0.24 + 0.12),
-          radius: Math.random() * 1.3 + 1.1, // Medium, balanced motes (1.1px - 2.4px radius)
-          baseAlpha: Math.random() * 0.25 + 0.35, // Soft, pleasant luminescence
+          radius: Math.random() * 1.5 + 1.3, // True middle-ground scale (1.3px - 2.8px radius)
+          baseAlpha: Math.random() * 0.25 + 0.38, // Refined luminous presence
           rgb: lightMoteRGBs[Math.floor(Math.random() * lightMoteRGBs.length)],
           swaySpeed: Math.random() * 0.7 + 0.5,
           swayPhase: Math.random() * Math.PI * 2,
