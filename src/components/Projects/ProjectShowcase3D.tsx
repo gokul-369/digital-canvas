@@ -47,7 +47,7 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
       texture.magFilter = THREE.LinearFilter;
       texture.colorSpace = THREE.SRGBColorSpace;
 
-      const mat = screenMeshRef.current?.material as THREE.MeshStandardMaterial;
+      const mat = screenMeshRef.current?.material as THREE.MeshBasicMaterial;
       if (mat) {
         mat.map = texture;
         mat.needsUpdate = true;
@@ -68,8 +68,8 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0, 4.4);
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 0, 3.6);
     cameraRef.current = camera;
 
     // 2. High-performance WebGL Renderer
@@ -81,45 +81,46 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 1.0;
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // 3. Dynamic Studio Lighting
-    const ambientLight = new THREE.AmbientLight(isDark ? 0x1e293b : 0xf8fafc, isDark ? 1.0 : 1.8);
+    // 3. Clean Studio Lighting (No harsh point lights on screen)
+    const ambientLight = new THREE.AmbientLight(isDark ? 0xffffff : 0xf8fafc, isDark ? 1.4 : 1.8);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, isDark ? 1.4 : 1.6);
+    const dirLight = new THREE.DirectionalLight(0xffffff, isDark ? 0.8 : 1.0);
     dirLight.position.set(3, 4, 5);
     scene.add(dirLight);
 
-    const accentPointLight = new THREE.PointLight(project.accentColor, isDark ? 2.5 : 1.2, 7);
-    accentPointLight.position.set(0, -1.5, 2);
-    scene.add(accentPointLight);
+    // Soft ambient backlight behind device for subtle aura
+    const backGlow = new THREE.PointLight(project.accentColor, isDark ? 1.8 : 0.8, 8);
+    backGlow.position.set(0, 0, -0.6);
+    scene.add(backGlow);
 
-    // 4. Construct Sleek 3D Device Canvas Frame
+    // 4. Construct Sleek, Larger 3D Device Canvas Frame (16:10 Ratio)
     const deviceGroup = new THREE.Group();
     deviceGroupRef.current = deviceGroup;
     scene.add(deviceGroup);
 
-    // Outer Bezel Frame (Floating 16:10 Minimal Glass Laptop / Device Slab)
-    const frameW = 3.3;
-    const frameH = 2.1;
-    const frameGeo = new THREE.BoxGeometry(frameW, frameH, 0.08);
+    // Outer Bezel Frame (Larger presence, ultra-thin minimal bezels)
+    const frameW = 4.2;
+    const frameH = 2.65;
+    const frameGeo = new THREE.BoxGeometry(frameW, frameH, 0.06);
     const frameMat = new THREE.MeshStandardMaterial({
       color: isDark ? 0x0f172a : 0xf1f5f9,
-      metalness: isDark ? 0.9 : 0.4,
-      roughness: isDark ? 0.25 : 0.35,
+      metalness: isDark ? 0.85 : 0.3,
+      roughness: isDark ? 0.3 : 0.4,
     });
     const frameMesh = new THREE.Mesh(frameGeo, frameMat);
     deviceGroup.add(frameMesh);
 
-    // Screen Display Plane (Holds actual project UI screenshot)
-    const screenW = frameW * 0.96;
-    const screenH = frameH * 0.94;
+    // Screen Display Plane (Edge-to-edge true aspect ratio, zero specular hotspot)
+    const screenW = frameW * 0.985;
+    const screenH = frameH * 0.975;
     const screenGeo = new THREE.PlaneGeometry(screenW, screenH);
 
-    // Initial placeholder texture or loaded preview
+    // Initial texture load
     const initialTexture = project.previewImage
       ? textureLoader.current.load(project.previewImage, (tex) => {
           tex.colorSpace = THREE.SRGBColorSpace;
@@ -127,13 +128,13 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
         })
       : null;
 
-    const screenMat = new THREE.MeshStandardMaterial({
+    // Pristine, glare-free screen material (zero harsh spotlights or green circles)
+    const screenMat = new THREE.MeshBasicMaterial({
       map: initialTexture,
-      roughness: 0.18,
-      metalness: 0.05,
+      toneMapped: false,
     });
     const screenMesh = new THREE.Mesh(screenGeo, screenMat);
-    screenMesh.position.set(0, 0, 0.045);
+    screenMesh.position.set(0, 0, 0.035);
     deviceGroup.add(screenMesh);
     screenMeshRef.current = screenMesh;
 
@@ -142,7 +143,7 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
     const edgeMat = new THREE.LineBasicMaterial({
       color: isDark ? 0x38bdf8 : 0x94a3b8,
       transparent: true,
-      opacity: isDark ? 0.4 : 0.6,
+      opacity: isDark ? 0.35 : 0.5,
     });
     const edgeLine = new THREE.LineSegments(edgeGeo, edgeMat);
     deviceGroup.add(edgeLine);
@@ -175,11 +176,11 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
 
       // Camera distance tuning across breakpoints
       if (newW < 640) {
-        camera.position.z = 5.2;
+        camera.position.z = 4.8;
       } else if (newW < 1024) {
-        camera.position.z = 4.6;
+        camera.position.z = 4.0;
       } else {
-        camera.position.z = 4.2;
+        camera.position.z = 3.5;
       }
     };
     handleResize();
@@ -231,7 +232,7 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
       <div
         ref={mountRef}
         onClick={onOpenLive}
-        className="relative w-full h-[320px] sm:h-[400px] md:h-[480px] cursor-pointer overflow-hidden rounded-3xl group"
+        className="relative w-full h-[380px] sm:h-[480px] md:h-[560px] lg:h-[620px] cursor-pointer overflow-hidden rounded-3xl group"
       >
         {/* Top Floating Browser Address Bar Pill */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 px-4 py-1.5 rounded-full border border-slate-200/60 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md shadow-md flex items-center gap-2 pointer-events-none group-hover:scale-105 transition-transform duration-300">
