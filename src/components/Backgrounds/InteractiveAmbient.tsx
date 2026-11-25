@@ -458,26 +458,26 @@ function InteractiveAmbient({
         style={{
           background: isDark
             ? variant === "gallery"
-              ? "radial-gradient(ellipse 75% 45% at 50% -10%, rgba(16, 185, 129, 0.16) 0%, transparent 65%), radial-gradient(ellipse 65% 55% at 85% 35%, rgba(99, 102, 241, 0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(168, 85, 247, 0.15) 0%, transparent 60%)"
+              ? "radial-gradient(ellipse 75% 45% at 50% -10%, rgba(16, 185, 129, 0.20) 0%, transparent 65%), radial-gradient(ellipse 65% 55% at 85% 35%, rgba(99, 102, 241, 0.22) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(168, 85, 247, 0.18) 0%, transparent 60%)"
               : variant === "skills"
-                ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168, 85, 247, 0.18) 0%, transparent 65%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(56, 189, 248, 0.16) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(99, 102, 241, 0.15) 0%, transparent 60%)"
+                ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168, 85, 247, 0.22) 0%, transparent 65%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(56, 189, 248, 0.20) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(99, 102, 241, 0.18) 0%, transparent 60%)"
                 : variant === "experience"
-                  ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.18) 0%, transparent 65%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(99, 102, 241, 0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(16, 185, 129, 0.14) 0%, transparent 60%)"
-                  : "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16, 185, 129, 0.16) 0%, transparent 65%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(99, 102, 241, 0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(192, 132, 252, 0.14) 0%, transparent 60%)"
+                  ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.22) 0%, transparent 65%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(99, 102, 241, 0.22) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(16, 185, 129, 0.18) 0%, transparent 60%)"
+                  : "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16, 185, 129, 0.22) 0%, transparent 65%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(99, 102, 241, 0.24) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(192, 132, 252, 0.18) 0%, transparent 60%)"
             : variant === "gallery"
-              ? "radial-gradient(ellipse 75% 45% at 50% -10%, rgba(56, 189, 248, 0.32) 0%, transparent 70%), radial-gradient(ellipse 65% 55% at 85% 35%, rgba(129, 140, 248, 0.28) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(244, 114, 182, 0.22) 0%, transparent 65%)"
+              ? "radial-gradient(ellipse 75% 45% at 50% -10%, rgba(56, 189, 248, 0.35) 0%, transparent 70%), radial-gradient(ellipse 65% 55% at 85% 35%, rgba(129, 140, 248, 0.30) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(244, 114, 182, 0.25) 0%, transparent 65%)"
               : variant === "skills"
-                ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168, 85, 247, 0.32) 0%, transparent 70%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(56, 189, 248, 0.28) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(129, 140, 248, 0.24) 0%, transparent 65%)"
+                ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168, 85, 247, 0.35) 0%, transparent 70%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(56, 189, 248, 0.30) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(129, 140, 248, 0.25) 0%, transparent 65%)"
                 : variant === "experience"
-                  ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.34) 0%, transparent 70%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(56, 189, 248, 0.30) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(168, 85, 247, 0.24) 0%, transparent 65%)"
-                  : "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(45, 212, 191, 0.30) 0%, transparent 70%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(129, 140, 248, 0.32) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(245, 158, 11, 0.22) 0%, transparent 65%)",
+                  ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.36) 0%, transparent 70%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(56, 189, 248, 0.32) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(168, 85, 247, 0.25) 0%, transparent 65%)"
+                  : "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(45, 212, 191, 0.32) 0%, transparent 70%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(129, 140, 248, 0.34) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(245, 158, 11, 0.24) 0%, transparent 65%)",
         }}
       />
 
       {/* Luminous Authentic Particle Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-90"
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-100"
       />
 
       {/* Atmospheric Vignette Depth */}
@@ -485,7 +485,7 @@ function InteractiveAmbient({
         className="absolute inset-0 pointer-events-none"
         style={{
           background: isDark
-            ? "radial-gradient(circle at 50% 50%, transparent 25%, rgba(3, 4, 7, 0.88) 100%)"
+            ? "radial-gradient(circle at 50% 50%, transparent 35%, rgba(3, 4, 7, 0.65) 100%)"
             : "radial-gradient(circle at 50% 50%, transparent 60%, rgba(226, 232, 240, 0.25) 100%)",
         }}
       />

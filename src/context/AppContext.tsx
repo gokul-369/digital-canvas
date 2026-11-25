@@ -30,7 +30,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const isDark = theme === "dark";
     document.documentElement.classList.toggle("dark", isDark);
     document.documentElement.style.backgroundColor = isDark ? "#030407" : "#f8fafc";
-    document.body.style.backgroundColor = isDark ? "#030407" : "#f8fafc";
     try {
       localStorage.setItem("theme", theme);
     } catch {}

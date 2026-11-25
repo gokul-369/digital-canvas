@@ -169,14 +169,14 @@ export default function EditorialGallery({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Column: Editorial Narrative & Controls in Frosted Glass Chassis */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-14 items-center">
+          {/* Controls & Narrative Chassis: Order-last on mobile (below image), Order-first on desktop (left 5 cols) */}
           <motion.div
             layout
             transition={{
               layout: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
             }}
-            className="lg:col-span-5 relative flex flex-col justify-between space-y-5 sm:space-y-6 z-10 p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-white/70 via-white/50 to-white/40 dark:from-white/[0.12] dark:via-white/[0.05] dark:to-white/[0.02] backdrop-blur-2xl backdrop-saturate-180 border border-white/80 dark:border-white/20 shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.7),0_16px_40px_0_rgba(0,0,0,0.08)] dark:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_20px_50px_0_rgba(0,0,0,0.5)] lg:min-h-[510px] transition-all duration-300 overflow-hidden"
+            className="order-last lg:order-first lg:col-span-5 relative flex flex-col justify-between space-y-4 sm:space-y-6 z-10 p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-white/70 via-white/50 to-white/40 dark:from-white/[0.12] dark:via-white/[0.05] dark:to-white/[0.02] backdrop-blur-2xl backdrop-saturate-180 border border-white/80 dark:border-white/20 shadow-[inset_0_1px_2px_0_rgba(255,255,255,0.7),0_16px_40px_0_rgba(0,0,0,0.08)] dark:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.35),0_20px_50px_0_rgba(0,0,0,0.5)] lg:min-h-[510px] transition-all duration-300 overflow-hidden"
           >
             {/* Subtle Glass Refraction Highlights */}
             <div
@@ -225,7 +225,7 @@ export default function EditorialGallery({
               </div>
 
               {/* Title & Caveat Description with Stable Reserved Geometry to Prevent Height Snapping */}
-              <div className="min-h-[120px] sm:min-h-[145px] flex flex-col justify-center my-3 sm:my-4">
+              <div className="min-h-[85px] sm:min-h-[120px] lg:min-h-[145px] flex flex-col justify-center my-2 sm:my-4">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentIndex}
@@ -233,7 +233,7 @@ export default function EditorialGallery({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    className="space-y-2 sm:space-y-3"
+                    className="space-y-1.5 sm:space-y-3"
                   >
                     <h3 className="font-space text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white drop-shadow-sm">
                       {current.title}
@@ -254,7 +254,7 @@ export default function EditorialGallery({
             </div>
 
             {/* Interactive Navigation Controls */}
-            <div className="pt-4 space-y-5">
+            <div className="pt-2 sm:pt-4 space-y-4 sm:space-y-5">
               {/* Progress Bar */}
               <div className="w-full bg-slate-200/80 dark:bg-white/10 h-1 rounded-full overflow-hidden">
                 <div
@@ -325,13 +325,13 @@ export default function EditorialGallery({
             </div>
           </motion.div>
 
-          {/* Right Column: 3D Image Frame */}
-          <div className="lg:col-span-7 relative flex items-center justify-center">
+          {/* 3D Image Frame: Order-first on mobile (top of section), Order-last on desktop (right 7 cols) */}
+          <div className="order-first lg:order-last lg:col-span-7 relative flex items-center justify-center w-full">
             {/* Ambient Glow */}
             <div className="pointer-events-none absolute inset-4 rounded-3xl bg-indigo-500/15 dark:bg-indigo-500/20 blur-3xl" />
 
             {/* Crisp 3D Frame */}
-            <div className="relative w-full aspect-[4/3] max-h-[50vh] lg:max-h-[56vh] rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/15 bg-black/80 shadow-2xl group">
+            <div className="relative w-full aspect-[4/3] max-h-[46vh] sm:max-h-[50vh] lg:max-h-[56vh] rounded-3xl overflow-hidden border border-slate-200/90 dark:border-white/15 bg-black/80 shadow-2xl group">
               <ThreeDViewport
                 currentImage={current}
                 prevImage={previous}
