@@ -1,130 +1,101 @@
-export interface ProjectTelemetry {
-  status: "ONLINE" | "STANDBY" | "ACTIVE" | "DEPRECATED";
-  latencyMs?: number;
-  uptime?: string;
-  protocol?: string;
-  port?: number | string;
-  nodeLocation?: string;
-}
+import vigilensImg from "../assets/projects/vigilens.png";
+import ociImg from "../assets/projects/oci.png";
 
 export interface ProjectItem {
   id: string;
   title: string;
   tagline: string;
-  category: "Observability & Telemetry" | "Cloud Infrastructure" | "Full-Stack Application" | "Web System";
-  description: string;
-  highlights: string[];
-  stack: string[];
-  telemetry: ProjectTelemetry;
-  liveUrl?: string;
+  category: string;
+  domainUrl: string;
+  liveUrl: string;
   githubUrl?: string;
+  description: string;
+  architectureHighlights: {
+    title: string;
+    description: string;
+  }[];
+  stack: string[];
+  metrics: {
+    label: string;
+    value: string;
+  }[];
   accentColor: string;
+  accentRgb: string;
+  previewImage: string;
   badge: string;
-  hardwareSpec: {
-    bladeId: string;
-    freq: string;
-    power: string;
-    rackUnit: string;
-  };
 }
 
 export const projectsList: ProjectItem[] = [
   {
     id: "vigilens",
     title: "VigiLens",
-    tagline: "Autonomous Endpoint Observability & Telemetry Engine",
-    category: "Observability & Telemetry",
-    description:
-      "A high-precision endpoint tracking tool engineered to observe, monitor, and diagnose distributed API endpoints in real-time. Features automated heartbeat pinging, payload tracing, latency distribution heatmaps, and failure alerts.",
-    highlights: [
-      "Sub-millisecond endpoint ping & round-trip latency tracking",
-      "Dynamic response code classification (2xx, 4xx, 5xx) with anomaly detection",
-      "Packet inspection and header diffing for zero-downtime migrations",
-      "Live event-stream telemetry over persistent WebSockets",
-    ],
-    stack: ["TypeScript", "Node.js", "React", "WebSockets", "TailwindCSS", "Docker"],
-    telemetry: {
-      status: "ONLINE",
-      latencyMs: 14,
-      uptime: "99.98%",
-      protocol: "HTTPS / WSS",
-      port: 443,
-      nodeLocation: "VPS Node 01",
-    },
-    liveUrl: "https://vigilens.app", // placeholder - to be updated with user URL
+    tagline: "Autonomous Endpoint Tracking & Observability Platform",
+    category: "Full-Stack Observability",
+    domainUrl: "vigilens.gokul.ink",
+    liveUrl: "https://vigilens.gokul.ink",
     githubUrl: "https://github.com/gokul-369",
+    previewImage: vigilensImg,
+    description:
+      "A full-stack endpoint tracking and observability platform designed to monitor API availability, payload health, and response latency in real-time. Engineered with a secure multi-tier architecture where the database is completely walled off from the open internet.",
+    architectureHighlights: [
+      {
+        title: "Isolated Database Ingress",
+        description: "PostgreSQL database instance is completely air-gapped from the public internet via strict firewall ingress rules; only the Next.js application container has access.",
+      },
+      {
+        title: "Full-Stack Next.js Engine",
+        description: "Server-side rendered telemetry views, low-latency API routes, and real-time endpoint status dashboards.",
+      },
+      {
+        title: "Automated Dokploy Deployment",
+        description: "Continuous deployment pipeline running inside an isolated Docker network on Oracle Cloud Infrastructure.",
+      },
+    ],
+    stack: ["Next.js", "PostgreSQL", "Dokploy", "Oracle Cloud (OCI)", "TypeScript", "TailwindCSS", "Docker"],
+    metrics: [
+      { label: "Deployment", value: "Dokploy CI/CD" },
+      { label: "Database", value: "Isolated PostgreSQL" },
+      { label: "Hosting", value: "Oracle Cloud VPS" },
+      { label: "Network Security", value: "Ingress Restricted" },
+    ],
     accentColor: "#38bdf8", // Sky Cyan
-    badge: "FLAGSHIP TOOL",
-    hardwareSpec: {
-      bladeId: "OBS-01",
-      freq: "3.2 GHz",
-      power: "12W ACTIVE",
-      rackUnit: "1U",
-    },
+    accentRgb: "56, 189, 248",
+    badge: "01 · FULL STACK ENGINE",
   },
   {
-    id: "vps-infra",
-    title: "Custom VPS Cloud Engine",
-    tagline: "Hardened Self-Hosted Infrastructure & Production Node",
-    category: "Cloud Infrastructure",
-    description:
-      "A self-configured and hardened Virtual Private Server running production services, reverse proxy layers, automated SSL provisioning, isolated Docker network bridge, and continuous uptime monitoring.",
-    highlights: [
-      "Custom Linux OS kernel tuning and firewall (UFW/iptables) hardening",
-      "Nginx reverse proxy with automated Let's Encrypt SSL certificate rotation",
-      "Multi-container Docker Compose mesh with zero-port leakage",
-      "Automated system health telemetry, log rotation, and swap optimization",
-    ],
-    stack: ["Ubuntu Linux", "Nginx", "Docker", "Bash", "Systemd", "Certbot"],
-    telemetry: {
-      status: "ACTIVE",
-      latencyMs: 8,
-      uptime: "99.99%",
-      protocol: "SSH / TCP",
-      port: 22,
-      nodeLocation: "EU-Central",
-    },
-    liveUrl: "https://github.com/gokul-369",
+    id: "oci-vps",
+    title: "Oracle Cloud Infrastructure (OCI)",
+    tagline: "24/7 Hardened Production Cloud Node & Dokploy Cluster",
+    category: "Cloud Infrastructure & DevOps",
+    domainUrl: "oci.gokul.ink",
+    liveUrl: "https://oci.gokul.ink",
     githubUrl: "https://github.com/gokul-369",
-    accentColor: "#a855f7", // Violet / Nebula
-    badge: "INFRASTRUCTURE",
-    hardwareSpec: {
-      bladeId: "SRV-NODE-02",
-      freq: "Xeon 2.8GHz",
-      power: "24W PEAK",
-      rackUnit: "2U",
-    },
-  },
-  {
-    id: "staticpro",
-    title: "StaticPro",
-    tagline: "Production Engineering & Architecture Portal",
-    category: "Full-Stack Application",
+    previewImage: ociImg,
     description:
-      "A production-grade web system crafted to showcase scalable frontend architectures, high-performance rendering pipelines, and modular code isolation under real-world traffic.",
-    highlights: [
-      "Optimized static asset bundling and sub-second cold starts",
-      "Modular component hierarchy with strict TypeScript contracts",
-      "Multi-device responsive layout with accessible keyboard navigation",
+      "A dedicated, always-on Oracle Cloud VM configured from the ground up for maximum security, multi-tenant container orchestration, and continuous operation. Governed by hardened ingress/egress rules with automated maintenance and self-sustaining cleanup routines.",
+    architectureHighlights: [
+      {
+        title: "Hardened Security Architecture",
+        description: "Custom OCI Virtual Cloud Network (VCN) with strict stateful security lists, locked down port ingress, and restricted SSH access.",
+      },
+      {
+        title: "Centralized Dokploy Control Panel",
+        description: "Multi-project container orchestration hub managing deployments, reverse proxy routing, and automatic SSL certificate generation.",
+      },
+      {
+        title: "Self-Sustaining Maintenance",
+        description: "Automated cron-based Docker image pruning, log rotation, resource monitoring, and swap optimization ensuring 24/7 uptime without manual intervention.",
+      },
     ],
-    stack: ["React", "JavaScript", "HTML5", "CSS3", "Vite"],
-    telemetry: {
-      status: "STANDBY",
-      latencyMs: 22,
-      uptime: "99.95%",
-      protocol: "HTTPS",
-      port: 443,
-      nodeLocation: "Global Edge",
-    },
-    liveUrl: "https://github.com/gokul-369/Staticpro",
-    githubUrl: "https://github.com/gokul-369/Staticpro",
-    accentColor: "#fbbf24", // Solar Amber
-    badge: "CORE BUILD",
-    hardwareSpec: {
-      bladeId: "APP-03",
-      freq: "1.8 GHz",
-      power: "8W ECO",
-      rackUnit: "1U",
-    },
+    stack: ["Oracle Cloud (OCI)", "Ubuntu Linux", "Dokploy", "Docker Compose", "Nginx", "UFW / iptables", "Bash"],
+    metrics: [
+      { label: "Uptime", value: "24/7 Continuous" },
+      { label: "Firewall", value: "Strict Ingress/Egress" },
+      { label: "Orchestration", value: "Dokploy Cluster" },
+      { label: "Maintenance", value: "Self-Sustaining Cron" },
+    ],
+    accentColor: "#a855f7", // Violet Nebula
+    accentRgb: "168, 85, 247",
+    badge: "02 · CLOUD INFRASTRUCTURE",
   },
 ];

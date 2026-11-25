@@ -1,10 +1,10 @@
 import { useState, useId, type FC } from "react";
 import { projectsList, type ProjectItem } from "../../data/projects";
-import { OrbitalConsole } from "../../components/Projects/OrbitalConsole";
+import { ProjectShowcase3D } from "../../components/Projects/ProjectShowcase3D";
 import InteractiveAmbient from "../../components/Backgrounds/InteractiveAmbient";
 import SectionHeader from "../../components/SectionHeader";
 import useTheme from "../../hooks/useTheme";
-import { HiOutlineServer, HiOutlineRadio, HiOutlineCpuChip } from "react-icons/hi2";
+import { HiOutlineServer, HiOutlineRadio } from "react-icons/hi2";
 import { FiCheckCircle, FiExternalLink, FiGithub } from "react-icons/fi";
 
 const ProjectsPage: FC = () => {
@@ -16,14 +16,10 @@ const ProjectsPage: FC = () => {
     projectsList.find((p) => p.id === selectedProjectId) || projectsList[0];
 
   const getCategoryIcon = (category: ProjectItem["category"]) => {
-    switch (category) {
-      case "Observability & Telemetry":
-        return <HiOutlineRadio className="w-4 h-4 text-sky-400" />;
-      case "Cloud Infrastructure":
-        return <HiOutlineServer className="w-4 h-4 text-purple-400" />;
-      default:
-        return <HiOutlineCpuChip className="w-4 h-4 text-amber-400" />;
+    if (category.toLowerCase().includes("observability")) {
+      return <HiOutlineRadio className="w-4 h-4 text-sky-400" />;
     }
+    return <HiOutlineServer className="w-4 h-4 text-purple-400" />;
   };
 
   return (
@@ -31,22 +27,22 @@ const ProjectsPage: FC = () => {
       {/* Dynamic Cosmic Ambient Background */}
       <InteractiveAmbient variant="home" />
 
-      {/* Page Title & Mission Header */}
-      <div className="w-full max-w-5xl z-10 flex flex-col items-center text-center mb-8">
+      {/* Header Section */}
+      <div className="w-full max-w-5xl z-10 flex flex-col items-center text-center mb-10">
         <SectionHeader
-          tag="// AVIONICS & SYSTEMS TELEMETRY"
-          title="Orbital Nodes &"
-          accent="Production Engineering"
-          description="Hardware-inspired mission control console tracking live endpoint observability engines, hardened cloud VPS infrastructure, and distributed applications."
+          tag="// SELECTED WORKS & INFRASTRUCTURE"
+          title="Featured Projects &"
+          accent="Production Systems"
+          description="A curated look into production platforms, endpoint observability tooling, and hardened cloud infrastructure built for reliability."
           className="mb-8"
         />
 
-        {/* Hardware Blade Selector Tabs */}
+        {/* Project Selector Tabs */}
         <div
           role="tablist"
           id={tabListId}
-          aria-label="Hardware Blade Selector"
-          className="w-full max-w-3xl flex items-center justify-center gap-2 p-1.5 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl shadow-lg overflow-x-auto no-scrollbar"
+          aria-label="Project Selection"
+          className="flex items-center justify-center gap-2 p-1.5 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.03] backdrop-blur-xl shadow-lg"
         >
           {projectsList.map((proj, idx) => {
             const isSelected = proj.id === selectedProject.id;
@@ -56,7 +52,7 @@ const ProjectsPage: FC = () => {
                 role="tab"
                 aria-selected={isSelected}
                 onClick={() => setSelectedProjectId(proj.id)}
-                className={`relative px-4 py-2.5 rounded-xl font-mono text-xs font-semibold tracking-wide transition-all duration-300 flex items-center gap-2.5 cursor-pointer whitespace-nowrap ${
+                className={`relative px-5 py-2.5 rounded-xl font-mono text-xs font-semibold tracking-wide transition-all duration-300 flex items-center gap-2.5 cursor-pointer whitespace-nowrap ${
                   isSelected
                     ? "bg-slate-900 text-white dark:bg-white/15 dark:text-white shadow-[0_0_20px_rgba(56,189,248,0.25)] border border-sky-400/40"
                     : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.05]"
@@ -65,27 +61,28 @@ const ProjectsPage: FC = () => {
                 <span className="text-[11px] opacity-60">0{idx + 1}</span>
                 {getCategoryIcon(proj.category)}
                 <span>{proj.title}</span>
-                <span
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    proj.telemetry.status === "ONLINE" || proj.telemetry.status === "ACTIVE"
-                      ? "bg-emerald-400 animate-pulse"
-                      : "bg-amber-400"
-                  }`}
-                />
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Main 3D Space-Grade Console Viewport */}
-      <div className="w-full max-w-5xl z-10 flex flex-col items-center">
-        <OrbitalConsole project={selectedProject} theme={theme} className="mb-6" />
+      {/* 3D Showcase & Project Dossier Container */}
+      <div className="w-full max-w-5xl z-10 flex flex-col items-center gap-8">
+        {/* 3D Interactive Project Canvas (Shows real screenshot with interactive tilt) */}
+        <div className="w-full rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/60 dark:bg-white/[0.02] backdrop-blur-xl p-3 sm:p-4 shadow-2xl">
+          <ProjectShowcase3D
+            project={selectedProject}
+            theme={theme}
+            onOpenLive={() => window.open(selectedProject.liveUrl, "_blank")}
+          />
+        </div>
 
-        {/* Deep-Dive Technical Telemetry HUD */}
-        <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-          {/* Left Column: Project Architecture & Specs (2 cols) */}
-          <div className="lg:col-span-2 flex flex-col gap-5 p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/75 dark:bg-white/[0.03] backdrop-blur-2xl shadow-xl">
+        {/* Detailed Engineering Breakdown & Architecture HUD */}
+        <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column: Project Overview & Deep Architecture (2 cols) */}
+          <div className="lg:col-span-2 flex flex-col gap-6 p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/75 dark:bg-white/[0.03] backdrop-blur-2xl shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200/60 dark:border-white/[0.08]">
               <div>
                 <span className="font-mono text-xs uppercase tracking-widest text-sky-500 font-bold">
@@ -96,12 +93,18 @@ const ProjectsPage: FC = () => {
                 </h2>
               </div>
 
-              <span className="font-mono text-xs font-semibold px-3 py-1 rounded-full border border-sky-400/30 bg-sky-500/10 text-sky-600 dark:text-sky-300">
-                {selectedProject.badge}
-              </span>
+              <a
+                href={selectedProject.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs font-semibold px-3 py-1.5 rounded-full border border-sky-400/40 bg-sky-500/10 text-sky-600 dark:text-sky-300 hover:bg-sky-500/20 transition-colors flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>{selectedProject.domainUrl}</span>
+                <FiExternalLink className="w-3.5 h-3.5" />
+              </a>
             </div>
 
-            <p className="font-caveat text-xl text-sky-600 dark:text-sky-400 -mt-1">
+            <p className="font-caveat text-xl text-sky-600 dark:text-sky-400 -mt-2">
               "{selectedProject.tagline}"
             </p>
 
@@ -110,24 +113,34 @@ const ProjectsPage: FC = () => {
             </p>
 
             {/* Architecture Highlights */}
-            <div className="mt-2">
-              <h3 className="font-mono text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 font-semibold mb-3">
-                // ENGINEERING HIGHLIGHTS & ARCHITECTURE
+            <div className="space-y-3 pt-2">
+              <h3 className="font-mono text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 font-semibold">
+                // ARCHITECTURAL IMPLEMENTATION
               </h3>
-              <ul className="space-y-2.5">
-                {selectedProject.highlights.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-xs text-slate-600 dark:text-slate-300">
-                    <FiCheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
-                    <span>{item}</span>
-                  </li>
+              <div className="grid grid-cols-1 gap-3">
+                {selectedProject.architectureHighlights.map((hl) => (
+                  <div
+                    key={hl.title}
+                    className="p-3.5 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05] flex items-start gap-3"
+                  >
+                    <FiCheckCircle className="w-4 h-4 text-emerald-500 mt-1 shrink-0" />
+                    <div>
+                      <h4 className="font-space text-xs font-bold text-slate-900 dark:text-white">
+                        {hl.title}
+                      </h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">
+                        {hl.description}
+                      </p>
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
-            {/* Tech Stack Badges */}
-            <div className="mt-3 pt-4 border-t border-slate-200/60 dark:border-white/[0.08]">
+            {/* Tech Stack */}
+            <div className="pt-4 border-t border-slate-200/60 dark:border-white/[0.08]">
               <h3 className="font-mono text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 font-semibold mb-3">
-                // SYSTEM STACK
+                // STACK & TOOLING
               </h3>
               <div className="flex flex-wrap gap-2">
                 {selectedProject.stack.map((tech) => (
@@ -142,116 +155,68 @@ const ProjectsPage: FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Real-Time Telemetry & Hardware Spec Deck (1 col) */}
-          <div className="flex flex-col gap-5">
-            {/* Live Metrics Box */}
+          {/* Right Column: Deployment Specs & Actions (1 col) */}
+          <div className="flex flex-col gap-6">
+            {/* Deployment Specs Box */}
             <div className="p-6 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/75 dark:bg-white/[0.03] backdrop-blur-2xl shadow-xl flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
                   <span className="font-mono text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 font-semibold">
-                    // LIVE TELEMETRY
+                    // DEPLOYMENT SPECS
                   </span>
                   <span className="flex items-center gap-1.5 font-mono text-xs font-bold text-emerald-500">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    {selectedProject.telemetry.status}
+                    LIVE ON OCI
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                  <div className="p-3 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05]">
-                    <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase">
-                      Ping Latency
-                    </span>
-                    <p className="font-mono text-lg font-bold text-slate-900 dark:text-white mt-0.5">
-                      {selectedProject.telemetry.latencyMs}ms
-                    </p>
-                  </div>
-
-                  <div className="p-3 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05]">
-                    <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase">
-                      Uptime
-                    </span>
-                    <p className="font-mono text-lg font-bold text-emerald-500 mt-0.5">
-                      {selectedProject.telemetry.uptime}
-                    </p>
-                  </div>
-
-                  <div className="p-3 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05]">
-                    <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase">
-                      Protocol
-                    </span>
-                    <p className="font-mono text-sm font-bold text-slate-900 dark:text-white mt-0.5">
-                      {selectedProject.telemetry.protocol}
-                    </p>
-                  </div>
-
-                  <div className="p-3 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05]">
-                    <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase">
-                      Port
-                    </span>
-                    <p className="font-mono text-sm font-bold text-slate-900 dark:text-white mt-0.5">
-                      :{selectedProject.telemetry.port}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-4 p-3 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05]">
-                  <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase">
-                    Node Location
-                  </span>
-                  <p className="font-mono text-xs font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
-                    {selectedProject.telemetry.nodeLocation}
-                  </p>
+                <div className="space-y-3 mt-4">
+                  {selectedProject.metrics.map((metric) => (
+                    <div
+                      key={metric.label}
+                      className="p-3 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05] flex justify-between items-center"
+                    >
+                      <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+                        {metric.label}
+                      </span>
+                      <span className="font-mono text-xs font-bold text-slate-900 dark:text-white">
+                        {metric.value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Action Links */}
-              <div className="mt-6 flex flex-col gap-2.5">
-                {selectedProject.liveUrl && (
-                  <a
-                    href={selectedProject.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-3 rounded-2xl font-mono text-xs font-bold tracking-wide text-white bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 hover:from-sky-400 hover:to-purple-500 shadow-lg hover:shadow-[0_0_25px_rgba(56,189,248,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <span>LAUNCH APPLICATION</span>
-                    <FiExternalLink className="w-4 h-4" />
-                  </a>
-                )}
+              {/* Action Launch Buttons */}
+              <div className="mt-8 flex flex-col gap-3">
+                <a
+                  href={selectedProject.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 rounded-2xl font-mono text-xs font-bold tracking-wide text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-lg hover:shadow-[0_0_25px_rgba(56,189,248,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span>OPEN {selectedProject.title.toUpperCase()}</span>
+                  <FiExternalLink className="w-4 h-4" />
+                </a>
 
                 {selectedProject.githubUrl && (
                   <a
                     href={selectedProject.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-2.5 rounded-2xl font-mono text-xs font-semibold tracking-wide border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-white/[0.03] text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 rounded-2xl font-mono text-xs font-semibold tracking-wide border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-white/[0.03] text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <FiGithub className="w-4 h-4" />
-                    <span>INSPECT SOURCE CODE</span>
+                    <span>INSPECT GITHUB REPOSITORY</span>
                   </a>
                 )}
               </div>
             </div>
 
-            {/* Hardware Rack Specs Box */}
-            <div className="p-5 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/75 dark:bg-white/[0.03] backdrop-blur-2xl shadow-xl">
-              <span className="font-mono text-xs uppercase tracking-wider text-slate-700 dark:text-slate-300 font-semibold">
-                // HARDWARE ENCLOSURE
-              </span>
-              <div className="mt-3 space-y-2 font-mono text-xs text-slate-600 dark:text-slate-400">
-                <div className="flex justify-between py-1 border-b border-slate-200/40 dark:border-white/[0.04]">
-                  <span>Rack Unit:</span>
-                  <span className="text-slate-900 dark:text-white font-bold">{selectedProject.hardwareSpec.rackUnit} Blade</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-slate-200/40 dark:border-white/[0.04]">
-                  <span>Processing:</span>
-                  <span className="text-slate-900 dark:text-white font-bold">{selectedProject.hardwareSpec.freq}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span>Power Draw:</span>
-                  <span className="text-slate-900 dark:text-white font-bold">{selectedProject.hardwareSpec.power}</span>
-                </div>
-              </div>
+            {/* Quick Summary Note */}
+            <div className="p-5 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/75 dark:bg-white/[0.03] backdrop-blur-2xl shadow-xl font-mono text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              <span className="text-sky-500 font-bold block mb-1">// SECURE NETWORKING</span>
+              All container clusters are provisioned through Dokploy on Oracle Cloud Infrastructure with strict ingress boundaries and SSL encryption.
             </div>
           </div>
         </div>

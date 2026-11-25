@@ -241,25 +241,25 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
             <div className="flex-1">
               <div className="flex items-center gap-3 pb-3 border-b border-slate-200/60 dark:border-white/[0.08]">
                 <span className="font-mono text-xs uppercase tracking-wider text-sky-600 dark:text-sky-400 font-semibold">
-                  // PRODUCTION SYSTEMS & HARDWARE
+                  // PRODUCTION SYSTEMS & INFRASTRUCTURE
                 </span>
                 <span className="font-mono text-[11px] px-3 py-1 rounded-full border border-sky-400/40 bg-sky-500/10 text-sky-600 dark:text-sky-300 font-semibold flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  VigiLens & VPS Live
+                  VigiLens & OCI Live
                 </span>
               </div>
 
               <div className="mt-4 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4">
                 <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                  Orbital Telemetry & Projects
+                  Featured Projects & Systems
                 </h3>
                 <p className="font-caveat text-xl text-sky-600 dark:text-sky-400">
-                  "Tools forged for scale, observed in real time."
+                  "Architecture built for endurance, deployed to scale."
                 </p>
               </div>
 
               <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-                An interactive 3D space-grade avionics console monitoring VigiLens (autonomous endpoint telemetry & request tracing), self-hosted hardened cloud VPS infrastructure, and distributed production web applications.
+                Explore VigiLens (full-stack endpoint tracking & isolated database architecture) and hardened Oracle Cloud (OCI) VPS infrastructure running Dokploy. View live project canvases in 3D.
               </p>
             </div>
 
@@ -269,7 +269,7 @@ function Dashboard({ theme: _theme }: { theme?: ThemeClassSet }) {
                 scroll={scrollWithLenis}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-mono text-xs font-semibold shadow-md shadow-sky-500/25 transition-all group cursor-pointer"
               >
-                <span>Launch 3D Console</span>
+                <span>View 3D Projects</span>
                 <MdArrowRightAlt className="text-base group-hover:translate-x-1.5 transition-transform" />
               </HashLink>
               <HiOutlineRadio className="h-8 w-8 sm:h-10 sm:w-10 text-sky-500/40 block flex-shrink-0" />
