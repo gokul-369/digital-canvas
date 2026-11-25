@@ -142,10 +142,10 @@ function InteractiveAmbient({
     let cometCooldown = Math.floor(Math.random() * 160 + 100);
 
     const spawnComet = (): ShiningComet => {
-      const angle = Math.PI * 0.22 + (Math.random() - 0.5) * 0.15; // ~35° to 45° trajectory
-      const startX = Math.random() * (width * 0.75) + 20;
-      const startY = Math.random() * (height * 0.25) - 40;
-      const speed = Math.random() * 4 + 7.5; // 7.5 to 11.5 px/frame
+      const angle = Math.PI * 0.22 + (Math.random() - 0.5) * 0.14; // ~35° to 45° trajectory
+      const startX = Math.random() * (width * 0.65) - 60;
+      const startY = -30;
+      const speed = Math.random() * 4 + 8.5; // 8.5 to 12.5 px/frame
       const length = Math.random() * 80 + 140; // 140px - 220px luminous tail
       const maxAlpha = Math.random() * 0.3 + 0.7; // 0.7 to 1.0
 
@@ -159,7 +159,7 @@ function InteractiveAmbient({
         alpha: 0,
         maxAlpha,
         progress: 0,
-        duration: 140 + Math.random() * 50,
+        duration: 400,
         active: true,
       };
     };
@@ -369,16 +369,13 @@ function InteractiveAmbient({
           c.x += Math.cos(c.angle) * c.speed;
           c.y += Math.sin(c.angle) * c.speed;
 
-          const p = c.progress / c.duration;
-          if (p < 0.15) {
-            c.alpha = (p / 0.15) * c.maxAlpha;
-          } else if (p > 0.65) {
-            c.alpha = ((1 - p) / 0.35) * c.maxAlpha;
-          } else {
-            c.alpha = c.maxAlpha;
-          }
+          // Smooth fade-in at entry; keep luminous until completely off-screen
+          c.alpha = Math.min(1, c.progress / 18) * c.maxAlpha;
 
-          if (p >= 1 || c.x > width + 250 || c.y > height + 250) {
+          const tailEndX = c.x - Math.cos(c.angle) * c.length;
+          const tailEndY = c.y - Math.sin(c.angle) * c.length;
+
+          if (tailEndX > width + 80 || tailEndY > height + 80) {
             c.active = false;
             activeComet = null;
           } else {

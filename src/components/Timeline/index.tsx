@@ -3,6 +3,9 @@ import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import type { experience } from "../../types";
 import { HiOutlineCalendar } from "react-icons/hi2";
 import { IoSparklesOutline } from "react-icons/io5";
+import tcsLogo from "../../assets/companies/tcs.png";
+import paperfliteLogo from "../../assets/companies/paperflite.png";
+import novacLogo from "../../assets/companies/novac.png";
 
 interface CompanyMetadata {
   monogram: string;
@@ -36,72 +39,23 @@ const companyConfig: Record<string, CompanyMetadata> = {
   },
 };
 
+const COMPANY_LOGOS: Record<string, string> = {
+  "Tata Consultancy Services": tcsLogo,
+  Paperflite: paperfliteLogo,
+  "Novac Technology Solutions": novacLogo,
+};
+
 export function CompanyLogo({ company, fallback }: { company: string; fallback: string }) {
-  if (company === "Tata Consultancy Services") {
-    return (
-      <svg viewBox="0 0 64 32" className="w-9 h-9" aria-label="TCS logo">
-        <defs>
-          <linearGradient id="tcs-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#38bdf8" />
-            <stop offset="50%" stopColor="#818cf8" />
-            <stop offset="100%" stopColor="#ec4899" />
-          </linearGradient>
-        </defs>
-        <text
-          x="50%"
-          y="54%"
-          dominantBaseline="middle"
-          textAnchor="middle"
-          fill="url(#tcs-grad)"
-          fontFamily="Space Grotesk, sans-serif"
-          fontWeight="800"
-          fontSize="22"
-          letterSpacing="-1"
-        >
-          tcs
-        </text>
-      </svg>
-    );
-  }
+  const logoSrc = COMPANY_LOGOS[company];
 
-  if (company === "Paperflite") {
+  if (logoSrc) {
     return (
-      <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none" aria-label="Paperflite logo">
-        <defs>
-          <linearGradient id="pfl-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#818cf8" />
-            <stop offset="100%" stopColor="#a855f7" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M4 15.5L27 5L18.5 27L14.5 18L4 15.5Z"
-          fill="url(#pfl-grad)"
-        />
-        <path
-          d="M27 5L14.5 18L18.5 27"
-          stroke="white"
-          strokeOpacity="0.45"
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
-  if (company === "Novac Technology Solutions") {
-    return (
-      <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none" aria-label="Novac Technology Solutions logo">
-        <defs>
-          <linearGradient id="novac-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fbbf24" />
-            <stop offset="100%" stopColor="#f97316" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M7 25V7H11.5L20.5 19.5V7H25V25H20.5L11.5 12.5V25H7Z"
-          fill="url(#novac-grad)"
-        />
-      </svg>
+      <img
+        src={logoSrc}
+        alt={`${company} logo`}
+        loading="lazy"
+        className="w-7 h-7 sm:w-8 sm:h-8 object-contain rounded-lg"
+      />
     );
   }
 
