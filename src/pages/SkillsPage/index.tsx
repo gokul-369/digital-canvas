@@ -1,9 +1,12 @@
-import { useState, useMemo, memo } from "react";
+import { useState, useMemo, lazy, Suspense, memo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { skills } from "../../data";
 import SectionHeader from "../../components/SectionHeader";
 import InteractiveAmbient from "../../components/Backgrounds/InteractiveAmbient";
 import useNavigateTop from "../../hooks/useNavigateToTop";
+import useTheme from "../../hooks/useTheme";
+
+const GitHubGraph = lazy(() => import("../../components/GitHubGraph"));
 import {
   IoSearchOutline,
   IoSparklesOutline,
@@ -31,6 +34,8 @@ const DOMAIN_CATEGORIES = [
 
 function SkillsPage() {
   useNavigateTop();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
   const [activeTab, setActiveTab] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSkill, setActiveSkill] = useState<SkillItem | null>(null);
@@ -270,6 +275,21 @@ function SkillsPage() {
             No technologies found matching "{searchQuery}"
           </div>
         )}
+
+        {/* GitHub Contribution Graph */}
+        <div className="w-full mt-16 mb-4">
+          <div className="p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/75 dark:bg-white/[0.03] backdrop-blur-2xl shadow-xl">
+            <Suspense
+              fallback={
+                <div className="w-full h-32 flex items-center justify-center font-mono text-xs text-slate-400 animate-pulse">
+                  Loading contribution graph…
+                </div>
+              }
+            >
+              <GitHubGraph isDark={isDark} />
+            </Suspense>
+          </div>
+        </div>
       </div>
     </main>
   );

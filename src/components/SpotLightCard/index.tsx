@@ -51,8 +51,8 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
       {...rest}
       className={`relative p-5 overflow-hidden rounded-2xl
   backdrop-blur-xl
-  transition-all duration-300 cursor-pointer
-  group ease-out hover:-translate-y-1
+  transition-[transform,box-shadow,border-color] duration-300 cursor-pointer
+  group ease-out hover:-translate-y-1 transform-gpu will-change-transform
   ${className}`}
     >
       <div

@@ -374,3 +374,68 @@ body.book-inspect-open [class*="fixed"][class*="top-7"] {
 .animate-dust-3 {
   animation: dustTwinkle 2s ease-in-out infinite 1.2s;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PERFORMANCE GLOBALS
+   - GPU compositing layer promotion for animated elements
+   - Content-visibility: auto for off-screen sections
+   - Reduced-motion safety net
+   - Smooth font rendering
+═══════════════════════════════════════════════════════════════ */
+
+/* Force sub-pixel font AA on HiDPI screens */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Promote key animated elements to their own compositor layer */
+.will-change-transform {
+  will-change: transform;
+}
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Below-fold sections get content-visibility deferral */
+section:not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Safe GPU layer promotion for Framer Motion children */
+[data-framer-appear-id],
+[data-motion-id] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Respect prefers-reduced-motion — kill all CSS transitions/animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Prevent layout thrash from bouncing/floating elements */
+.animate-pulse,
+.animate-bounce,
+.animate-spin {
+  will-change: transform, opacity;
+}
+
+/* Smooth image rendering globally */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+img[loading="lazy"] {
+  content-visibility: auto;
+}
