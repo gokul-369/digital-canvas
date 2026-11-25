@@ -85,25 +85,33 @@ export default function CollaboratePanel({ isOpen, onClose }: Props) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 overflow-y-auto">
           {/* Backdrop with smooth fade */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.28 }}
             onClick={onClose}
             className="fixed inset-0 bg-slate-950/60 dark:bg-black/75 backdrop-blur-md"
           />
 
-          {/* Centered Glass Command Dialogue (Non-Jittery) */}
+          {/* Glass Command Dialogue - Smooth Bottom Slide-Up Transition */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 16 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 w-full max-w-lg rounded-3xl border border-slate-200/90 dark:border-white/15 bg-white/95 dark:bg-[#090b12]/95 backdrop-blur-2xl shadow-2xl p-5 sm:p-8 my-auto max-h-[92vh] overflow-y-auto text-slate-900 dark:text-white"
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{
+              type: "spring",
+              damping: 30,
+              stiffness: 300,
+              mass: 0.8,
+            }}
+            className="relative z-10 w-full max-w-lg rounded-t-3xl sm:rounded-3xl border border-slate-200/90 dark:border-white/15 bg-white/95 dark:bg-[#090b12]/95 backdrop-blur-2xl shadow-2xl p-6 sm:p-8 max-h-[92vh] overflow-y-auto text-slate-900 dark:text-white"
           >
+            {/* Mobile Sheet Handle Bar */}
+            <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-white/20 mx-auto -mt-1 mb-4 sm:hidden flex-shrink-0" />
+
             {/* Header Telemetry Pill */}
             <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-white/10">
               <div className="flex items-center gap-2">

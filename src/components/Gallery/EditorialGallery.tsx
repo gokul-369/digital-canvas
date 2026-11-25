@@ -5,7 +5,6 @@ import {
   IoChevronForward,
   IoExpand,
   IoClose,
-  IoSparklesOutline,
 } from "react-icons/io5";
 import { processedAlbum as images } from "../../data";
 import ThreeDViewport from "./ThreeDViewport";
@@ -424,27 +423,34 @@ export default function EditorialGallery({
                   >
                     {/* Guaranteed Proportional Viewport Frame - Never Cuts Text or Overflows */}
                     <div className="relative flex items-center justify-center h-[48vh] sm:h-[55vh] w-[90vw] max-w-[850px] overflow-hidden rounded-2xl">
-                      {/* Progressive Blurred Preview + Gemini Shimmer Wave While Buffering */}
+                      {/* Progressive Blurred Preview + Cool Atmospheric Developing Skeleton */}
                       {!isFullImageLoaded && (
                         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gemini-skeleton">
                           <img
                             src={current.thumb || current.medium}
                             alt=""
-                            className="absolute inset-0 w-full h-full object-contain filter blur-xl opacity-50 scale-105"
+                            className="absolute inset-0 w-full h-full object-contain filter blur-xl opacity-60 scale-105"
                           />
-                          <div className="relative z-10 flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/60 border border-white/20 shadow-xl backdrop-blur-md">
-                            <IoSparklesOutline size={16} className="text-indigo-400 animate-pulse" />
+                          <div className="relative z-10 flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/70 border border-white/20 shadow-2xl backdrop-blur-xl">
+                            <div className="relative flex items-center justify-center">
+                              <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping absolute" />
+                              <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                            </div>
                             <span className="font-mono text-xs uppercase tracking-wider text-white font-medium">
-                              Buffering Frame {numFormatted}...
+                              Developing Exposure // Frame {numFormatted}
                             </span>
                           </div>
                         </div>
                       )}
 
-                      {/* Main Full-Res Image - Fitted naturally within bounds */}
+                      {/* Main Optimized Responsive Image */}
                       <img
-                        src={current.full || current.medium}
+                        src={current.medium || current.full}
+                        srcSet={`${current.thumb} 320w, ${current.medium} 768w, ${current.full} 1400w`}
+                        sizes="(max-width: 640px) 90vw, (max-width: 1024px) 75vw, 850px"
                         alt={current.title}
+                        loading="eager"
+                        decoding="async"
                         onLoad={() => setIsFullImageLoaded(true)}
                         className={`max-h-full max-w-full object-contain rounded-2xl shadow-2xl transition-opacity duration-300 ease-out ${
                           isFullImageLoaded ? "opacity-100" : "opacity-0"

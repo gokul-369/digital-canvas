@@ -93,7 +93,7 @@ function InteractiveAmbient({
 
     // Responsive particle densities
     const starCount = isMobile ? 65 : isTablet ? 105 : 160;
-    const moteCount = isMobile ? 35 : isTablet ? 55 : 85;
+    const moteCount = isMobile ? 60 : isTablet ? 95 : 135;
 
     // Authentic astronomical stellar classes
     const darkStarColors = [
@@ -179,14 +179,14 @@ function InteractiveAmbient({
       ? Array.from({ length: moteCount }, () => ({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.06,
-          vy: -(Math.random() * 0.25 + 0.12),
-          radius: Math.random() * 3.5 + 2.0,
-          baseAlpha: Math.random() * 0.35 + 0.25,
+          vx: (Math.random() - 0.5) * 0.08,
+          vy: -(Math.random() * 0.28 + 0.14),
+          radius: Math.random() * 4.5 + 2.5,
+          baseAlpha: Math.random() * 0.4 + 0.4,
           rgb: lightMoteRGBs[Math.floor(Math.random() * lightMoteRGBs.length)],
           swaySpeed: Math.random() * 0.7 + 0.5,
           swayPhase: Math.random() * Math.PI * 2,
-          swayAmplitude: Math.random() * 0.35 + 0.15,
+          swayAmplitude: Math.random() * 0.4 + 0.2,
         }))
       : [];
 
@@ -317,83 +317,6 @@ function InteractiveAmbient({
             ctx.arc(s.x, s.y, s.radius * 0.7, 0, Math.PI * 2);
             ctx.fill();
           } else {
-            // Clean pinpoint star
-            ctx.fillStyle = s.color;
-            ctx.globalAlpha = currentAlpha;
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-
-        // RENDER SHINING COMETS IN NIGHT MODE
-        cometCooldown--;
-        if (cometCooldown <= 0 && activeComet === null) {
-          activeComet = spawnComet();
-          cometCooldown = Math.floor(Math.random() * 320 + 260); // 4.5 to 9.5 seconds interval
-        }
-
-        if (activeComet && activeComet.active) {
-          const c = activeComet;
-          c.progress++;
-
-          // Move along trajectory
-          c.x += Math.cos(c.angle) * c.speed;
-          c.y += Math.sin(c.angle) * c.speed;
-
-          // Silky smooth fade envelope
-          const p = c.progress / c.duration;
-          if (p < 0.15) {
-            c.alpha = (p / 0.15) * c.maxAlpha;
-          } else if (p > 0.65) {
-            c.alpha = ((1 - p) / 0.35) * c.maxAlpha;
-          } else {
-            c.alpha = c.maxAlpha;
-          }
-
-          if (p >= 1 || c.x > width + 250 || c.y > height + 250) {
-            c.active = false;
-            activeComet = null;
-          } else {
-            // Tail calculation
-            const tailX = c.x - Math.cos(c.angle) * c.length;
-            const tailY = c.y - Math.sin(c.angle) * c.length;
-
-            // Luminous ion & dust streak
-            const tailGrad = ctx.createLinearGradient(c.x, c.y, tailX, tailY);
-            tailGrad.addColorStop(0, `rgba(255, 255, 255, ${c.alpha * 0.95})`);
-            tailGrad.addColorStop(0.12, `rgba(224, 242, 254, ${c.alpha * 0.75})`);
-            tailGrad.addColorStop(0.35, `rgba(56, 189, 248, ${c.alpha * 0.4})`);
-            tailGrad.addColorStop(0.7, `rgba(99, 102, 241, ${c.alpha * 0.15})`);
-            tailGrad.addColorStop(1, "transparent");
-
-            ctx.strokeStyle = tailGrad;
-            ctx.lineWidth = c.headRadius * 1.5;
-            ctx.lineCap = "round";
-            ctx.beginPath();
-            ctx.moveTo(c.x, c.y);
-            ctx.lineTo(tailX, tailY);
-            ctx.stroke();
-
-            // Glowing radiant coma around the comet nucleus
-            const flareGrad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.headRadius * 6);
-            flareGrad.addColorStop(0, `rgba(255, 255, 255, ${c.alpha * 0.9})`);
-            flareGrad.addColorStop(0.25, `rgba(186, 230, 253, ${c.alpha * 0.6})`);
-            flareGrad.addColorStop(0.6, `rgba(99, 102, 241, ${c.alpha * 0.2})`);
-            flareGrad.addColorStop(1, "transparent");
-
-            ctx.fillStyle = flareGrad;
-            ctx.beginPath();
-            ctx.arc(c.x, c.y, c.headRadius * 6, 0, Math.PI * 2);
-            ctx.fill();
-
-            // High-intensity white nucleus core
-            ctx.fillStyle = "#ffffff";
-            ctx.globalAlpha = c.alpha;
-            ctx.beginPath();
-            ctx.arc(c.x, c.y, c.headRadius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.globalAlpha = 1.0;
           }
         }
       } else {
@@ -401,7 +324,7 @@ function InteractiveAmbient({
         for (let i = 0; i < moteCount; i++) {
           const m = motes[i];
 
-          // Buoyant upward drift with thermal sinusoidal sway (no dragging with mouse)
+          // Buoyant upward drift with thermal sinusoidal sway
           m.y += m.vy;
           m.x += Math.sin(time * 0.001 * m.swaySpeed + m.swayPhase) * m.swayAmplitude + m.vx;
 
@@ -420,23 +343,109 @@ function InteractiveAmbient({
           const dx = mouseX - m.x;
           const dy = mouseY - m.y;
           const dist = Math.hypot(dx, dy);
-          const proximity = Math.max(0, 1 - dist / 130);
+          const proximity = Math.max(0, 1 - dist / 150);
 
-          // Soft shimmering opacity
-          const shimmer = Math.sin(time * 0.0016 * m.swaySpeed + m.swayPhase) * 0.12;
-          const alpha = Math.max(0.12, Math.min(0.85, m.baseAlpha + shimmer + proximity * 0.45));
-          const currentRadius = m.radius * (1 + proximity * 0.4);
+          // Rich, prominent shimmering opacity
+          const shimmer = Math.sin(time * 0.0018 * m.swaySpeed + m.swayPhase) * 0.15;
+          const alpha = Math.max(0.25, Math.min(0.95, m.baseAlpha + shimmer + proximity * 0.45));
+          const currentRadius = m.radius * (1 + proximity * 0.35);
 
-          // Soft feathered photographic bokeh circle
+          // Feathered photographic bokeh circle with vibrant core
           const gradient = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, currentRadius);
           gradient.addColorStop(0, `rgba(${m.rgb}, ${alpha})`);
-          gradient.addColorStop(0.45, `rgba(${m.rgb}, ${alpha * 0.5})`);
+          gradient.addColorStop(0.5, `rgba(${m.rgb}, ${alpha * 0.6})`);
           gradient.addColorStop(1, `rgba(${m.rgb}, 0)`);
 
           ctx.fillStyle = gradient;
           ctx.beginPath();
           ctx.arc(m.x, m.y, currentRadius, 0, Math.PI * 2);
           ctx.fill();
+        }
+      }
+
+      // RENDER SHINING COMETS IN BOTH MODES (Dark: Electric Cyan/White, Light: Iridescent Prismatic Flare)
+      cometCooldown--;
+      if (cometCooldown <= 0 && activeComet === null) {
+        activeComet = spawnComet();
+        cometCooldown = Math.floor(Math.random() * 280 + 220); // 3.5 to 8 seconds interval
+      }
+
+      if (activeComet && activeComet.active) {
+        const c = activeComet;
+        c.progress++;
+
+        // Move along trajectory
+        c.x += Math.cos(c.angle) * c.speed;
+        c.y += Math.sin(c.angle) * c.speed;
+
+        // Silky smooth fade envelope
+        const p = c.progress / c.duration;
+        if (p < 0.15) {
+          c.alpha = (p / 0.15) * c.maxAlpha;
+        } else if (p > 0.65) {
+          c.alpha = ((1 - p) / 0.35) * c.maxAlpha;
+        } else {
+          c.alpha = c.maxAlpha;
+        }
+
+        if (p >= 1 || c.x > width + 250 || c.y > height + 250) {
+          c.active = false;
+          activeComet = null;
+        } else {
+          // Tail calculation
+          const tailX = c.x - Math.cos(c.angle) * c.length;
+          const tailY = c.y - Math.sin(c.angle) * c.length;
+
+          // Luminous ion & dust streak tailored for theme
+          const tailGrad = ctx.createLinearGradient(c.x, c.y, tailX, tailY);
+          if (isDark) {
+            tailGrad.addColorStop(0, `rgba(255, 255, 255, ${c.alpha * 0.95})`);
+            tailGrad.addColorStop(0.12, `rgba(224, 242, 254, ${c.alpha * 0.75})`);
+            tailGrad.addColorStop(0.35, `rgba(56, 189, 248, ${c.alpha * 0.4})`);
+            tailGrad.addColorStop(0.7, `rgba(99, 102, 241, ${c.alpha * 0.15})`);
+            tailGrad.addColorStop(1, "transparent");
+          } else {
+            tailGrad.addColorStop(0, `rgba(79, 70, 229, ${c.alpha * 0.9})`);
+            tailGrad.addColorStop(0.18, `rgba(99, 102, 241, ${c.alpha * 0.75})`);
+            tailGrad.addColorStop(0.45, `rgba(56, 189, 248, ${c.alpha * 0.5})`);
+            tailGrad.addColorStop(0.75, `rgba(245, 158, 11, ${c.alpha * 0.25})`);
+            tailGrad.addColorStop(1, "transparent");
+          }
+
+          ctx.strokeStyle = tailGrad;
+          ctx.lineWidth = c.headRadius * 1.5;
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(c.x, c.y);
+          ctx.lineTo(tailX, tailY);
+          ctx.stroke();
+
+          // Glowing radiant coma around the comet nucleus
+          const flareGrad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.headRadius * 6);
+          if (isDark) {
+            flareGrad.addColorStop(0, `rgba(255, 255, 255, ${c.alpha * 0.9})`);
+            flareGrad.addColorStop(0.25, `rgba(186, 230, 253, ${c.alpha * 0.6})`);
+            flareGrad.addColorStop(0.6, `rgba(99, 102, 241, ${c.alpha * 0.2})`);
+            flareGrad.addColorStop(1, "transparent");
+          } else {
+            flareGrad.addColorStop(0, `rgba(79, 70, 229, ${c.alpha * 0.85})`);
+            flareGrad.addColorStop(0.3, `rgba(129, 140, 248, ${c.alpha * 0.55})`);
+            flareGrad.addColorStop(0.65, `rgba(56, 189, 248, ${c.alpha * 0.25})`);
+            flareGrad.addColorStop(1, "transparent");
+          }
+
+          ctx.fillStyle = flareGrad;
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, c.headRadius * 6, 0, Math.PI * 2);
+          ctx.fill();
+
+          // High-intensity nucleus core
+          ctx.fillStyle = isDark ? "#ffffff" : "#4f46e5";
+          ctx.globalAlpha = c.alpha;
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, c.headRadius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1.0;
         }
       }
 
@@ -472,10 +481,10 @@ function InteractiveAmbient({
                 ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.16) 0%, transparent 65%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(99, 102, 241, 0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(16, 185, 129, 0.13) 0%, transparent 60%)"
                 : "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16, 185, 129, 0.16) 0%, transparent 65%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(99, 102, 241, 0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(192, 132, 252, 0.14) 0%, transparent 60%)"
             : variant === "gallery"
-              ? "radial-gradient(ellipse 75% 45% at 50% -10%, rgba(56, 189, 248, 0.16) 0%, transparent 65%), radial-gradient(ellipse 65% 55% at 85% 35%, rgba(129, 140, 248, 0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(244, 114, 182, 0.10) 0%, transparent 60%)"
+              ? "radial-gradient(ellipse 75% 45% at 50% -10%, rgba(56, 189, 248, 0.32) 0%, transparent 70%), radial-gradient(ellipse 65% 55% at 85% 35%, rgba(129, 140, 248, 0.28) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(244, 114, 182, 0.22) 0%, transparent 65%)"
               : variant === "experience"
-                ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.16) 0%, transparent 65%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(56, 189, 248, 0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(192, 132, 252, 0.10) 0%, transparent 60%)"
-                : "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(45, 212, 191, 0.14) 0%, transparent 65%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(165, 180, 252, 0.15) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(251, 191, 36, 0.10) 0%, transparent 60%)",
+                ? "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.34) 0%, transparent 70%), radial-gradient(ellipse 65% 55% at 85% 40%, rgba(56, 189, 248, 0.30) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(168, 85, 247, 0.24) 0%, transparent 65%)"
+                : "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(45, 212, 191, 0.30) 0%, transparent 70%), radial-gradient(ellipse 70% 55% at 85% 35%, rgba(129, 140, 248, 0.32) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 65%, rgba(245, 158, 11, 0.22) 0%, transparent 65%)",
         }}
       />
 
@@ -491,7 +500,7 @@ function InteractiveAmbient({
         style={{
           background: isDark
             ? "radial-gradient(circle at 50% 50%, transparent 25%, rgba(3, 4, 7, 0.88) 100%)"
-            : "radial-gradient(circle at 50% 50%, transparent 55%, rgba(248, 250, 252, 0.35) 100%)",
+            : "radial-gradient(circle at 50% 50%, transparent 60%, rgba(226, 232, 240, 0.25) 100%)",
         }}
       />
     </div>
