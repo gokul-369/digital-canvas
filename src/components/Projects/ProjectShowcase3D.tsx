@@ -46,6 +46,8 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
       texture.minFilter = THREE.LinearMipmapLinearFilter;
       texture.magFilter = THREE.LinearFilter;
       texture.colorSpace = THREE.SRGBColorSpace;
+      texture.wrapS = THREE.ClampToEdgeWrapping;
+      texture.wrapT = THREE.ClampToEdgeWrapping;
 
       const mat = screenMeshRef.current?.material as THREE.MeshBasicMaterial;
       if (mat) {
@@ -98,10 +100,12 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
     deviceGroupRef.current = deviceGroup;
     scene.add(deviceGroup);
 
-    // Outer Bezel Frame (Larger presence, ultra-thin minimal bezels)
-    const frameW = 4.3;
-    const frameH = 2.7;
-    const frameGeo = new THREE.BoxGeometry(frameW, frameH, 0.05);
+    // Exact 16:10 screen aspect ratio (1.6000) matching 1024x640 screenshots edge-to-edge
+    const screenW = 4.32;
+    const screenH = 2.70; // 4.32 / 2.70 = 1.6000 exactly
+    const frameW = screenW + 0.08; // Ultra-slim 1mm bezel
+    const frameH = screenH + 0.08;
+    const frameGeo = new THREE.BoxGeometry(frameW, frameH, 0.04);
     const frameMat = new THREE.MeshStandardMaterial({
       color: isDark ? 0x0b1120 : 0xe2e8f0,
       metalness: isDark ? 0.85 : 0.3,
@@ -110,15 +114,15 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
     const frameMesh = new THREE.Mesh(frameGeo, frameMat);
     deviceGroup.add(frameMesh);
 
-    // Screen Display Plane (Edge-to-edge true aspect ratio, zero specular hotspot)
-    const screenW = frameW * 0.985;
-    const screenH = frameH * 0.975;
+    // Screen Display Plane (100% Edge-to-Edge Cover, zero wasted space)
     const screenGeo = new THREE.PlaneGeometry(screenW, screenH);
 
     // Initial texture load
     const initialTexture = project.previewImage
       ? textureLoader.current.load(project.previewImage, (tex) => {
           tex.colorSpace = THREE.SRGBColorSpace;
+          tex.wrapS = THREE.ClampToEdgeWrapping;
+          tex.wrapT = THREE.ClampToEdgeWrapping;
           tex.needsUpdate = true;
         })
       : null;
@@ -129,7 +133,7 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
       toneMapped: false,
     });
     const screenMesh = new THREE.Mesh(screenGeo, screenMat);
-    screenMesh.position.set(0, 0, 0.03);
+    screenMesh.position.set(0, 0, 0.025);
     deviceGroup.add(screenMesh);
     screenMeshRef.current = screenMesh;
 
