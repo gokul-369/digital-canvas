@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback, type FC } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Link } from "react-router-dom";
+import { manifest } from "../../routes/manifest";
 import { projectsList, type ProjectItem } from "../../data/projects";
 import { ProjectShowcase3D } from "../../components/Projects/ProjectShowcase3D";
 import InteractiveAmbient from "../../components/Backgrounds/InteractiveAmbient";
 import SectionHeader from "../../components/SectionHeader";
 import useTheme from "../../hooks/useTheme";
-import { HiOutlineServer, HiOutlineRadio, HiOutlineSparkles } from "react-icons/hi2";
-import { FiCheckCircle, FiExternalLink, FiGithub, FiLock } from "react-icons/fi";
+import { HiOutlineServer, HiOutlineRadio, HiOutlineSparkles, HiOutlineBriefcase } from "react-icons/hi2";
+import { FiCheckCircle, FiExternalLink, FiGithub, FiLock, FiArrowRight } from "react-icons/fi";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 const ProjectsPage: FC = () => {
@@ -62,23 +64,27 @@ const ProjectsPage: FC = () => {
       {/* Header Section */}
       <div className="w-full max-w-5xl z-10 flex flex-col items-center text-center mb-6">
         <SectionHeader
-          tag="// SELECTED WORKS & INFRASTRUCTURE"
-          title="Featured Projects &"
-          accent="Production Systems"
-          description="A curated look into production platforms, endpoint observability tooling, and hardened cloud infrastructure built for reliability."
+          tag="// AUTONOMOUS LABS & PERSONAL SYSTEMS"
+          title="Personal Projects &"
+          accent="Systems Architecture"
+          description="A curated look into personal engineering platforms, endpoint observability tooling, and hardened cloud infrastructure. Professional & enterprise systems are cataloged separately."
           className="mb-8"
         />
 
-        {/* Clean Next / Prev Controller Bar (No Tabs) */}
+        {/* Clean Next / Prev Controller Bar (No Tabs, Icon-Only Buttons) */}
         <div className="w-full flex items-center justify-between px-1 sm:px-2">
-          {/* Active Project Counter & Mini-Pills */}
-          <div className="flex items-center gap-3">
-            <div className="px-4 py-2 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] backdrop-blur-md text-slate-800 dark:text-slate-200 shadow-sm flex items-center gap-2.5">
+          {/* Active Project Counter, Label & Mini-Pills */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="px-3.5 sm:px-4 py-2 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] backdrop-blur-md text-slate-800 dark:text-slate-200 shadow-sm flex items-center gap-2 sm:gap-2.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="font-mono text-xs font-bold tracking-wider">
                 PROJECT 0{currentIndex + 1} / 0{projectsList.length}
               </span>
             </div>
+
+            <span className="hidden sm:inline-block px-2.5 py-1 rounded-xl font-mono text-[10px] uppercase font-bold tracking-wider border border-sky-400/30 bg-sky-500/10 text-sky-600 dark:text-sky-300">
+              Personal Lab
+            </span>
 
             {/* Quick mini-indicator pills */}
             <div className="hidden sm:flex items-center gap-1.5 pl-1">
@@ -97,23 +103,30 @@ const ProjectsPage: FC = () => {
             </div>
           </div>
 
-          {/* Prev / Next Buttons */}
+          {/* Right Action: Professional Experience Link + Icon-Only Prev/Next Buttons */}
           <div className="flex items-center gap-2">
+            <Link
+              to={manifest.experience}
+              className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-2xl border border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-mono text-xs font-semibold transition-all group mr-1"
+            >
+              <HiOutlineBriefcase className="w-4 h-4 text-indigo-500" />
+              <span>EXPERIENCE</span>
+              <FiArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+
             <button
               onClick={handlePrev}
-              className="px-3.5 py-2 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-sky-400 hover:text-sky-500 hover:shadow-md transition-all duration-200 cursor-pointer flex items-center gap-1.5 group select-none active:scale-95"
+              className="p-2.5 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-sky-400 hover:text-sky-500 hover:shadow-md transition-all duration-200 cursor-pointer flex items-center justify-center group select-none active:scale-95"
               aria-label="Previous Project"
             >
               <IoChevronBack className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-              <span className="font-mono text-xs font-semibold pr-1 hidden sm:inline">PREV</span>
             </button>
 
             <button
               onClick={handleNext}
-              className="px-4 py-2 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-sky-400 hover:text-sky-500 hover:shadow-md transition-all duration-200 cursor-pointer flex items-center gap-1.5 group select-none active:scale-95"
+              className="p-2.5 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/70 dark:bg-white/[0.04] backdrop-blur-md text-slate-700 dark:text-slate-200 hover:border-sky-400 hover:text-sky-500 hover:shadow-md transition-all duration-200 cursor-pointer flex items-center justify-center group select-none active:scale-95"
               aria-label="Next Project"
             >
-              <span className="font-mono text-xs font-semibold pl-1 hidden sm:inline">NEXT</span>
               <IoChevronForward className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
@@ -122,13 +135,15 @@ const ProjectsPage: FC = () => {
 
       {/* 3D Showcase & Project Dossier Container */}
       <div className="w-full max-w-5xl z-10 flex flex-col items-center gap-8">
-        {/* 3D Interactive Project Canvas (Animated on Next / Prev) */}
+        {/* 3D Interactive Project Canvas (Smooth Sliding Animation on Next / Prev) */}
         <div className="w-full">
           <ProjectShowcase3D
             project={selectedProject}
             direction={direction}
             theme={theme}
             onOpenLive={() => window.open(selectedProject.liveUrl, "_blank")}
+            onNext={handleNext}
+            onPrev={handlePrev}
           />
         </div>
 
@@ -314,6 +329,32 @@ const ProjectsPage: FC = () => {
               </div>
             </motion.div>
           </AnimatePresence>
+        </div>
+
+        {/* Enterprise & Professional Experience Bridge Banner */}
+        <div className="w-full mt-4 p-6 sm:p-8 rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-slate-900/60 backdrop-blur-2xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                ENTERPRISE & COMMERCIAL SYSTEMS
+              </span>
+            </div>
+            <h3 className="font-space text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Looking for Professional Engineering & Client Platforms?
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              The projects above represent independent engineering labs and autonomous infrastructure. Commercial production work—including front-end platforms for a tier-1 UK Bank, VISA Click to Pay integrations, and AI MCP servers at <strong>Tata Consultancy Services</strong>, <strong>Paperflite</strong>, and <strong>Novac Technology Solutions</strong>—is documented in the Professional Experience timeline.
+            </p>
+          </div>
+
+          <Link
+            to={manifest.experience}
+            className="shrink-0 px-6 py-3.5 rounded-2xl font-mono text-xs font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 shadow-lg hover:shadow-[0_0_25px_rgba(99,102,241,0.4)] transition-all flex items-center gap-2.5 cursor-pointer group"
+          >
+            <span>VIEW WORK EXPERIENCE</span>
+            <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
     </div>
