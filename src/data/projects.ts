@@ -55,11 +55,12 @@ export const projectsList: ProjectItem[] = [
         description: "Continuous deployment pipeline running inside an isolated Docker network on Oracle Cloud Infrastructure.",
       },
     ],
-    stack: ["Next.js", "PostgreSQL", "Dokploy", "Oracle Cloud (OCI)", "TypeScript", "TailwindCSS", "Docker"],
+    stack: ["Next.js", "PostgreSQL", "Dokploy", "Oracle Cloud (OCI)", "Cloudflare", "TypeScript", "TailwindCSS", "Docker"],
     metrics: [
       { label: "Deployment", value: "Dokploy CI/CD" },
       { label: "Database", value: "Isolated PostgreSQL" },
       { label: "Hosting", value: "Oracle Cloud VPS" },
+      { label: "Edge & SSL", value: "Cloudflare Proxy" },
       { label: "Codebase Access", value: "Closed Source / Private" },
     ],
     accentColor: "#38bdf8", // Sky Cyan
@@ -81,7 +82,7 @@ export const projectsList: ProjectItem[] = [
     architectureHighlights: [
       {
         title: "Hardened Security Architecture",
-        description: "Custom OCI Virtual Cloud Network (VCN) with strict stateful security lists, locked down port ingress, and restricted SSH access.",
+        description: "Custom OCI Virtual Cloud Network (VCN) with strict stateful security lists, Cloudflare edge DNS/SSL proxy masking the origin IP, and restricted SSH access.",
       },
       {
         title: "Centralized Dokploy Control Panel",
@@ -92,10 +93,11 @@ export const projectsList: ProjectItem[] = [
         description: "Automated cron-based Docker image pruning, log rotation, resource monitoring, and swap optimization ensuring 24/7 uptime without manual intervention.",
       },
     ],
-    stack: ["Oracle Cloud (OCI)", "Ubuntu Linux", "Dokploy", "Docker Compose", "Nginx", "UFW / iptables", "Bash"],
+    stack: ["Oracle Cloud (OCI)", "Cloudflare", "Ubuntu Linux", "Dokploy", "Docker Compose", "Nginx", "UFW / iptables", "Bash"],
     metrics: [
       { label: "Uptime", value: "24/7 Continuous" },
       { label: "Firewall", value: "Strict Ingress/Egress" },
+      { label: "Edge & DNS", value: "Cloudflare Proxy / WAF" },
       { label: "Orchestration", value: "Dokploy Cluster" },
       { label: "Codebase Access", value: "Closed Source / Private" },
     ],

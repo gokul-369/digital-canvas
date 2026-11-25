@@ -33,6 +33,9 @@ function resolveLogo(name: string): LogoDef {
   if (key.includes("oracle") || key.includes("oci")) {
     return { url: `${DEVICON}/oracle/oracle-original.svg` };
   }
+  if (key.includes("cloudflare")) {
+    return { url: `${DEVICON}/cloudflare/cloudflare-original.svg` };
+  }
   if (key.includes("typescript")) {
     return { url: `${DEVICON}/typescript/typescript-original.svg` };
   }
