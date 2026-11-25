@@ -1,7 +1,7 @@
 import { navLinks } from "../../data";
 import useTheme from "../../hooks/useTheme";
 import { HashLink } from "react-router-hash-link";
-import { scrollWithLenis } from "../../utils/scroll";
+import { scrollWithLenis, scrollToTop } from "../../utils/scroll";
 import { PiMoonStarsLight } from "react-icons/pi";
 import { GoSun } from "react-icons/go";
 import {
@@ -15,16 +15,13 @@ import { useMotionValueEvent, useScroll, motion } from "motion/react";
 import { useState, useRef, type ComponentType } from "react";
 import { useLocation } from "react-router-dom";
 
-const MOBILE_META: Record<
-  string,
-  { label: string; icon: ComponentType<{ className?: string }> }
-> = {
-  Home: { label: "Home", icon: HiOutlineHome },
-  Experience: { label: "Work", icon: HiOutlineBriefcase },
-  Skills: { label: "Stack", icon: HiOutlineCommandLine },
-  Projects: { label: "Labs", icon: HiOutlineRocketLaunch },
-  Gallery: { label: "Lens", icon: IoCameraOutline },
-  Books: { label: "Books", icon: IoBookOutline },
+const MOBILE_ICONS: Record<string, ComponentType<{ className?: string }>> = {
+  Home: HiOutlineHome,
+  Experience: HiOutlineBriefcase,
+  Skills: HiOutlineCommandLine,
+  Projects: HiOutlineRocketLaunch,
+  Gallery: IoCameraOutline,
+  Books: IoBookOutline,
 };
 
 function Nav() {
@@ -54,6 +51,12 @@ function Nav() {
     return location.pathname.startsWith(linkValue);
   };
 
+  const handleLinkClick = (linkValue: string) => {
+    // Scroll immediately if switching routes or smoothly if staying on current route
+    const sameRoute = isActive(linkValue);
+    scrollToTop(!sameRoute);
+  };
+
   return (
     <>
       {/* Desktop Floating Top Pill Nav (md+) */}
@@ -72,6 +75,7 @@ function Nav() {
                 <HashLink
                   to={link.value}
                   scroll={scrollWithLenis}
+                  onClick={() => handleLinkClick(link.value)}
                   key={link.name}
                   className={`relative text-sm transition-all duration-300 ${
                     active
@@ -111,28 +115,25 @@ function Nav() {
         </motion.nav>
       </div>
 
-      {/* Mobile Floating Bottom Morphing Dock (< md) — zero hamburger, zero top clutter */}
-      <div className="md:hidden fixed bottom-4 left-0 w-full flex items-center justify-center z-40 px-3 pointer-events-none">
+      {/* Mobile Floating Bottom Morphing Dock (< md) — solid indigo active pill, original names */}
+      <div className="md:hidden fixed bottom-4 left-0 w-full flex items-center justify-center z-40 px-2 pointer-events-none">
         <motion.nav
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           aria-label="Mobile navigation dock"
-          className="pointer-events-auto inline-flex items-center gap-1 p-1.5 rounded-full border border-slate-200/90 dark:border-white/15 bg-white/90 dark:bg-slate-950/85 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.16)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.65)]"
+          className="pointer-events-auto inline-flex items-center gap-0.5 sm:gap-1 p-1.5 rounded-full border border-slate-200/90 dark:border-white/15 bg-white/90 dark:bg-slate-950/85 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.16)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.65)] max-w-full"
         >
           {navLinks.map((link) => {
             const active = isActive(link.value);
-            const meta = MOBILE_META[link.name] ?? {
-              label: link.name,
-              icon: HiOutlineHome,
-            };
-            const Icon = meta.icon;
+            const Icon = MOBILE_ICONS[link.name] ?? HiOutlineHome;
 
             return (
               <HashLink
                 key={link.name}
                 to={link.value}
                 scroll={scrollWithLenis}
+                onClick={() => handleLinkClick(link.value)}
                 aria-label={link.name}
                 className={`relative flex items-center justify-center gap-1.5 rounded-full transition-colors duration-200 ${
                   active
@@ -144,13 +145,13 @@ function Nav() {
                   <motion.span
                     layoutId="mobile-dock-active"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md shadow-indigo-500/30"
+                    className="absolute inset-0 rounded-full bg-indigo-600 shadow-md shadow-indigo-500/25"
                   />
                 )}
                 <Icon className="relative z-10 w-4 h-4 shrink-0" />
                 {active && (
-                  <span className="relative z-10 font-mono text-[11px] font-bold tracking-tight whitespace-nowrap">
-                    {meta.label}
+                  <span className="relative z-10 font-mono text-[11px] font-semibold tracking-tight whitespace-nowrap">
+                    {link.name}
                   </span>
                 )}
               </HashLink>
@@ -165,7 +166,7 @@ function Nav() {
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle color theme"
-            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-white active:scale-90 transition-all cursor-pointer"
+            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-white active:scale-90 transition-all cursor-pointer shrink-0"
           >
             {themeName === "dark" ? (
               <GoSun className="w-4 h-4" />

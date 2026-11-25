@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes, useLocation } from "react-router";
+import { scrollToTop } from "../utils/scroll";
 import Home from "../pages/Home";
 
 import Nav from "../components/Nav";
@@ -26,6 +27,7 @@ const ImageGallery = lazy(() => import("../pages/ImageGallery"));
 const BooksPage = lazy(() => import("../pages/BooksPage"));
 
 function ScrollSync() {
+  const { pathname, hash } = useLocation();
   const lenis = useLenis(() => {
     ScrollTrigger.update();
   });
@@ -36,6 +38,12 @@ function ScrollSync() {
     }
     ScrollTrigger.refresh();
   }, [lenis]);
+
+  useEffect(() => {
+    if (!hash || hash === "#home") {
+      scrollToTop(true);
+    }
+  }, [pathname, hash]);
 
   return null;
 }

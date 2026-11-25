@@ -1,14 +1,29 @@
+type LenisLike = {
+  scrollTo: (
+    t: number | string | HTMLElement,
+    opts?: {
+      offset?: number;
+      duration?: number;
+      immediate?: boolean;
+      easing?: (t: number) => number;
+    },
+  ) => void;
+};
+
+function getLenis(): LenisLike | undefined {
+  return (window as unknown as { __lenis?: LenisLike }).__lenis;
+}
+
+export function scrollToTop(immediate = false) {
+  const lenis = getLenis();
+  if (lenis) {
+    lenis.scrollTo(0, immediate ? { immediate: true } : { duration: 0.65 });
+  }
+  window.scrollTo({ top: 0, behavior: immediate ? "auto" : "smooth" });
+}
+
 export function scrollToElement(target: string | HTMLElement, offset = -60) {
-  const lenis = (
-    window as unknown as {
-      __lenis?: {
-        scrollTo: (
-          t: string | HTMLElement,
-          opts?: { offset?: number; duration?: number; easing?: (t: number) => number },
-        ) => void;
-      };
-    }
-  ).__lenis;
+  const lenis = getLenis();
 
   if (lenis) {
     lenis.scrollTo(target, {
