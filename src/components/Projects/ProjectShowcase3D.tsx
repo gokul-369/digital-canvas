@@ -1,5 +1,12 @@
-import { useState, useRef, useEffect, useCallback, type FC } from "react";
-import { motion, AnimatePresence, type Variants } from "motion/react";
+import { useRef, useEffect, useCallback, memo, type FC } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  type Variants,
+} from "motion/react";
 import { projectsList, type ProjectItem } from "../../data/projects";
 
 interface ProjectShowcase3DProps {
@@ -12,7 +19,32 @@ interface ProjectShowcase3DProps {
   onPrev?: () => void;
 }
 
-export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
+const SPRING_CONFIG = { stiffness: 160, damping: 26, mass: 0.5 };
+
+const slideVariants: Variants = {
+  enter: (dir: "next" | "prev") => ({
+    x: dir === "next" ? "100%" : "-100%",
+    opacity: 0.3,
+  }),
+  center: {
+    x: "0%",
+    opacity: 1,
+    transition: {
+      x: { type: "spring", stiffness: 280, damping: 30 },
+      opacity: { duration: 0.25 },
+    },
+  },
+  exit: (dir: "next" | "prev") => ({
+    x: dir === "next" ? "-100%" : "100%",
+    opacity: 0.3,
+    transition: {
+      x: { type: "spring", stiffness: 280, damping: 30 },
+      opacity: { duration: 0.2 },
+    },
+  }),
+};
+
+export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = memo(({
   project,
   direction = "next",
   theme: _theme = "dark",
@@ -22,10 +54,18 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
   onPrev,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [rotateX, setRotateX] = useState<number>(0);
-  const [rotateY, setRotateY] = useState<number>(0);
-  const [sheenPos, setSheenPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
-  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const sheenRef = useRef<HTMLDivElement>(null);
+
+  // Zero-re-render MotionValues for 120fps GPU-composited 3D tilt
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+
+  const smoothX = useSpring(mouseX, SPRING_CONFIG);
+  const smoothY = useSpring(mouseY, SPRING_CONFIG);
+
+  // Gentle, crisp 3D tilt (+/- 5 deg Y, +/- 4 deg X)
+  const rotateY = useTransform(smoothX, [0, 1], [-5, 5]);
+  const rotateX = useTransform(smoothY, [0, 1], [4, -4]);
 
   // Preload all project images for zero-lag instant sliding
   useEffect(() => {
@@ -37,102 +77,73 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
     });
   }, []);
 
-  // Smooth 3D mouse parallax tilt calculation
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const nx = (e.clientX - rect.left) / rect.width; // 0 to 1
-    const ny = (e.clientY - rect.top) / rect.height; // 0 to 1
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const nx = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const ny = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
 
-    // Tilt angles: max +/- 7 degrees
-    const rY = (nx - 0.5) * 14;
-    const rX = (0.5 - ny) * 12;
+      mouseX.set(nx);
+      mouseY.set(ny);
 
-    setRotateX(rX);
-    setRotateY(rY);
-    setSheenPos({ x: nx * 100, y: ny * 100 });
+      // Move pre-rasterized sheen layer with GPU transform (zero paint cost)
+      if (sheenRef.current) {
+        const tx = (nx - 0.5) * rect.width * 0.8;
+        const ty = (ny - 0.5) * rect.height * 0.8;
+        sheenRef.current.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      }
+    },
+    [mouseX, mouseY]
+  );
+
+  const handleMouseEnter = useCallback(() => {
+    if (sheenRef.current) {
+      sheenRef.current.style.opacity = "1";
+    }
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    setRotateX(0);
-    setRotateY(0);
-    setIsHovered(false);
-  }, []);
-
-  const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
-  }, []);
-
-  // Slide transition variants for the thumbnail carousel
-  const slideVariants: Variants = {
-    enter: (dir: "next" | "prev") => ({
-      x: dir === "next" ? "100%" : "-100%",
-      opacity: 0,
-      scale: 0.94,
-    }),
-    center: {
-      x: "0%",
-      opacity: 1,
-      scale: 1,
-      transition: {
-        x: { type: "spring", stiffness: 260, damping: 28 },
-        opacity: { duration: 0.28 },
-        scale: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
-      },
-    },
-    exit: (dir: "next" | "prev") => ({
-      x: dir === "next" ? "-100%" : "100%",
-      opacity: 0,
-      scale: 0.94,
-      transition: {
-        x: { type: "spring", stiffness: 260, damping: 28 },
-        opacity: { duration: 0.25 },
-        scale: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
-      },
-    }),
-  };
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+    if (sheenRef.current) {
+      sheenRef.current.style.opacity = "0";
+      sheenRef.current.style.transform = "translate3d(0px, 0px, 0)";
+    }
+  }, [mouseX, mouseY]);
 
   return (
     <div
       style={{ perspective: 1200 }}
       className={`w-full flex justify-center py-2 select-none ${className}`}
     >
-      {/* 3D Interactive Tilt Container */}
+      {/* 3D Interactive Tilt Container — pure GPU MotionValues, zero React re-renders */}
       <motion.div
         ref={containerRef}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        animate={{
-          rotateX: isHovered ? rotateX : 0,
-          rotateY: isHovered ? rotateY : 0,
-          scale: isHovered ? 1.01 : 1,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 220,
-          damping: 24,
-          mass: 0.6,
-        }}
         style={{
-          transformStyle: "preserve-3d",
+          rotateX,
+          rotateY,
+          transformPerspective: 1200,
+          willChange: "transform",
         }}
-        className="relative w-full rounded-3xl border border-slate-200/90 dark:border-white/10 bg-slate-900/95 shadow-2xl overflow-hidden flex flex-col group cursor-pointer"
+        className="relative w-full rounded-3xl border border-slate-200/90 dark:border-white/10 bg-slate-900 shadow-2xl overflow-hidden flex flex-col cursor-pointer transform-gpu"
       >
-        {/* Dynamic Specular Glass Sheen moving with cursor */}
+        {/* Pre-rasterized GPU Specular Glass Sheen (moved via translate3d, never re-painted) */}
         <div
-          className="pointer-events-none absolute inset-0 z-30 transition-opacity duration-500"
+          ref={sheenRef}
+          className="pointer-events-none absolute -inset-1/2 z-30 opacity-0 transition-opacity duration-300 will-change-transform"
           style={{
-            background: `radial-gradient(circle 500px at ${sheenPos.x}% ${sheenPos.y}%, rgba(255, 255, 255, 0.08), transparent 70%)`,
-            opacity: isHovered ? 1 : 0,
+            background:
+              "radial-gradient(circle 340px at center, rgba(255, 255, 255, 0.08), transparent 70%)",
           }}
         />
 
-        {/* Native Browser Window Header (macOS Style, completely outside canvas) */}
-        <div
-          style={{ transform: "translateZ(10px)" }}
-          className="w-full px-5 py-3 border-b border-slate-200/80 dark:border-white/10 bg-slate-100/90 dark:bg-slate-900/90 backdrop-blur-md flex items-center justify-between z-20"
-        >
+        {/* Native Browser Window Header (macOS Style, no backdrop-blur inside 3D layer) */}
+        <div className="w-full px-5 py-3 border-b border-slate-200/80 dark:border-white/10 bg-slate-100 dark:bg-slate-900 flex items-center justify-between z-20">
           {/* macOS window control dots */}
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-rose-500/80 border border-rose-600/50 inline-block" />
@@ -189,9 +200,8 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
                   onPrev();
                 }
               }}
-              className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing flex items-center justify-center overflow-hidden"
+              className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing flex items-center justify-center overflow-hidden will-change-transform transform-gpu"
             >
-              {/* High-Resolution Project Screenshot (Zero Letterbox, 100% 16:10 Fit) */}
               <img
                 src={project.previewImage}
                 alt={project.title}
@@ -200,12 +210,14 @@ export const ProjectShowcase3D: FC<ProjectShowcase3DProps> = ({
                 className="w-full h-full object-cover object-top select-none pointer-events-none"
               />
 
-              {/* Subtle glass reflection edge */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-white/[0.03] pointer-events-none" />
+              {/* Subtle bottom vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
             </motion.div>
           </AnimatePresence>
         </div>
       </motion.div>
     </div>
   );
-};
+});
+
+ProjectShowcase3D.displayName = "ProjectShowcase3D";

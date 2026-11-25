@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, type FC } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense, type FC } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
 import { manifest } from "../../routes/manifest";
@@ -7,6 +7,8 @@ import { ProjectShowcase3D } from "../../components/Projects/ProjectShowcase3D";
 import InteractiveAmbient from "../../components/Backgrounds/InteractiveAmbient";
 import SectionHeader from "../../components/SectionHeader";
 import useTheme from "../../hooks/useTheme";
+
+const GitHubGraph = lazy(() => import("../../components/GitHubGraph"));
 import { HiOutlineServer, HiOutlineRadio, HiOutlineSparkles, HiOutlineBriefcase } from "react-icons/hi2";
 import { FiCheckCircle, FiExternalLink, FiGithub, FiLock, FiArrowRight } from "react-icons/fi";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
@@ -331,8 +333,21 @@ const ProjectsPage: FC = () => {
           </AnimatePresence>
         </div>
 
+        {/* Open Source Commit Graph */}
+        <div className="w-full p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/75 dark:bg-white/[0.03] backdrop-blur-2xl shadow-xl">
+          <Suspense
+            fallback={
+              <div className="w-full h-36 flex items-center justify-center font-mono text-xs text-slate-400 animate-pulse">
+                Loading GitHub contribution graph…
+              </div>
+            }
+          >
+            <GitHubGraph isDark={theme === "dark"} />
+          </Suspense>
+        </div>
+
         {/* Enterprise & Professional Experience Bridge Banner */}
-        <div className="w-full mt-4 p-6 sm:p-8 rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-slate-900/60 backdrop-blur-2xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="w-full mt-2 p-6 sm:p-8 rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-slate-900/60 backdrop-blur-2xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center gap-1.5">
