@@ -1,16 +1,17 @@
 /**
  * GitHub Contribution Calendar Graph
  *
- * Uses the free github-contributions-api.jogruber.de API — no auth required,
- * no CORS proxy needed. Supports `y=last` (past 12 months) or `y=all` (all years).
- *
- * Layout: 53 columns × 7 rows — identical to native GitHub UI.
+ * Uses the free github-contributions-api.jogruber.de API — no auth required.
+ * Defaults to "All-Time" aggregated calendar activity across all active years
+ * (2020–present) so the full breadth of open-source contributions is visible,
+ * with a toggle to inspect the past 12 months.
  */
 
 import {
   useEffect,
   useState,
   useCallback,
+  useMemo,
   memo,
   useRef,
   type FC,
@@ -24,7 +25,7 @@ const API_BASE = "https://github-contributions-api.jogruber.de/v4";
 type Level = 0 | 1 | 2 | 3 | 4;
 
 type ContribDay = {
-  date: string;   // "2026-11-25"
+  date: string;   // "2026-11-25" or "MM-DD" in all-time mode
   count: number;
   level: Level;
 };
@@ -34,7 +35,6 @@ type APIResponse = {
   contributions: ContribDay[];
 };
 
-// ─── Colour palettes matching GitHub exactly ───────────────────────────────
 const DARK_PALETTE: Record<Level, string> = {
   0: "#161b22",
   1: "#0e4429",
@@ -53,16 +53,22 @@ const LIGHT_PALETTE: Record<Level, string> = {
 const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const DAY_LABELS  = ["Mon","","Wed","","Fri","",""];
 
-/** Pad/slice into exactly 53 × 7 starting on Monday */
+function computeLevel(count: number): Level {
+  if (count <= 0) return 0;
+  if (count <= 2) return 1;
+  if (count <= 5) return 2;
+  if (count <= 10) return 3;
+  return 4;
+}
+
+/** Build 53×7 weeks from ascending daily entries */
 function buildWeeks(days: ContribDay[]): ContribDay[][] {
-  // Sort ascending
   const sorted = [...days].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   );
-  // Pad front so week starts on Monday (day 1)
   const first = sorted[0] ? new Date(sorted[0].date) : new Date();
-  const dow = first.getDay(); // 0=Sun
-  const padBefore = (dow === 0 ? 6 : dow - 1); // Monday = 0 offset
+  const dow = first.getDay();
+  const padBefore = dow === 0 ? 6 : dow - 1;
   const padded: ContribDay[] = [
     ...Array.from({ length: padBefore }, (_, i) => {
       const d = new Date(first);
@@ -71,15 +77,40 @@ function buildWeeks(days: ContribDay[]): ContribDay[][] {
     }),
     ...sorted,
   ];
-  // Chunk into weeks of 7
   const weeks: ContribDay[][] = [];
   for (let i = 0; i < padded.length; i += 7) {
     weeks.push(padded.slice(i, i + 7));
   }
-  return weeks.slice(-53); // last 53 weeks
+  return weeks.slice(-53);
 }
 
-/** Compute month label positions from weeks */
+/**
+ * Aggregate all-time contributions (2020–present) onto a 53-week calendar grid
+ * by summing counts for each calendar day (MM-DD) across all years.
+ */
+function buildAllTimeAggregatedDays(
+  allContribs: ContribDay[],
+  lastYearContribs: ContribDay[]
+): ContribDay[] {
+  const byMonthDay = new Map<string, number>();
+  for (const c of allContribs) {
+    if (!c.date || c.count <= 0) continue;
+    const md = c.date.slice(5); // "MM-DD"
+    byMonthDay.set(md, (byMonthDay.get(md) ?? 0) + c.count);
+  }
+
+  // Map onto the 53-week date skeleton of the past 12 months
+  return lastYearContribs.map((day) => {
+    const md = day.date.slice(5);
+    const totalCount = byMonthDay.get(md) ?? day.count;
+    return {
+      date: day.date,
+      count: totalCount,
+      level: computeLevel(totalCount),
+    };
+  });
+}
+
 function monthLabels(weeks: ContribDay[][]): { label: string; col: number }[] {
   const seen = new Set<string>();
   const result: { label: string; col: number }[] = [];
@@ -97,7 +128,6 @@ function monthLabels(weeks: ContribDay[][]): { label: string; col: number }[] {
   return result;
 }
 
-// ─── Skeleton ─────────────────────────────────────────────────────────────
 const Skeleton: FC<{ isDark: boolean }> = ({ isDark }) => (
   <div className="w-full overflow-x-auto">
     <div className="flex gap-[3px]">
@@ -116,7 +146,6 @@ const Skeleton: FC<{ isDark: boolean }> = ({ isDark }) => (
   </div>
 );
 
-// ─── Tooltip ──────────────────────────────────────────────────────────────
 interface TooltipState {
   visible: boolean;
   x: number;
@@ -125,18 +154,17 @@ interface TooltipState {
   date: string;
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────
 interface GitHubGraphProps {
   isDark?: boolean;
   className?: string;
 }
 
 const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) => {
-  const [weeks, setWeeks] = useState<ContribDay[][]>([]);
+  const [mode, setMode] = useState<"all" | "year">("all");
+  const [lastData, setLastData] = useState<APIResponse | null>(null);
+  const [allData, setAllData] = useState<APIResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [totalThisYear, setTotalThisYear] = useState(0);
-  const [totalAllTime, setTotalAllTime] = useState(0);
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false, x: 0, y: 0, count: 0, date: "",
   });
@@ -148,20 +176,17 @@ const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) =>
     setLoading(true);
     setError(false);
     try {
-      // Fetch last-year data for the heatmap
       const [lastRes, allRes] = await Promise.all([
         fetch(`${API_BASE}/${GITHUB_USERNAME}?y=last`),
         fetch(`${API_BASE}/${GITHUB_USERNAME}?y=all`),
       ]);
       if (!lastRes.ok) throw new Error("API error");
 
-      const lastData: APIResponse = await lastRes.json();
-      const allData: APIResponse = allRes.ok ? await allRes.json() : lastData;
+      const lastJson: APIResponse = await lastRes.json();
+      const allJson: APIResponse = allRes.ok ? await allRes.json() : lastJson;
 
-      setWeeks(buildWeeks(lastData.contributions));
-      setTotalThisYear(lastData.total?.lastYear ?? 0);
-      const grand = Object.values(allData.total ?? {}).reduce((s, v) => s + v, 0);
-      setTotalAllTime(grand);
+      setLastData(lastJson);
+      setAllData(allJson);
     } catch {
       setError(true);
     } finally {
@@ -169,9 +194,29 @@ const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) =>
     }
   }, []);
 
-  useEffect(() => { fetchGraph(); }, [fetchGraph]);
+  useEffect(() => {
+    fetchGraph();
+  }, [fetchGraph]);
 
-  const months = weeks.length > 0 ? monthLabels(weeks) : [];
+  const weeks = useMemo(() => {
+    if (!lastData) return [];
+    if (mode === "all" && allData) {
+      const aggregated = buildAllTimeAggregatedDays(
+        allData.contributions,
+        lastData.contributions
+      );
+      return buildWeeks(aggregated);
+    }
+    return buildWeeks(lastData.contributions);
+  }, [mode, lastData, allData]);
+
+  const totalThisYear = lastData?.total?.lastYear ?? 0;
+  const totalAllTime = useMemo(
+    () => Object.values(allData?.total ?? {}).reduce((s, v) => s + v, 0),
+    [allData]
+  );
+
+  const months = useMemo(() => (weeks.length > 0 ? monthLabels(weeks) : []), [weeks]);
 
   const handleEnter = useCallback((e: React.MouseEvent, day: ContribDay) => {
     const root = rootRef.current;
@@ -200,30 +245,37 @@ const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) =>
             Open Source Activity
           </h3>
           <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            github.com/{GITHUB_USERNAME} · past 12 months
+            github.com/{GITHUB_USERNAME} · {mode === "all" ? "all-time calendar (2020–present)" : "past 12 months"}
           </p>
         </div>
 
         {!loading && !error && (
           <div className="flex flex-wrap items-center gap-2">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="px-3.5 py-1.5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5"
+            <button
+              type="button"
+              onClick={() => setMode("all")}
+              className={`px-3.5 py-1.5 rounded-2xl border font-mono text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                mode === "all"
+                  ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 shadow-sm"
+                  : "border-slate-200/80 dark:border-white/10 bg-white/40 dark:bg-white/[0.02] text-slate-500 dark:text-slate-400 hover:border-emerald-500/30"
+              }`}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              {mode === "all" && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
+              {totalAllTime.toLocaleString()} all time
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMode("year")}
+              className={`px-3.5 py-1.5 rounded-2xl border font-mono text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                mode === "year"
+                  ? "border-sky-500/50 bg-sky-500/15 text-sky-600 dark:text-sky-400 shadow-sm"
+                  : "border-slate-200/80 dark:border-white/10 bg-white/40 dark:bg-white/[0.02] text-slate-500 dark:text-slate-400 hover:border-sky-500/30"
+              }`}
+            >
+              {mode === "year" && <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />}
               {totalThisYear.toLocaleString()} this year
-            </motion.div>
-            {totalAllTime > 0 && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-                className="px-3.5 py-1.5 rounded-2xl border border-sky-500/30 bg-sky-500/10 font-mono text-xs font-bold text-sky-600 dark:text-sky-400"
-              >
-                {totalAllTime.toLocaleString()} all time
-              </motion.div>
-            )}
+            </button>
           </div>
         )}
       </div>
@@ -282,12 +334,12 @@ const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) =>
                   <div key={w} className="flex flex-col gap-[3px]">
                     {week.map((day, d) => (
                       <motion.div
-                        key={`${w}-${d}`}
+                        key={`${mode}-${w}-${d}`}
                         initial={{ opacity: 0, scale: 0.3 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{
-                          duration: 0.25,
-                          delay: (w * 7 + d) * 0.0005,
+                          duration: 0.22,
+                          delay: (w * 7 + d) * 0.0004,
                           ease: [0.34, 1.56, 0.64, 1],
                         }}
                         onMouseEnter={(e) => handleEnter(e, day)}
@@ -332,13 +384,19 @@ const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) =>
               : `${tooltip.count} contribution${tooltip.count > 1 ? "s" : ""}`}
             {tooltip.date && (
               <span className="text-slate-400 ml-1.5">
-                {new Date(tooltip.date + "T00:00:00").toLocaleDateString("en-US", {
-                  month: "short", day: "numeric", year: "numeric",
-                })}
+                {mode === "all"
+                  ? new Date(tooltip.date + "T00:00:00").toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    }) + " (all-time)"
+                  : new Date(tooltip.date + "T00:00:00").toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
               </span>
             )}
           </div>
-          {/* Arrow */}
           <div className="w-2 h-2 bg-slate-900/95 dark:bg-slate-800/95 border-r border-b border-white/10 rotate-45 mx-auto -mt-1" />
         </div>
       )}

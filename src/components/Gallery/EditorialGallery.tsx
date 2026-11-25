@@ -49,8 +49,7 @@ export default function EditorialGallery({
         setIsInViewport(entry.isIntersecting);
       },
       {
-        threshold: 0.05,
-        rootMargin: "-20px 0px -20px 0px",
+        threshold: 0.55,
       },
     );
 
@@ -136,7 +135,7 @@ export default function EditorialGallery({
       {/* 100% Full-Screen MacBook-Style Shallow Frosted Glass Blurred Photo Background */}
       <div
         aria-hidden="true"
-        className="fixed inset-[-5%] w-[110%] h-[110%] pointer-events-none -z-10 overflow-hidden transform-gpu transition-opacity duration-700 ease-out bg-[#030712]"
+        className="fixed inset-[-5%] w-[110%] h-[110%] pointer-events-none -z-10 overflow-hidden transform-gpu transition-opacity duration-400 ease-out bg-[#030712]"
         style={{
           opacity: isFullscreen ? 1 : isInViewport ? 1 : 0,
         }}
