@@ -1,85 +1,138 @@
 import { motion } from "motion/react";
-import { useState, useEffect } from "react";
-
-const PHASES = [
-  "INITIALIZING QUANTUM CANVAS",
-  "SYNTHESIZING 3D GEOMETRY",
-  "CALIBRATING LIGHT SPECTRUM",
-  "SYSTEM CORE NOMINAL",
-];
 
 export function Loader() {
-  const [phaseIndex, setPhaseIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPhaseIndex((prev) => (prev + 1) % PHASES.length);
-    }, 600);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#f8fafc] dark:bg-[#030407] transition-colors duration-300 select-none">
-      {/* Ambient background bloom */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full bg-gradient-to-tr from-cyan-500/20 via-indigo-500/20 to-purple-500/20 blur-[90px] animate-pulse" />
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#020306] select-none overflow-hidden transition-colors duration-500">
+      {/* Deep Space Subtle Gravitational Warp Distortion Aura */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+        <div className="w-[520px] h-[520px] rounded-full bg-gradient-to-tr from-amber-500/[0.04] via-indigo-500/[0.03] to-cyan-500/[0.03] blur-[100px] animate-pulse" />
       </div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 1.05 }}
-        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 flex flex-col items-center gap-6 p-7 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-white/[0.03] backdrop-blur-2xl shadow-[0_8px_32px_rgba(99,102,241,0.08)] dark:shadow-none"
+        exit={{ opacity: 0, scale: 1.04 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 flex flex-col items-center"
       >
-        {/* Orbital Gyroscope Node */}
-        <div className="relative w-16 h-16 flex items-center justify-center">
-          {/* Outer ring */}
-          <motion.div
-            className="absolute inset-0 rounded-full border border-indigo-400/40 dark:border-cyan-400/30"
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+        {/* INTERSTELLAR MINIMALIST GARGANTUA & ENDURANCE RING */}
+        <div className="relative w-44 h-44 flex items-center justify-center">
+          {/* Gravitational Lensing Outer Halo (Gargantua warped photon ring) */}
+          <div className="absolute inset-3 rounded-full border border-amber-400/20 blur-[1px]" />
+          <div className="absolute inset-2 rounded-full border border-amber-300/10 blur-[2px]" />
+
+          {/* Upper Gravitational Lensing Arc (Bending light behind the black hole) */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
+            viewBox="0 0 176 176"
           >
-            {/* Orbiting beacon satellite */}
-            <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-indigo-600 dark:bg-cyan-300 shadow-[0_0_8px_rgba(79,70,229,0.9)] dark:shadow-[0_0_8px_#38bdf8]" />
+            <defs>
+              <linearGradient id="gargantuaLens" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#f59e0b" stopOpacity="0" />
+                <stop offset="25%" stopColor="#fbbf24" stopOpacity="0.8" />
+                <stop offset="50%" stopColor="#ffffff" stopOpacity="0.95" />
+                <stop offset="75%" stopColor="#f59e0b" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#d97706" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="accretionGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#d97706" stopOpacity="0.1" />
+                <stop offset="30%" stopColor="#fbbf24" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="#ffffff" stopOpacity="1" />
+                <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#b45309" stopOpacity="0.1" />
+              </linearGradient>
+            </defs>
+
+            {/* Upper warped arc of the accretion disk */}
+            <path
+              d="M 28 88 C 28 42, 148 42, 148 88"
+              fill="none"
+              stroke="url(#gargantuaLens)"
+              strokeWidth="1.75"
+              className="opacity-80 blur-[0.5px]"
+            />
+            {/* Lower subtle counter-lensing arc */}
+            <path
+              d="M 38 88 C 38 124, 138 124, 138 88"
+              fill="none"
+              stroke="url(#gargantuaLens)"
+              strokeWidth="1"
+              className="opacity-40"
+            />
+
+            {/* Horizontal Accretion Disk Ring (Relativistic Doppler asymmetry: left side brighter) */}
+            <ellipse
+              cx="88"
+              cy="88"
+              rx="76"
+              ry="16"
+              fill="none"
+              stroke="url(#accretionGrad)"
+              strokeWidth="1.5"
+              className="blur-[0.5px]"
+            />
+          </svg>
+
+          {/* Rotating Endurance Module Ring (Minimalist 12-pod clockwork orbit) */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
+          >
+            {Array.from({ length: 12 }).map((_, i) => {
+              const angle = (i * 30 * Math.PI) / 180;
+              const r = 74; // Orbit radius
+              const x = Math.cos(angle) * r;
+              const y = Math.sin(angle) * r;
+              const isCommandModule = i === 0;
+
+              return (
+                <div
+                  key={i}
+                  style={{
+                    transform: `translate(${x}px, ${y}px)`,
+                  }}
+                  className="absolute flex items-center justify-center"
+                >
+                  <span
+                    className={`block rounded-full transition-all ${
+                      isCommandModule
+                        ? "w-1.5 h-1.5 bg-amber-200 shadow-[0_0_8px_#fbbf24]"
+                        : "w-1 h-1 bg-white/70 shadow-[0_0_4px_rgba(255,255,255,0.8)]"
+                    }`}
+                  />
+                </div>
+              );
+            })}
           </motion.div>
 
-          {/* Middle segmented counter-rotating ring */}
-          <motion.div
-            className="absolute inset-2 rounded-full border-2 border-dashed border-indigo-500/60 dark:border-indigo-400/60"
-            animate={{ rotate: -360 }}
-            transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-          />
+          {/* Pure Black Hole Event Horizon Singularity (Total light absorption) */}
+          <div className="relative w-20 h-20 rounded-full bg-[#000000] shadow-[0_0_24px_rgba(251,191,36,0.25),inset_0_0_12px_rgba(0,0,0,1)] flex items-center justify-center border border-amber-400/40">
+            {/* Razor-thin Photon Sphere Rim */}
+            <div className="absolute inset-0 rounded-full border border-amber-200/50 shadow-[0_0_10px_rgba(251,191,36,0.6)]" />
 
-          {/* Inner luminous core */}
-          <div className="relative flex items-center justify-center">
-            <span className="absolute w-6 h-6 rounded-full bg-indigo-500/30 dark:bg-cyan-400/30 animate-ping opacity-60" />
-            <span className="relative w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-400 dark:from-cyan-300 dark:to-indigo-400 shadow-[0_0_12px_rgba(79,70,229,0.8)] dark:shadow-[0_0_16px_#38bdf8]" />
+            {/* Absolute Void Center */}
+            <div className="w-16 h-16 rounded-full bg-black" />
           </div>
         </div>
 
-        {/* Telemetry Branding & Progress */}
-        <div className="flex flex-col items-center gap-2.5 text-center">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-mono text-[11px] tracking-[0.25em] uppercase font-bold text-slate-800 dark:text-white">
-              GOKUL RAO // ARCHITECTURE
-            </span>
-          </div>
+        {/* Minimalist Interstellar Typography & Hairline Telemetry */}
+        <div className="mt-8 flex flex-col items-center gap-2 text-center">
+          <span className="font-mono text-[11px] tracking-[0.45em] uppercase text-white/90 font-light pl-[0.45em]">
+            G A R G A N T U A
+          </span>
 
-          {/* Precision progress bar */}
-          <div className="w-44 h-1 rounded-full bg-slate-200/90 dark:bg-white/10 overflow-hidden relative">
+          {/* Minimal 1px Hairline Slingshot Progress */}
+          <div className="w-36 h-[1px] bg-white/10 relative overflow-hidden my-1">
             <motion.div
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500 rounded-full"
-              initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
-              transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+              className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-transparent via-amber-300 to-transparent"
+              animate={{ x: [-50, 150] }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
             />
           </div>
 
-          {/* Cycling Status Label */}
-          <span className="font-mono text-[10px] tracking-wider text-slate-500 dark:text-slate-400 transition-opacity duration-200 h-3 flex items-center">
-            {PHASES[phaseIndex]}
+          <span className="font-mono text-[9px] tracking-[0.25em] text-white/40 uppercase">
+            EVENT HORIZON // T-MINUS
           </span>
         </div>
       </motion.div>

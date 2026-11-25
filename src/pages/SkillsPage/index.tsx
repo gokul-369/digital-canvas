@@ -106,7 +106,7 @@ function SkillsPage() {
 
   return (
     <main className="relative min-h-dvh w-full overflow-hidden pt-28 pb-32">
-      <InteractiveAmbient variant="home" />
+      <InteractiveAmbient variant="skills" />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12 z-10 flex flex-col items-center">
         {/* Section Header */}
