@@ -14,6 +14,7 @@ import { ProjectShowcase3D } from "../../components/Projects/ProjectShowcase3D";
 import InteractiveAmbient from "../../components/Backgrounds/InteractiveAmbient";
 import SectionHeader from "../../components/SectionHeader";
 import useTheme from "../../hooks/useTheme";
+import { TechLogo } from "../../components/TechLogo";
 
 const GitHubGraph = lazy(() => import("../../components/GitHubGraph"));
 import {
@@ -270,9 +271,10 @@ const ProjectsPage: FC = () => {
                     {selectedProject.stack.map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 rounded-lg font-mono text-[11px] font-medium border border-slate-200/80 dark:border-white/10 bg-slate-100/80 dark:bg-white/[0.04] text-slate-700 dark:text-slate-300"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl font-mono text-xs font-medium border border-slate-200/80 dark:border-white/10 bg-slate-100/80 dark:bg-white/[0.04] text-slate-800 dark:text-slate-200 shadow-sm hover:border-sky-400/40 transition-colors"
                       >
-                        {tech}
+                        <TechLogo name={tech} size={15} />
+                        <span>{tech}</span>
                       </span>
                     ))}
                   </div>
@@ -298,14 +300,17 @@ const ProjectsPage: FC = () => {
                       {selectedProject.metrics.map((metric) => (
                         <div
                           key={metric.label}
-                          className="p-3 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05] flex justify-between items-center"
+                          className="p-3 rounded-2xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/[0.05] flex justify-between items-center gap-3"
                         >
-                          <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+                          <span className="font-mono text-[11px] text-slate-500 dark:text-slate-400 shrink-0">
                             {metric.label}
                           </span>
-                          <span className="font-mono text-xs font-bold text-slate-900 dark:text-white">
-                            {metric.value}
-                          </span>
+                          <div className="flex items-center gap-2 min-w-0">
+                            <TechLogo name={metric.value} size={16} />
+                            <span className="font-mono text-xs font-bold text-slate-900 dark:text-white truncate">
+                              {metric.value}
+                            </span>
+                          </div>
                         </div>
                       ))}
                     </div>

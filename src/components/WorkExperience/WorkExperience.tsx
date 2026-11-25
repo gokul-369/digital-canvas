@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { workExperiences } from "../../data";
 import { groupExperiencesByCompany } from "../../utils/groupByCompany";
-import { Timeline, TimelineItem } from "../Timeline";
+import { Timeline, TimelineItem, CompanyLogo } from "../Timeline";
 import SectionHeader from "../SectionHeader";
 import {
   HiOutlineBriefcase,
@@ -266,7 +266,7 @@ export default function WorkExperience() {
                             : "bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300"
                         }`}
                       >
-                        {companyMeta.monogram}
+                        <CompanyLogo company={item.company} fallback={companyMeta.monogram} />
                       </div>
 
                       <span className="font-mono text-[10px] px-2.5 py-1 rounded-full border border-slate-200/80 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-500 dark:text-slate-400 font-semibold">

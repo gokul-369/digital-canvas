@@ -36,6 +36,78 @@ const companyConfig: Record<string, CompanyMetadata> = {
   },
 };
 
+export function CompanyLogo({ company, fallback }: { company: string; fallback: string }) {
+  if (company === "Tata Consultancy Services") {
+    return (
+      <svg viewBox="0 0 64 32" className="w-9 h-9" aria-label="TCS logo">
+        <defs>
+          <linearGradient id="tcs-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#38bdf8" />
+            <stop offset="50%" stopColor="#818cf8" />
+            <stop offset="100%" stopColor="#ec4899" />
+          </linearGradient>
+        </defs>
+        <text
+          x="50%"
+          y="54%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          fill="url(#tcs-grad)"
+          fontFamily="Space Grotesk, sans-serif"
+          fontWeight="800"
+          fontSize="22"
+          letterSpacing="-1"
+        >
+          tcs
+        </text>
+      </svg>
+    );
+  }
+
+  if (company === "Paperflite") {
+    return (
+      <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none" aria-label="Paperflite logo">
+        <defs>
+          <linearGradient id="pfl-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#818cf8" />
+            <stop offset="100%" stopColor="#a855f7" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M4 15.5L27 5L18.5 27L14.5 18L4 15.5Z"
+          fill="url(#pfl-grad)"
+        />
+        <path
+          d="M27 5L14.5 18L18.5 27"
+          stroke="white"
+          strokeOpacity="0.45"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
+  if (company === "Novac Technology Solutions") {
+    return (
+      <svg viewBox="0 0 32 32" className="w-7 h-7" fill="none" aria-label="Novac Technology Solutions logo">
+        <defs>
+          <linearGradient id="novac-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fbbf24" />
+            <stop offset="100%" stopColor="#f97316" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M7 25V7H11.5L20.5 19.5V7H25V25H20.5L11.5 12.5V25H7Z"
+          fill="url(#novac-grad)"
+        />
+      </svg>
+    );
+  }
+
+  return <span>{fallback}</span>;
+}
+
 export function TimelineItem({
   roles,
   company,
@@ -72,8 +144,8 @@ export function TimelineItem({
         {/* Company Header Plaque */}
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 sm:pb-6 border-b border-slate-200/60 dark:border-white/5">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border border-indigo-200/60 dark:border-white/10 bg-indigo-50/80 dark:bg-white/5 font-mono font-bold text-sm text-indigo-600 dark:text-indigo-400 shadow-sm group-hover:scale-105 transition-transform">
-              {config.monogram}
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border border-indigo-200/60 dark:border-white/10 bg-indigo-50/80 dark:bg-white/[0.06] font-mono font-bold text-sm text-indigo-600 dark:text-indigo-400 shadow-sm group-hover:scale-105 transition-transform">
+              <CompanyLogo company={company} fallback={config.monogram} />
             </div>
             <div>
               <h3 className="font-space text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
