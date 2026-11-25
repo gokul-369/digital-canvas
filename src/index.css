@@ -399,12 +399,6 @@ body {
   will-change: opacity;
 }
 
-/* Below-fold sections get content-visibility deferral */
-section:not(:first-child) {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 500px;
-}
-
 /* Safe GPU layer promotion for Framer Motion children */
 [data-framer-appear-id],
 [data-motion-id] {
