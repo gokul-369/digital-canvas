@@ -408,8 +408,6 @@ export const testimonials: testimonial[] = [
     company: "Infosys",
     testimonial:
       "I’ve collaborated with him and exchanged technical ideas, and he consistently stands out for his quick learning ability and strong coding skills. He writes clean and optimized code, grasps new technologies and approaches challenges with clarity and confidence. It’s impressive to see such focus and growth at this stage of his career.",
-    image:
-      "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/bharathi.png",
   },
   {
     name: "Lavanya Srinivasan",

@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { RiDoubleQuotesL } from "react-icons/ri";
 import type { testimonial } from "../../types";
 
 function TestimonialCard({ testimonial }: { testimonial: testimonial }) {
+  const [imgError, setImgError] = useState(false);
   const initials = testimonial.name
     .split(" ")
     .map((n) => n[0])
@@ -31,10 +33,12 @@ function TestimonialCard({ testimonial }: { testimonial: testimonial }) {
 
       {/* Author Footer */}
       <div className="relative z-10 pt-3 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-3">
-        {testimonial.image ? (
+        {testimonial.image && !imgError ? (
           <img
             src={testimonial.image}
             alt={testimonial.name}
+            loading="lazy"
+            onError={() => setImgError(true)}
             className="h-10 w-10 sm:h-11 sm:w-11 object-cover rounded-2xl border border-indigo-200 dark:border-white/15 shadow-sm"
           />
         ) : (
