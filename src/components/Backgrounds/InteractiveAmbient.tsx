@@ -93,7 +93,7 @@ function InteractiveAmbient({
 
     // Responsive particle densities
     const starCount = isMobile ? 65 : isTablet ? 110 : 160;
-    const moteCount = isMobile ? 60 : isTablet ? 95 : 135;
+    const moteCount = isMobile ? 24 : isTablet ? 38 : 55;
 
     // Authentic astronomical stellar classes
     const darkStarColors = [
@@ -180,9 +180,9 @@ function InteractiveAmbient({
           x: Math.random() * width,
           y: Math.random() * height,
           vx: (Math.random() - 0.5) * 0.08,
-          vy: -(Math.random() * 0.28 + 0.14),
-          radius: Math.random() * 4.5 + 2.5,
-          baseAlpha: Math.random() * 0.4 + 0.4,
+          vy: -(Math.random() * 0.24 + 0.12),
+          radius: Math.random() * 1.3 + 1.1, // Medium, balanced motes (1.1px - 2.4px radius)
+          baseAlpha: Math.random() * 0.25 + 0.35, // Soft, pleasant luminescence
           rgb: lightMoteRGBs[Math.floor(Math.random() * lightMoteRGBs.length)],
           swaySpeed: Math.random() * 0.7 + 0.5,
           swayPhase: Math.random() * Math.PI * 2,
@@ -337,19 +337,19 @@ function InteractiveAmbient({
           const dist = Math.hypot(dx, dy);
           const proximity = Math.max(0, 1 - dist / 150);
 
-          const shimmer = Math.sin(time * 0.0018 * m.swaySpeed + m.swayPhase) * 0.15;
-          const alpha = Math.max(0.25, Math.min(0.95, m.baseAlpha + shimmer + proximity * 0.45));
-          const currentRadius = m.radius * (1 + proximity * 0.35);
+          const shimmer = Math.sin(time * 0.0018 * m.swaySpeed + m.swayPhase) * 0.12;
+          const alpha = Math.max(0.2, Math.min(0.75, m.baseAlpha + shimmer + proximity * 0.35));
+          const currentRadius = m.radius * (1 + proximity * 0.25);
 
-          // Fast two-pass glow: soft aura + luminous center
+          // Soft delicate sunlight mote with gentle outer aura
           ctx.beginPath();
-          ctx.arc(m.x, m.y, currentRadius * 1.8, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${m.rgb}, ${alpha * 0.28})`;
+          ctx.arc(m.x, m.y, currentRadius * 1.4, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${m.rgb}, ${alpha * 0.22})`;
           ctx.fill();
 
           ctx.beginPath();
           ctx.arc(m.x, m.y, currentRadius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${m.rgb}, ${alpha * 0.9})`;
+          ctx.fillStyle = `rgba(${m.rgb}, ${alpha * 0.8})`;
           ctx.fill();
         }
       }
