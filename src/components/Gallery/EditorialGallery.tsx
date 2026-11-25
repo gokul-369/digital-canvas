@@ -51,7 +51,7 @@ export default function EditorialGallery({
       {
         threshold: 0.05,
         rootMargin: "-20px 0px -20px 0px",
-      }
+      },
     );
 
     observer.observe(el);
@@ -59,9 +59,13 @@ export default function EditorialGallery({
   }, []);
 
   // Two persistent slots for ultra-smooth 60fps full-screen background crossfade with zero jitter
-  const [bgSlots, setBgSlots] = useState<{ activeSlot: 0 | 1; slot0: string; slot1: string }>({
+  const [bgSlots, setBgSlots] = useState<{
+    activeSlot: 0 | 1;
+    slot0: string;
+    slot1: string;
+  }>({
     activeSlot: 0,
-    slot0: images[0]?.thumb || images[0]?.medium || "",
+    slot0: images[0]?.medium || images[0]?.full || images[0]?.thumb || "",
     slot1: "",
   });
 
@@ -71,7 +75,7 @@ export default function EditorialGallery({
 
   useEffect(() => {
     setIsFullImageLoaded(false);
-    const nextSrc = current?.thumb || current?.medium || "";
+    const nextSrc = current?.medium || current?.full || current?.thumb || "";
     setBgSlots((prev) => {
       if (prev.activeSlot === 0) {
         if (prev.slot0 === nextSrc) return prev;
@@ -129,38 +133,41 @@ export default function EditorialGallery({
 
   return (
     <>
-      {/* 100% Full-Screen Ambient Blurred Photo Background - Rich photo blur with 700ms scroll fade-out */}
+      {/* 100% Full-Screen MacBook-Style Shallow Frosted Glass Blurred Photo Background */}
       <div
         aria-hidden="true"
-        className="fixed inset-[-8%] w-[116%] h-[116%] pointer-events-none -z-10 overflow-hidden transform-gpu transition-opacity duration-700 ease-out"
+        className="fixed inset-[-5%] w-[110%] h-[110%] pointer-events-none -z-10 overflow-hidden transform-gpu transition-opacity duration-700 ease-out bg-[#030712]"
         style={{
           opacity: isFullscreen ? 1 : isInViewport ? 1 : 0,
         }}
       >
-        {/* Slot 0 */}
+        {/* Solid Base to 100% block space stars from showing behind */}
+        <div className="absolute inset-0 bg-slate-950 dark:bg-[#030712]" />
+
+        {/* Slot 0 - MacBook style shallow blur */}
         {bgSlots.slot0 && (
           <img
             src={bgSlots.slot0}
             alt=""
-            className={`absolute inset-0 w-full h-full object-cover filter blur-[55px] sm:blur-[75px] saturate-160 contrast-120 dark:brightness-90 transition-opacity duration-700 ease-out ${
-              bgSlots.activeSlot === 0 ? "opacity-75 dark:opacity-70" : "opacity-0"
+            className={`absolute inset-0 w-full h-full object-cover filter blur-[22px] sm:blur-[26px] scale-105 saturate-125 contrast-110 brightness-95 dark:brightness-80 transition-opacity duration-700 ease-out ${
+              bgSlots.activeSlot === 0 ? "opacity-100" : "opacity-0"
             }`}
           />
         )}
-        {/* Slot 1 */}
+        {/* Slot 1 - MacBook style shallow blur */}
         {bgSlots.slot1 && (
           <img
             src={bgSlots.slot1}
             alt=""
-            className={`absolute inset-0 w-full h-full object-cover filter blur-[55px] sm:blur-[75px] saturate-160 contrast-120 dark:brightness-90 transition-opacity duration-700 ease-out ${
-              bgSlots.activeSlot === 1 ? "opacity-75 dark:opacity-70" : "opacity-0"
+            className={`absolute inset-0 w-full h-full object-cover filter blur-[22px] sm:blur-[26px] scale-105 saturate-125 contrast-110 brightness-95 dark:brightness-80 transition-opacity duration-700 ease-out ${
+              bgSlots.activeSlot === 1 ? "opacity-100" : "opacity-0"
             }`}
           />
         )}
 
-        {/* Subtle Atmospheric Depth Tint: Ensures section title is clear while preserving rich full-screen blur */}
-        <div className="absolute inset-0 bg-[#f8fafc]/30 dark:bg-[#030712]/30 backdrop-blur-[1px] transition-colors duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f8fafc]/55 via-transparent to-[#f8fafc]/45 dark:from-[#030712]/55 dark:via-transparent dark:to-[#030712]/45 pointer-events-none transition-colors duration-500" />
+        {/* MacBook-Style Frosted Glass Glaze: Perfectly balances photo visibility and title legibility */}
+        <div className="absolute inset-0 bg-white/[0.08] dark:bg-black/[0.22] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-transparent to-white/50 dark:from-black/60 dark:via-black/20 dark:to-black/60 pointer-events-none transition-colors duration-500" />
       </div>
 
       <div
@@ -199,7 +206,11 @@ export default function EditorialGallery({
                     type="button"
                     onClick={onToggleImmersive}
                     className="inline-flex items-center gap-2 group cursor-pointer focus:outline-none"
-                    title={isImmersive ? "Exit Immersive Mode" : "Enter Immersive Mode"}
+                    title={
+                      isImmersive
+                        ? "Exit Immersive Mode"
+                        : "Enter Immersive Mode"
+                    }
                     aria-label="Toggle Immersive Mode"
                   >
                     <span className="font-mono text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 group-hover:text-indigo-500 transition-colors">
@@ -497,7 +508,6 @@ export default function EditorialGallery({
                     aria-label="Previous image"
                   >
                     <IoChevronBack size={16} />
-                    <span>Prev</span>
                   </button>
 
                   <span className="font-mono text-xs text-white/70 tracking-widest uppercase">
@@ -510,7 +520,6 @@ export default function EditorialGallery({
                     className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/15 active:scale-95 text-white font-mono text-xs border border-white/20 backdrop-blur-md transition-all cursor-pointer shadow-lg"
                     aria-label="Next image"
                   >
-                    <span>Next</span>
                     <IoChevronForward size={16} />
                   </button>
                 </div>
@@ -545,7 +554,8 @@ export default function EditorialGallery({
                 </div>
 
                 <p className="hidden sm:block font-mono text-[11px] text-white/50 tracking-wider">
-                  Use ← / → keys or arrows to navigate · Click anywhere outside to close
+                  Use ← / → keys or arrows to navigate · Click anywhere outside
+                  to close
                 </p>
               </div>
             </motion.div>
