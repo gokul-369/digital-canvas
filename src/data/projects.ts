@@ -1,5 +1,6 @@
 import vigilensImg from "../assets/projects/vigilens.png";
 import ociImg from "../assets/projects/oci.png";
+import portfolioImg from "../assets/projects/portfolio.png";
 
 export interface ProjectItem {
   id: string;
@@ -9,6 +10,8 @@ export interface ProjectItem {
   domainUrl: string;
   liveUrl: string;
   githubUrl?: string;
+  isPrivate: boolean;
+  repoAccessNote: string;
   description: string;
   architectureHighlights: {
     title: string;
@@ -33,7 +36,8 @@ export const projectsList: ProjectItem[] = [
     category: "Full-Stack Observability",
     domainUrl: "vigilens.gokul.ink",
     liveUrl: "https://vigilens.gokul.ink",
-    githubUrl: "https://github.com/gokul-369",
+    isPrivate: true,
+    repoAccessNote: "Proprietary internal architecture. Database & API contracts detailed below.",
     previewImage: vigilensImg,
     description:
       "A full-stack endpoint tracking and observability platform designed to monitor API availability, payload health, and response latency in real-time. Engineered with a secure multi-tier architecture where the database is completely walled off from the open internet.",
@@ -56,7 +60,7 @@ export const projectsList: ProjectItem[] = [
       { label: "Deployment", value: "Dokploy CI/CD" },
       { label: "Database", value: "Isolated PostgreSQL" },
       { label: "Hosting", value: "Oracle Cloud VPS" },
-      { label: "Network Security", value: "Ingress Restricted" },
+      { label: "Codebase Access", value: "Closed Source / Private" },
     ],
     accentColor: "#38bdf8", // Sky Cyan
     accentRgb: "56, 189, 248",
@@ -69,7 +73,8 @@ export const projectsList: ProjectItem[] = [
     category: "Cloud Infrastructure & DevOps",
     domainUrl: "oci.gokul.ink",
     liveUrl: "https://oci.gokul.ink",
-    githubUrl: "https://github.com/gokul-369",
+    isPrivate: true,
+    repoAccessNote: "Production server infrastructure configs & ingress rules managed privately.",
     previewImage: ociImg,
     description:
       "A dedicated, always-on Oracle Cloud VM configured from the ground up for maximum security, multi-tenant container orchestration, and continuous operation. Governed by hardened ingress/egress rules with automated maintenance and self-sustaining cleanup routines.",
@@ -92,10 +97,48 @@ export const projectsList: ProjectItem[] = [
       { label: "Uptime", value: "24/7 Continuous" },
       { label: "Firewall", value: "Strict Ingress/Egress" },
       { label: "Orchestration", value: "Dokploy Cluster" },
-      { label: "Maintenance", value: "Self-Sustaining Cron" },
+      { label: "Codebase Access", value: "Closed Source / Private" },
     ],
     accentColor: "#a855f7", // Violet Nebula
     accentRgb: "168, 85, 247",
     badge: "02 · CLOUD INFRASTRUCTURE",
+  },
+  {
+    id: "digital-canvas",
+    title: "Digital Canvas",
+    tagline: "Interactive 3D Portfolio & Creative Engineering System",
+    category: "Creative Engineering & 3D WebGL",
+    domainUrl: "gokul.ink",
+    liveUrl: "https://gokul.ink",
+    githubUrl: "https://github.com/gokul-369/digital-canvas",
+    isPrivate: false,
+    repoAccessNote: "Open source on GitHub under MIT license.",
+    previewImage: portfolioImg,
+    description:
+      "A bespoke, high-performance digital portfolio engineered at the intersection of creative interaction and systems engineering. Features custom Three.js WebGL viewports, an interactive 3D reading codex, procedural cosmic dust simulations, and zero-jank Lenis/GSAP scroll choreography.",
+    architectureHighlights: [
+      {
+        title: "Procedural Three.js Shaders",
+        description: "Custom vertex/fragment displacement shaders for tactile image transitions, realistic starfields, and physics-based 3D card tilt.",
+      },
+      {
+        title: "Zero-Jank Motion Architecture",
+        description: "Decoupled Lenis smooth scrolling synced with GSAP ScrollTrigger and React 19 concurrent features.",
+      },
+      {
+        title: "Adaptive Ambient Environment",
+        description: "Dynamically reactive light/dark cosmic particle engines running at 60fps with automatic hardware throttling.",
+      },
+    ],
+    stack: ["React 19", "TypeScript", "Three.js", "TailwindCSS", "GSAP", "Lenis", "Vite"],
+    metrics: [
+      { label: "Rendering", value: "Three.js / WebGL" },
+      { label: "Motion", value: "GSAP + Lenis" },
+      { label: "Hosting", value: "Vercel Global Edge" },
+      { label: "Codebase Access", value: "Public Open Source" },
+    ],
+    accentColor: "#22c55e", // Emerald
+    accentRgb: "34, 197, 94",
+    badge: "03 · OPEN SOURCE SYSTEM",
   },
 ];

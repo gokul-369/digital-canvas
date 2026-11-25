@@ -4,8 +4,8 @@ import { ProjectShowcase3D } from "../../components/Projects/ProjectShowcase3D";
 import InteractiveAmbient from "../../components/Backgrounds/InteractiveAmbient";
 import SectionHeader from "../../components/SectionHeader";
 import useTheme from "../../hooks/useTheme";
-import { HiOutlineServer, HiOutlineRadio } from "react-icons/hi2";
-import { FiCheckCircle, FiExternalLink, FiGithub } from "react-icons/fi";
+import { HiOutlineServer, HiOutlineRadio, HiOutlineSparkles } from "react-icons/hi2";
+import { FiCheckCircle, FiExternalLink, FiGithub, FiLock } from "react-icons/fi";
 
 const ProjectsPage: FC = () => {
   const { theme } = useTheme();
@@ -18,6 +18,9 @@ const ProjectsPage: FC = () => {
   const getCategoryIcon = (category: ProjectItem["category"]) => {
     if (category.toLowerCase().includes("observability")) {
       return <HiOutlineRadio className="w-4 h-4 text-sky-400" />;
+    }
+    if (category.toLowerCase().includes("creative") || category.toLowerCase().includes("webgl")) {
+      return <HiOutlineSparkles className="w-4 h-4 text-emerald-400" />;
     }
     return <HiOutlineServer className="w-4 h-4 text-purple-400" />;
   };
@@ -199,7 +202,20 @@ const ProjectsPage: FC = () => {
                   <FiExternalLink className="w-4 h-4" />
                 </a>
 
-                {selectedProject.githubUrl && (
+                {selectedProject.isPrivate ? (
+                  <div className="w-full py-3 px-4 rounded-2xl font-mono text-xs border border-slate-200/80 dark:border-white/10 bg-slate-100/70 dark:bg-white/[0.02] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <FiLock className="w-4 h-4 text-amber-500 shrink-0" />
+                      <div>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">Repository: </span>
+                        <span>Closed Source</span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-bold">
+                      Private
+                    </span>
+                  </div>
+                ) : selectedProject.githubUrl ? (
                   <a
                     href={selectedProject.githubUrl}
                     target="_blank"
@@ -207,9 +223,9 @@ const ProjectsPage: FC = () => {
                     className="w-full py-3 rounded-2xl font-mono text-xs font-semibold tracking-wide border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-white/[0.03] text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <FiGithub className="w-4 h-4" />
-                    <span>INSPECT GITHUB REPOSITORY</span>
+                    <span>INSPECT OPEN SOURCE REPO</span>
                   </a>
-                )}
+                ) : null}
               </div>
             </div>
 
