@@ -172,12 +172,30 @@ export default function ThreeDViewport({
         }
         return cached;
       }
-      const tex = loader.load(url, (loaded) => {
-        const img = loaded.image as HTMLImageElement | undefined;
-        if (img?.width && img?.height && materialRef.current && targetUniform) {
-          materialRef.current.uniforms[targetUniform].value.set(img.width, img.height);
+      const tex = loader.load(
+        url,
+        (loaded) => {
+          const img = loaded.image as HTMLImageElement | undefined;
+          if (img?.width && img?.height && materialRef.current && targetUniform) {
+            materialRef.current.uniforms[targetUniform].value.set(img.width, img.height);
+          }
+        },
+        undefined,
+        () => {
+          // Automatic fallback if medium fails to load
+          if (url.includes("/assets/medium/")) {
+            const fallbackUrl = url.replace("/assets/medium/", "/assets/full/");
+            loader.load(fallbackUrl, (fallbackLoaded) => {
+              tex.image = fallbackLoaded.image;
+              tex.needsUpdate = true;
+              const img = fallbackLoaded.image as HTMLImageElement | undefined;
+              if (img?.width && img?.height && materialRef.current && targetUniform) {
+                materialRef.current.uniforms[targetUniform].value.set(img.width, img.height);
+              }
+            });
+          }
         }
-      });
+      );
       tex.minFilter = THREE.LinearFilter;
       tex.magFilter = THREE.LinearFilter;
       tex.generateMipmaps = false;
@@ -334,12 +352,30 @@ export default function ThreeDViewport({
         }
         return cached;
       }
-      const tex = loader.load(url, (loaded) => {
-        const img = loaded.image as HTMLImageElement | undefined;
-        if (img?.width && img?.height && materialRef.current) {
-          materialRef.current.uniforms[targetUniform].value.set(img.width, img.height);
+      const tex = loader.load(
+        url,
+        (loaded) => {
+          const img = loaded.image as HTMLImageElement | undefined;
+          if (img?.width && img?.height && materialRef.current) {
+            materialRef.current.uniforms[targetUniform].value.set(img.width, img.height);
+          }
+        },
+        undefined,
+        () => {
+          // Automatic fallback if medium fails to load
+          if (url.includes("/assets/medium/")) {
+            const fallbackUrl = url.replace("/assets/medium/", "/assets/full/");
+            loader.load(fallbackUrl, (fallbackLoaded) => {
+              tex.image = fallbackLoaded.image;
+              tex.needsUpdate = true;
+              const img = fallbackLoaded.image as HTMLImageElement | undefined;
+              if (img?.width && img?.height && materialRef.current) {
+                materialRef.current.uniforms[targetUniform].value.set(img.width, img.height);
+              }
+            });
+          }
         }
-      });
+      );
       tex.minFilter = THREE.LinearFilter;
       tex.magFilter = THREE.LinearFilter;
       tex.generateMipmaps = false;

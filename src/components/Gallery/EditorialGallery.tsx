@@ -153,6 +153,12 @@ export default function EditorialGallery({
           <img
             src={bgSlots.slot0}
             alt=""
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (target.src.includes("/assets/medium/")) {
+                target.src = target.src.replace("/assets/medium/", "/assets/full/");
+              }
+            }}
             className={`absolute inset-0 w-full h-full object-cover filter blur-[22px] sm:blur-[26px] scale-105 saturate-125 contrast-110 brightness-95 dark:brightness-80 transition-opacity duration-700 ease-out ${
               bgSlots.activeSlot === 0 ? "opacity-100" : "opacity-0"
             }`}
@@ -163,6 +169,12 @@ export default function EditorialGallery({
           <img
             src={bgSlots.slot1}
             alt=""
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (target.src.includes("/assets/medium/")) {
+                target.src = target.src.replace("/assets/medium/", "/assets/full/");
+              }
+            }}
             className={`absolute inset-0 w-full h-full object-cover filter blur-[22px] sm:blur-[26px] scale-105 saturate-125 contrast-110 brightness-95 dark:brightness-80 transition-opacity duration-700 ease-out ${
               bgSlots.activeSlot === 1 ? "opacity-100" : "opacity-0"
             }`}
@@ -465,12 +477,22 @@ export default function EditorialGallery({
                       {/* Main Optimized Responsive Image */}
                       <img
                         src={current.medium || current.full}
-                        srcSet={`${current.thumb} 320w, ${current.medium} 768w, ${current.full} 1400w`}
+                        srcSet={
+                          current.medium !== current.full
+                            ? `${current.thumb} 320w, ${current.medium} 768w, ${current.full} 1400w`
+                            : `${current.thumb} 320w, ${current.full} 1400w`
+                        }
                         sizes="(max-width: 640px) 94vw, (max-width: 1024px) 75vw, 900px"
                         alt={current.title}
                         loading="eager"
                         decoding="async"
                         onLoad={() => setIsFullImageLoaded(true)}
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (target.src !== current.full) {
+                            target.src = current.full;
+                          }
+                        }}
                         className={`max-h-full max-w-full object-contain rounded-2xl shadow-2xl transition-opacity duration-300 ease-out ${
                           isFullImageLoaded ? "opacity-100" : "opacity-0"
                         }`}
