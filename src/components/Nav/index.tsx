@@ -116,97 +116,111 @@ function Nav() {
         </motion.nav>
       </div>
 
-      {/* Mobile Collapsible Floating Dock (< md) — starts expanded on mount, then collapses into a circle */}
-      <div className="md:hidden fixed bottom-5 left-0 w-full flex items-center justify-center z-40 px-3 pointer-events-none">
-        <AnimatePresence mode="wait">
-          {isMobileDockOpen ? (
-            <motion.nav
-              key="mobile-dock-expanded"
-              initial={{ opacity: 0, scale: 0.75, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.75, y: 12 }}
-              transition={{ type: "spring", stiffness: 360, damping: 28 }}
-              aria-label="Mobile navigation dock"
-              className="pointer-events-auto flex w-full max-w-[380px] items-center justify-between p-1.5 rounded-full border border-slate-200/90 dark:border-white/15 bg-white/95 dark:bg-slate-950/90 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.18)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.7)]"
-            >
-              {navLinks.map((link) => {
-                const active = isActive(link.value);
-                const Icon = MOBILE_ICONS[link.name] ?? HiOutlineHome;
-
-                return (
-                  <HashLink
-                    key={link.name}
-                    to={link.value}
-                    scroll={scrollWithLenis}
-                    onClick={() => {
-                      handleLinkClick(link.value);
-                      setIsMobileDockOpen(false);
-                    }}
-                    aria-label={link.name}
-                    className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all duration-200 active:scale-90 ${
-                      active
-                        ? "text-white"
-                        : "text-slate-600 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-white"
-                    }`}
-                  >
-                    {active && (
-                      <motion.span
-                        layoutId="mobile-dock-active"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                        className="absolute inset-0 rounded-full bg-indigo-600 shadow-md shadow-indigo-500/25"
-                      />
-                    )}
-                    <Icon className="relative z-10 w-5 h-5 shrink-0" />
-                  </HashLink>
-                );
-              })}
-
-              <span className="w-px h-5 bg-slate-300/80 dark:bg-white/15 shrink-0" />
-
-              <button
-                type="button"
-                onClick={toggleTheme}
-                aria-label="Toggle color theme"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-white active:scale-90 transition-all cursor-pointer"
+      {/* Mobile Collapsible Floating Dock (< md) — morphs into a subtle bottom-right glass circle */}
+      <div className="md:hidden fixed bottom-4 inset-x-0 flex items-center justify-end z-40 px-4 pointer-events-none">
+        <motion.nav
+          layout
+          transition={{ type: "spring", stiffness: 320, damping: 28 }}
+          aria-label="Mobile navigation dock"
+          className={`pointer-events-auto flex items-center rounded-full border border-slate-200/80 dark:border-white/15 bg-white/80 dark:bg-slate-950/75 backdrop-blur-xl shadow-[0_8px_28px_rgba(0,0,0,0.14)] dark:shadow-[0_10px_34px_rgba(0,0,0,0.55)] ${
+            isMobileDockOpen
+              ? "w-full max-w-[380px] justify-between p-1.5"
+              : "h-10 w-10 justify-center p-0"
+          }`}
+        >
+          <AnimatePresence mode="popLayout" initial={false}>
+            {isMobileDockOpen ? (
+              <motion.div
+                key="dock-items"
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.92 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="flex w-full items-center justify-between"
               >
-                {themeName === "dark" ? (
-                  <GoSun className="w-5 h-5" />
-                ) : (
-                  <PiMoonStarsLight className="w-5 h-5" />
-                )}
-              </button>
+                {navLinks.map((link) => {
+                  const active = isActive(link.value);
+                  const Icon = MOBILE_ICONS[link.name] ?? HiOutlineHome;
 
-              <button
+                  return (
+                    <HashLink
+                      key={link.name}
+                      to={link.value}
+                      scroll={scrollWithLenis}
+                      onClick={() => {
+                        handleLinkClick(link.value);
+                        setIsMobileDockOpen(false);
+                      }}
+                      aria-label={link.name}
+                      className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors duration-200 active:scale-90 ${
+                        active
+                          ? "text-white"
+                          : "text-slate-600 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-white"
+                      }`}
+                    >
+                      {active && (
+                        <motion.span
+                          layoutId="mobile-dock-active"
+                          transition={{
+                            type: "spring",
+                            stiffness: 380,
+                            damping: 30,
+                          }}
+                          className="absolute inset-0 rounded-full bg-indigo-600 shadow-md shadow-indigo-500/25"
+                        />
+                      )}
+                      <Icon className="relative z-10 w-5 h-5 shrink-0" />
+                    </HashLink>
+                  );
+                })}
+
+                <span className="w-px h-5 bg-slate-300/80 dark:bg-white/15 shrink-0" />
+
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  aria-label="Toggle color theme"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-white active:scale-90 transition-all cursor-pointer"
+                >
+                  {themeName === "dark" ? (
+                    <GoSun className="w-5 h-5" />
+                  ) : (
+                    <PiMoonStarsLight className="w-5 h-5" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsMobileDockOpen(false)}
+                  aria-label="Collapse navigation menu"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white active:scale-90 transition-all cursor-pointer"
+                >
+                  <HiOutlineXMark className="w-5 h-5" />
+                </button>
+              </motion.div>
+            ) : (
+              <motion.button
+                key="dock-trigger"
                 type="button"
-                onClick={() => setIsMobileDockOpen(false)}
-                aria-label="Collapse navigation menu"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white active:scale-90 transition-all cursor-pointer"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                onClick={() => setIsMobileDockOpen(true)}
+                aria-label="Expand navigation menu"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-indigo-600 dark:text-indigo-400 active:scale-90 transition-transform cursor-pointer"
               >
-                <HiOutlineXMark className="w-5 h-5" />
-              </button>
-            </motion.nav>
-          ) : (
-            <motion.button
-              key="mobile-dock-collapsed"
-              type="button"
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.7 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 380, damping: 26 }}
-              onClick={() => setIsMobileDockOpen(true)}
-              aria-label="Expand navigation menu"
-              className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full border border-indigo-400/40 bg-indigo-600 text-white shadow-[0_10px_30px_rgba(79,70,229,0.45)] cursor-pointer"
-            >
-              {(() => {
-                const activeLink = navLinks.find((l) => isActive(l.value));
-                const ActiveIcon =
-                  (activeLink && MOBILE_ICONS[activeLink.name]) || HiOutlineHome;
-                return <ActiveIcon className="w-5 h-5" />;
-              })()}
-            </motion.button>
-          )}
-        </AnimatePresence>
+                {(() => {
+                  const activeLink = navLinks.find((l) => isActive(l.value));
+                  const ActiveIcon =
+                    (activeLink && MOBILE_ICONS[activeLink.name]) ||
+                    HiOutlineHome;
+                  return <ActiveIcon className="w-4 h-4" />;
+                })()}
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </motion.nav>
       </div>
     </>
   );
