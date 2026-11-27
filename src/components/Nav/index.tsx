@@ -115,7 +115,7 @@ function Nav() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           aria-label="Mobile navigation dock"
-          className="pointer-events-auto inline-flex items-center gap-0.5 sm:gap-1 p-1.5 rounded-full border border-slate-200/90 dark:border-white/15 bg-white/90 dark:bg-slate-950/85 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.16)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.65)] max-w-full"
+          className="pointer-events-auto flex w-full max-w-[360px] items-center justify-between p-1.5 rounded-full border border-slate-200/90 dark:border-white/15 bg-white/90 dark:bg-slate-950/85 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.16)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.65)]"
         >
           {navLinks.map((link) => {
             const active = isActive(link.value);
@@ -128,7 +128,7 @@ function Nav() {
                 scroll={scrollWithLenis}
                 onClick={() => handleLinkClick(link.value)}
                 aria-label={link.name}
-                className={`relative flex items-center justify-center rounded-full p-2.5 transition-colors duration-200 ${
+                className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-all duration-200 active:scale-90 ${
                   active
                     ? "text-white"
                     : "text-slate-600 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-white"
@@ -141,25 +141,25 @@ function Nav() {
                     className="absolute inset-0 rounded-full bg-indigo-600 shadow-md shadow-indigo-500/25"
                   />
                 )}
-                <Icon className="relative z-10 w-4 h-4 shrink-0" />
+                <Icon className="relative z-10 w-5 h-5 shrink-0" />
               </HashLink>
             );
           })}
 
           {/* Hairline Divider */}
-          <span className="w-px h-4 bg-slate-300/80 dark:bg-white/15 mx-0.5 shrink-0" />
+          <span className="w-px h-5 bg-slate-300/80 dark:bg-white/15 shrink-0" />
 
           {/* Minimal Theme Switch */}
           <button
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle color theme"
-            className="p-2 rounded-full text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-white active:scale-90 transition-all cursor-pointer shrink-0"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-white active:scale-90 transition-all cursor-pointer"
           >
             {themeName === "dark" ? (
-              <GoSun className="w-4 h-4" />
+              <GoSun className="w-5 h-5" />
             ) : (
-              <PiMoonStarsLight className="w-4 h-4" />
+              <PiMoonStarsLight className="w-5 h-5" />
             )}
           </button>
         </motion.nav>
