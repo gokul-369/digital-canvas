@@ -577,20 +577,12 @@ export default function PortfolioAI() {
             onClick={() => setIsOpen(true)}
             aria-label="Open Helios AI"
             title="Ask Helios AI (⌘K)"
-            className="fixed bottom-5 left-4 z-40 rounded-full p-[1.5px] shadow-[0_10px_35px_-6px_rgba(99,102,241,0.45)] md:left-auto md:bottom-6 md:right-6"
-            style={{
-              backgroundImage:
-                "linear-gradient(90deg, #38bdf8, #6366f1, #a855f7, #38bdf8)",
-              backgroundSize: "200% 100%",
-              animation: "geminiSweep 5s ease infinite",
-            }}
+            className="fixed bottom-5 left-4 z-40 flex items-center gap-2 rounded-full border border-slate-300/70 bg-white/75 px-3 py-2 text-xs font-medium text-slate-800 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl transition hover:border-slate-400/80 hover:bg-white/90 dark:border-white/15 dark:bg-white/[0.06] dark:text-white dark:shadow-[0_8px_30px_rgba(0,0,0,0.45)] dark:hover:border-white/25 dark:hover:bg-white/[0.1] md:left-auto md:bottom-6 md:right-6"
           >
-            <span className="flex items-center gap-1.5 rounded-full bg-white px-2.5 py-2 text-xs font-medium text-slate-800 dark:bg-[#030407] dark:text-white">
-              <AIBrandMark className="h-4 w-4 shrink-0" />
-              <kbd className="hidden rounded-full bg-slate-200/70 px-1.5 py-0.5 font-mono text-[9px] text-slate-500 dark:bg-white/10 dark:text-slate-400 sm:inline">
-                ⌘K
-              </kbd>
-            </span>
+            <AIBrandMark className="h-4 w-4 shrink-0" />
+            <kbd className="hidden rounded-full bg-slate-200/70 px-1.5 py-0.5 font-mono text-[9px] text-slate-500 dark:bg-white/10 dark:text-slate-400 sm:inline">
+              ⌘K
+            </kbd>
           </motion.button>
         )}
       </AnimatePresence>
