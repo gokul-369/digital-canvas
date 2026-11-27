@@ -11,6 +11,7 @@ import {
   HiOutlineArrowUpRight,
 } from "react-icons/hi2";
 import { MarkdownText } from "./MarkdownText";
+import { useAppContext } from "../../context/AppContext";
 import {
   bio,
   workExperiences,
@@ -116,6 +117,7 @@ function getGatewayBaseUrl(): string {
 
 export default function PortfolioAI() {
   const { pathname } = useLocation();
+  const { isMobileDockOpen } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -565,7 +567,11 @@ export default function PortfolioAI() {
             onClick={() => setIsOpen(true)}
             aria-label="Open Gokul AI"
             title="Ask Gokul AI (⌘K)"
-            className="fixed bottom-5 left-4 z-40 rounded-full p-[1.5px] shadow-[0_10px_35px_-6px_rgba(99,102,241,0.45)] md:left-auto md:bottom-6 md:right-6"
+            className={`fixed bottom-5 left-4 z-40 rounded-full p-[1.5px] shadow-[0_10px_35px_-6px_rgba(99,102,241,0.45)] transition-all duration-300 md:left-auto md:bottom-6 md:right-6 ${
+              isMobileDockOpen
+                ? "max-md:opacity-0 max-md:scale-90 max-md:pointer-events-none"
+                : "max-md:opacity-100 max-md:scale-100"
+            }`}
             style={{
               backgroundImage:
                 "linear-gradient(90deg, #38bdf8, #6366f1, #a855f7, #38bdf8)",

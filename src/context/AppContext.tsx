@@ -12,6 +12,9 @@ interface AppContextValue {
   isCollaborateOpen: boolean;
   openCollaborate: () => void;
   closeCollaborate: () => void;
+
+  isMobileDockOpen: boolean;
+  setIsMobileDockOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);
@@ -25,6 +28,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return "dark";
   });
   const [isCollaborateOpen, setIsCollaborateOpen] = useState(false);
+  const [isMobileDockOpen, setIsMobileDockOpen] = useState(true);
 
   useEffect(() => {
     const isDark = theme === "dark";
@@ -48,6 +52,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         isCollaborateOpen,
         openCollaborate: () => setIsCollaborateOpen(true),
         closeCollaborate: () => setIsCollaborateOpen(false),
+        isMobileDockOpen,
+        setIsMobileDockOpen,
       }}
     >
       {children}

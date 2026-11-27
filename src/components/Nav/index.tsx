@@ -10,11 +10,13 @@ import {
   HiOutlineCommandLine,
   HiOutlineRocketLaunch,
   HiOutlineXMark,
+  HiOutlineBars2,
 } from "react-icons/hi2";
 import { IoCameraOutline, IoBookOutline } from "react-icons/io5";
 import { useMotionValueEvent, useScroll, motion } from "motion/react";
 import { useState, useRef, useEffect, type ComponentType } from "react";
 import { useLocation } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
 
 const MOBILE_ICONS: Record<string, ComponentType<{ className?: string }>> = {
   Home: HiOutlineHome,
@@ -27,17 +29,17 @@ const MOBILE_ICONS: Record<string, ComponentType<{ className?: string }>> = {
 
 function Nav() {
   const { toggleTheme, theme: themeName, themeClassSet: theme } = useTheme();
+  const { isMobileDockOpen, setIsMobileDockOpen } = useAppContext();
   const { scrollY } = useScroll();
   const [visible, setVisible] = useState(true);
-  const [isMobileDockOpen, setIsMobileDockOpen] = useState(true);
   const lastYRef = useRef(0);
   const location = useLocation();
 
-  // Start expanded on mount so user sees the dock, then smoothly collapse into a circle
+  // Start expanded on mount so user sees the dock, then smoothly collapse into a subtle menu circle
   useEffect(() => {
     const timer = setTimeout(() => setIsMobileDockOpen(false), 1800);
     return () => clearTimeout(timer);
-  }, []);
+  }, [setIsMobileDockOpen]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const diff = latest - lastYRef.current;
@@ -123,7 +125,11 @@ function Nav() {
           animate={{ width: isMobileDockOpen ? 332 : 44 }}
           transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
           aria-label="Mobile navigation dock"
-          className="pointer-events-auto flex h-11 items-center justify-end overflow-hidden rounded-full border border-slate-200/80 dark:border-white/15 bg-white/85 dark:bg-slate-950/80 backdrop-blur-xl shadow-[0_8px_28px_rgba(0,0,0,0.14)] dark:shadow-[0_10px_34px_rgba(0,0,0,0.55)]"
+          className={`pointer-events-auto flex h-11 items-center justify-end overflow-hidden rounded-full backdrop-blur-xl transition-colors duration-300 ${
+            isMobileDockOpen
+              ? "border border-slate-200/80 dark:border-white/15 bg-white/85 dark:bg-slate-950/80 shadow-[0_8px_28px_rgba(0,0,0,0.14)] dark:shadow-[0_10px_34px_rgba(0,0,0,0.55)]"
+              : "border border-slate-300/45 dark:border-white/10 bg-white/40 dark:bg-white/[0.04] shadow-none"
+          }`}
         >
           {isMobileDockOpen ? (
             <motion.div
@@ -200,15 +206,9 @@ function Nav() {
               transition={{ duration: 0.2 }}
               onClick={() => setIsMobileDockOpen(true)}
               aria-label="Expand navigation menu"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-indigo-600 dark:text-indigo-400 active:scale-90 transition-transform cursor-pointer"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-600/85 dark:text-slate-300/75 hover:text-indigo-500 dark:hover:text-white active:scale-90 transition-all cursor-pointer"
             >
-              {(() => {
-                const activeLink = navLinks.find((l) => isActive(l.value));
-                const ActiveIcon =
-                  (activeLink && MOBILE_ICONS[activeLink.name]) ||
-                  HiOutlineHome;
-                return <ActiveIcon className="w-5 h-5" />;
-              })()}
+              <HiOutlineBars2 className="w-5 h-5" />
             </motion.button>
           )}
         </motion.nav>
