@@ -8,12 +8,21 @@ import {
   HiOutlineSparkles,
   HiOutlineBolt,
 } from "react-icons/hi2";
-import { SiGreensock } from "react-icons/si";
+import { SiGreensock, SiDrizzle, SiGooglegemini } from "react-icons/si";
 
 interface LogoDef {
   url?: string;
   invertDark?: boolean;
-  icon?: "dokploy" | "shield" | "clock" | "lock" | "opensource" | "gsap" | "lenis";
+  icon?:
+    | "dokploy"
+    | "shield"
+    | "clock"
+    | "lock"
+    | "opensource"
+    | "gsap"
+    | "lenis"
+    | "drizzle"
+    | "gemini";
 }
 
 const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
@@ -26,6 +35,21 @@ function resolveLogo(name: string): LogoDef {
   }
   if (key.includes("postgres")) {
     return { url: `${DEVICON}/postgresql/postgresql-original.svg` };
+  }
+  if (key.includes("sqlite")) {
+    return { url: `${DEVICON}/sqlite/sqlite-original.svg` };
+  }
+  if (key.includes("drizzle")) {
+    return { icon: "drizzle" };
+  }
+  if (key.includes("gemini")) {
+    return { icon: "gemini" };
+  }
+  if (key.includes("ollama")) {
+    return {
+      url: "https://cdn.jsdelivr.net/gh/gokul-369/digital-canvas/src/assets/ollama.svg",
+      invertDark: true,
+    };
   }
   if (key.includes("docker")) {
     return { url: `${DEVICON}/docker/docker-original.svg` };
@@ -72,7 +96,14 @@ function resolveLogo(name: string): LogoDef {
   if (key.includes("lenis")) {
     return { icon: "lenis" };
   }
-  if (key.includes("ufw") || key.includes("iptables") || key.includes("ingress") || key.includes("firewall")) {
+  if (
+    key.includes("ufw") ||
+    key.includes("iptables") ||
+    key.includes("ingress") ||
+    key.includes("firewall") ||
+    key.includes("aes") ||
+    key.includes("cors")
+  ) {
     return { icon: "shield" };
   }
   if (key.includes("24/7") || key.includes("continuous")) {
@@ -115,6 +146,10 @@ export const TechLogo: FC<{ name: string; size?: number; className?: string }> =
   switch (def.icon) {
     case "gsap":
       return <SiGreensock style={style} className={`text-emerald-500 shrink-0 ${className}`} />;
+    case "drizzle":
+      return <SiDrizzle style={style} className={`text-lime-500 shrink-0 ${className}`} />;
+    case "gemini":
+      return <SiGooglegemini style={style} className={`text-indigo-400 shrink-0 ${className}`} />;
     case "lenis":
       return <HiOutlineBolt style={style} className={`text-pink-500 shrink-0 ${className}`} />;
     case "shield":
