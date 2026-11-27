@@ -1,6 +1,7 @@
 import vigilensImg from "../assets/projects/vigilens.png";
 import ociImg from "../assets/projects/oci.png";
 import portfolioImg from "../assets/projects/portfolio.png";
+import aiGatewayImg from "../assets/projects/ai-gateway.png";
 
 export interface ProjectItem {
   id: string;
@@ -142,5 +143,43 @@ export const projectsList: ProjectItem[] = [
     accentColor: "#22c55e", // Emerald
     accentRgb: "34, 197, 94",
     badge: "03 · OPEN SOURCE SYSTEM",
+  },
+  {
+    id: "ai-gateway",
+    title: "AI Gateway",
+    tagline: "Multi-Provider LLM Control Plane & Dynamic Context Router",
+    category: "AI Infrastructure & Orchestration",
+    domainUrl: "ai.gokul.ink",
+    liveUrl: "https://ai.gokul.ink",
+    isPrivate: true,
+    repoAccessNote: "Private repository deployed on OCI via Dokploy.",
+    previewImage: aiGatewayImg,
+    description:
+      "A shared AI gateway and login-protected admin control plane powering multiple apps (gokul.ink & VigiLens) from a single endpoint. Supports live switching between Gemini, Ollama, and OpenAI-compatible providers with automatic failover, encrypted SQLite persistence, and dynamic per-app context routing.",
+    architectureHighlights: [
+      {
+        title: "Live Provider Switching & Auto-Fallback",
+        description: "Switch primary AI providers on the fly with configurable fallback chains, health probing, model discovery, and a zero-token Mock Mode.",
+      },
+      {
+        title: "Config-Driven Multi-App Routing",
+        description: "Routes POST /api/chat per app slug with SQLite/Drizzle system prompts, dynamic caller context, and authenticated internal endpoint tool calls.",
+      },
+      {
+        title: "Hardened Dokploy Deployment",
+        description: "Standalone Next.js container with AES-256-GCM encrypted API keys, CORS origin allowlisting, and per-IP sliding-window rate limiting.",
+      },
+    ],
+    stack: ["Next.js", "TypeScript", "Drizzle ORM", "SQLite", "Gemini API", "Ollama", "Docker", "Dokploy"],
+    metrics: [
+      { label: "Providers", value: "Gemini + Ollama + OpenAI" },
+      { label: "Persistence", value: "SQLite / Drizzle ORM" },
+      { label: "Security", value: "AES-256-GCM + CORS" },
+      { label: "Hosting", value: "Oracle Cloud (Dokploy)" },
+      { label: "Codebase Access", value: "Closed Source / Private" },
+    ],
+    accentColor: "#6366f1", // Indigo
+    accentRgb: "99, 102, 241",
+    badge: "04 · AI INFRASTRUCTURE",
   },
 ];
