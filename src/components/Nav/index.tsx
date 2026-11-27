@@ -128,10 +128,10 @@ function Nav() {
                 scroll={scrollWithLenis}
                 onClick={() => handleLinkClick(link.value)}
                 aria-label={link.name}
-                className={`relative flex items-center justify-center gap-1.5 rounded-full transition-colors duration-200 ${
+                className={`relative flex items-center justify-center rounded-full p-2.5 transition-colors duration-200 ${
                   active
-                    ? "px-3 py-2 text-white"
-                    : "p-2.5 text-slate-600 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-white"
+                    ? "text-white"
+                    : "text-slate-600 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-white"
                 }`}
               >
                 {active && (
@@ -142,11 +142,6 @@ function Nav() {
                   />
                 )}
                 <Icon className="relative z-10 w-4 h-4 shrink-0" />
-                {active && (
-                  <span className="relative z-10 font-mono text-[11px] font-semibold tracking-tight whitespace-nowrap">
-                    {link.name}
-                  </span>
-                )}
               </HashLink>
             );
           })}
