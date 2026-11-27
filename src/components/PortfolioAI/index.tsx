@@ -585,9 +585,8 @@ export default function PortfolioAI() {
               animation: "geminiSweep 5s ease infinite",
             }}
           >
-            <span className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-medium text-slate-800 dark:bg-[#030407] dark:text-white">
+            <span className="flex items-center gap-1.5 rounded-full bg-white px-2.5 py-2 text-xs font-medium text-slate-800 dark:bg-[#030407] dark:text-white">
               <AIBrandMark className="h-4 w-4 shrink-0" />
-              <span>Ask Helios</span>
               <kbd className="hidden rounded-full bg-slate-200/70 px-1.5 py-0.5 font-mono text-[9px] text-slate-500 dark:bg-white/10 dark:text-slate-400 sm:inline">
                 ⌘K
               </kbd>
