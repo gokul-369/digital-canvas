@@ -118,14 +118,14 @@ function Nav() {
         </motion.nav>
       </div>
 
-      {/* Mobile Collapsible Floating Dock (< md) — smooth width morph at bottom-right */}
-      <div className="md:hidden fixed bottom-5 right-4 z-40 pointer-events-none">
+      {/* Mobile Collapsible Floating Dock (< md) — symmetric full-width when open, subtle circle at bottom-right when collapsed */}
+      <div className="md:hidden fixed bottom-5 inset-x-4 flex items-center justify-end z-40 pointer-events-none">
         <motion.nav
           initial={false}
-          animate={{ width: isMobileDockOpen ? 332 : 44 }}
-          transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+          animate={{ width: isMobileDockOpen ? "100%" : 44 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           aria-label="Mobile navigation dock"
-          className={`pointer-events-auto flex h-11 items-center justify-end overflow-hidden rounded-full backdrop-blur-xl transition-colors duration-300 ${
+          className={`pointer-events-auto flex h-11 max-w-[380px] items-center justify-end overflow-hidden rounded-full backdrop-blur-xl transition-colors duration-300 ${
             isMobileDockOpen
               ? "border border-slate-200/80 dark:border-white/15 bg-white/85 dark:bg-slate-950/80 shadow-[0_8px_28px_rgba(0,0,0,0.14)] dark:shadow-[0_10px_34px_rgba(0,0,0,0.55)]"
               : "border border-slate-300/45 dark:border-white/10 bg-white/40 dark:bg-white/[0.04] shadow-none"
@@ -136,7 +136,7 @@ function Nav() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.25, delay: 0.08 }}
-              className="flex w-[332px] shrink-0 items-center justify-between px-1"
+              className="flex w-full items-center justify-between px-1.5"
             >
               {navLinks.map((link) => {
                 const active = isActive(link.value);
