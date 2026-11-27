@@ -131,7 +131,7 @@ function Nav() {
                 className={`relative flex items-center justify-center gap-1.5 rounded-full transition-colors duration-200 ${
                   active
                     ? "px-3 py-2 text-white"
-                    : "p-2 text-slate-600 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-white"
+                    : "p-2.5 text-slate-600 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-white"
                 }`}
               >
                 {active && (
