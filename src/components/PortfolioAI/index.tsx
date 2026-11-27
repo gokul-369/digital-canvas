@@ -474,10 +474,10 @@ export default function PortfolioAI() {
                       className="mb-8 flex flex-col items-center text-center"
                     >
                       <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.25em] text-indigo-600 dark:text-indigo-400">
-                        {`// Portfolio Intelligence`}
+                        {`// Helios AI`}
                       </p>
                       <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-                        Ask anything about{" "}
+                        Ask Helios about{" "}
                         <span
                           className="font-caveat bg-clip-text text-4xl font-bold tracking-normal text-transparent sm:text-5xl"
                           style={{
@@ -575,8 +575,8 @@ export default function PortfolioAI() {
             whileTap={{ scale: 0.95 }}
             type="button"
             onClick={() => setIsOpen(true)}
-            aria-label="Open Gokul AI"
-            title="Ask Gokul AI (⌘K)"
+            aria-label="Open Helios AI"
+            title="Ask Helios AI (⌘K)"
             className="fixed bottom-5 left-4 z-40 rounded-full p-[1.5px] shadow-[0_10px_35px_-6px_rgba(99,102,241,0.45)] md:left-auto md:bottom-6 md:right-6"
             style={{
               backgroundImage:
@@ -587,7 +587,7 @@ export default function PortfolioAI() {
           >
             <span className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-medium text-slate-800 dark:bg-[#030407] dark:text-white">
               <AIBrandMark className="h-4 w-4 shrink-0" />
-              <span>Ask AI</span>
+              <span>Ask Helios</span>
               <kbd className="hidden rounded-full bg-slate-200/70 px-1.5 py-0.5 font-mono text-[9px] text-slate-500 dark:bg-white/10 dark:text-slate-400 sm:inline">
                 ⌘K
               </kbd>

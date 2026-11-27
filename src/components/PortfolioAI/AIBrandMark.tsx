@@ -2,8 +2,9 @@ import { useId } from "react";
 
 export function AIBrandMark({ className = "h-4 w-4" }: { className?: string }) {
   const uid = useId();
-  const gradId = `ai-mark-grad-${uid}`;
-  const ringId = `ai-mark-ring-${uid}`;
+  const gradId = `helios-grad-${uid}`;
+  const ringId = `helios-ring-${uid}`;
+  const maskId = `helios-mask-${uid}`;
 
   return (
     <svg
@@ -16,10 +17,10 @@ export function AIBrandMark({ className = "h-4 w-4" }: { className?: string }) {
       <defs>
         <linearGradient
           id={gradId}
-          x1="10"
-          y1="54"
-          x2="54"
-          y2="10"
+          x1="12"
+          y1="52"
+          x2="52"
+          y2="12"
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0%" stopColor="#38bdf8" />
@@ -34,24 +35,31 @@ export function AIBrandMark({ className = "h-4 w-4" }: { className?: string }) {
           y2="56"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.95" />
-          <stop offset="100%" stopColor="#a855f7" stopOpacity="0.4" />
+          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#a855f7" stopOpacity="0.35" />
         </linearGradient>
+        <mask id={maskId}>
+          <rect width="64" height="64" fill="white" />
+          <circle cx="38" cy="27" r="15.5" fill="black" />
+        </mask>
       </defs>
       <circle
         cx="32"
         cy="32"
-        r="24"
+        r="25"
         stroke={`url(#${ringId})`}
-        strokeWidth="3.2"
-        strokeDasharray="116 32"
+        strokeWidth="2.8"
+        strokeDasharray="112 45"
         strokeLinecap="round"
       />
-      <path
-        d="M32 12C33.6 23.8 40.2 30.4 52 32C40.2 33.6 33.6 40.2 32 52C30.4 40.2 23.8 33.6 12 32C23.8 30.4 30.4 23.8 32 12Z"
+      <circle
+        cx="31"
+        cy="33"
+        r="18.5"
         fill={`url(#${gradId})`}
+        mask={`url(#${maskId})`}
       />
-      <circle cx="50" cy="16" r="3" fill="#38bdf8" />
+      <circle cx="48" cy="17" r="2.6" fill="#38bdf8" />
     </svg>
   );
 }
