@@ -24,9 +24,13 @@ import {
 import { projectsList } from "../../data/projects";
 import { booksList } from "../../data/books";
 
-function buildDynamicPortfolioContext(currentPage: string) {
+function buildDynamicPortfolioContext(
+  currentPage: string,
+  visitorName?: string,
+) {
   return {
     currentPage,
+    ...(visitorName?.trim() ? { visitorName: visitorName.trim() } : {}),
     availableRoutes: {
       Home: "/#/",
       Experience: "/#/experience",
@@ -129,6 +133,13 @@ export default function PortfolioAI() {
     return () => mq.removeEventListener("change", update);
   }, []);
   const [input, setInput] = useState("");
+  const [visitorName, setVisitorName] = useState(() => {
+    try {
+      return localStorage.getItem("portfolio_ai_visitor_name") || "";
+    } catch {
+      return "";
+    }
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<Exchange[]>([]);
@@ -210,7 +221,7 @@ export default function PortfolioAI() {
         body: JSON.stringify({
           app: "portfolio",
           messages: [...priorMessages, { role: "user", content: query }],
-          context: buildDynamicPortfolioContext(pathname),
+          context: buildDynamicPortfolioContext(pathname, visitorName),
         }),
       });
 
@@ -557,6 +568,26 @@ export default function PortfolioAI() {
                     </div>
                   </div>
                 </motion.form>
+
+                <div className="mt-2.5 flex items-center justify-center gap-2 text-[11px] text-slate-400 dark:text-slate-500">
+                  <span>Name (optional):</span>
+                  <input
+                    type="text"
+                    value={visitorName}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setVisitorName(val);
+                      try {
+                        localStorage.setItem("portfolio_ai_visitor_name", val);
+                      } catch {
+                        // Ignore storage quota/privacy errors
+                      }
+                    }}
+                    placeholder="Anonymous"
+                    maxLength={40}
+                    className="w-32 rounded-full border border-slate-300/60 bg-white/60 px-2.5 py-0.5 text-center text-[11px] text-slate-700 placeholder-slate-400 outline-none transition focus:border-indigo-400 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-cyan-400/70"
+                  />
+                </div>
               </div>
             </div>
           </motion.div>
