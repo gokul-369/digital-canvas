@@ -19,8 +19,32 @@ import {
 import { motion } from "motion/react";
 import { FiRefreshCw } from "react-icons/fi";
 
-const GITHUB_USERNAME = "gokul-369";
+const GITHUB_USERNAMES = ["gokul-369", "gokul-exe", "lbg-gokul"];
 const API_BASE = "https://github-contributions-api.jogruber.de/v4";
+
+function mergeApiResponses(responses: APIResponse[]): APIResponse {
+  const total: Record<string, number> = {};
+  const byDate = new Map<string, number>();
+
+  for (const res of responses) {
+    for (const [k, v] of Object.entries(res.total || {})) {
+      total[k] = (total[k] ?? 0) + v;
+    }
+    for (const day of res.contributions || []) {
+      byDate.set(day.date, (byDate.get(day.date) ?? 0) + day.count);
+    }
+  }
+
+  const contributions: ContribDay[] = Array.from(byDate.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, count]) => ({
+      date,
+      count,
+      level: computeLevel(count),
+    }));
+
+  return { total, contributions };
+}
 
 type Level = 0 | 1 | 2 | 3 | 4;
 
@@ -119,9 +143,12 @@ function monthLabels(weeks: ContribDay[][]): { label: string; col: number }[] {
       if (!day.date) return;
       const m = new Date(day.date + "T00:00:00").getMonth();
       const lbl = MONTH_NAMES[m];
+      const prevCol = result[result.length - 1]?.col ?? -10;
       if (!seen.has(lbl)) {
         seen.add(lbl);
-        result.push({ label: lbl, col });
+        if (col - prevCol >= 2) {
+          result.push({ label: lbl, col });
+        }
       }
     });
   });
@@ -176,17 +203,26 @@ const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) =>
     setLoading(true);
     setError(false);
     try {
-      const [lastRes, allRes] = await Promise.all([
-        fetch(`${API_BASE}/${GITHUB_USERNAME}?y=last`),
-        fetch(`${API_BASE}/${GITHUB_USERNAME}?y=all`),
-      ]);
-      if (!lastRes.ok) throw new Error("API error");
+      const results = await Promise.all(
+        GITHUB_USERNAMES.map(async (username) => {
+          const [lastRes, allRes] = await Promise.all([
+            fetch(`${API_BASE}/${username}?y=last`),
+            fetch(`${API_BASE}/${username}?y=all`),
+          ]);
+          if (!lastRes.ok) return null;
+          const lastJson: APIResponse = await lastRes.json();
+          const allJson: APIResponse = allRes.ok ? await allRes.json() : lastJson;
+          return { lastJson, allJson };
+        }),
+      );
 
-      const lastJson: APIResponse = await lastRes.json();
-      const allJson: APIResponse = allRes.ok ? await allRes.json() : lastJson;
+      const valid = results.filter(
+        (r): r is { lastJson: APIResponse; allJson: APIResponse } => r !== null,
+      );
+      if (valid.length === 0) throw new Error("API error");
 
-      setLastData(lastJson);
-      setAllData(allJson);
+      setLastData(mergeApiResponses(valid.map((v) => v.lastJson)));
+      setAllData(mergeApiResponses(valid.map((v) => v.allJson)));
     } catch {
       setError(true);
     } finally {
@@ -242,10 +278,10 @@ const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) =>
       <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
         <div>
           <h3 className="font-space text-lg font-bold text-slate-900 dark:text-white leading-tight">
-            Open Source Activity
+            Git Activity
           </h3>
           <p className="font-mono text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            github.com/{GITHUB_USERNAME} · {mode === "all" ? "all-time calendar (2020–present)" : "past 12 months"}
+            github.com/{GITHUB_USERNAMES[0]} · {mode === "all" ? "all-time calendar (2020–present)" : "past 12 months"}
           </p>
         </div>
 
@@ -298,7 +334,7 @@ const GitHubGraph: FC<GitHubGraphProps> = ({ isDark = true, className = "" }) =>
         <div className="w-full overflow-x-auto pb-1">
           <div className="inline-block min-w-full">
             {/* Month labels */}
-            <div className="flex gap-[3px] mb-1 ml-7">
+            <div className="flex h-3 gap-[3px] mb-1.5 ml-7">
               {weeks.map((_, w) => {
                 const hit = months.find((m) => m.col === w);
                 return (

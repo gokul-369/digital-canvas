@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import { lazy, Suspense, useEffect } from "react";
 import CollaboratePanel from "../components/Collaborate";
+import PortfolioAI from "../components/PortfolioAI";
 import { useAppContext } from "../context/AppContext";
 import Footer from "../components/Footer";
 import CustomCursor from "../components/Cursor";
@@ -113,6 +114,7 @@ export function AppRoutes() {
       </Routes>
 
       <Footer />
+      <PortfolioAI />
     </ReactLenis>
   );
 }
