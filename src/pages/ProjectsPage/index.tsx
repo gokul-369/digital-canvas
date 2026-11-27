@@ -322,24 +322,24 @@ const ProjectsPage: FC = () => {
                       href={selectedProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full py-3.5 rounded-2xl font-mono text-xs font-bold tracking-wide text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-lg hover:shadow-[0_0_25px_rgba(56,189,248,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full px-4 py-3.5 rounded-2xl font-mono text-xs font-bold tracking-wide text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-lg hover:shadow-[0_0_25px_rgba(56,189,248,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      <span>OPEN {selectedProject.title.toUpperCase()}</span>
-                      <FiExternalLink className="w-4 h-4" />
+                      <span className="truncate">OPEN {selectedProject.title.toUpperCase()}</span>
+                      <FiExternalLink className="w-4 h-4 shrink-0" />
                     </a>
 
                     {selectedProject.isPrivate ? (
-                      <div className="w-full py-3 px-4 rounded-2xl font-mono text-xs border border-slate-200/80 dark:border-white/10 bg-slate-100/70 dark:bg-white/[0.02] text-slate-600 dark:text-slate-400 flex items-center justify-between">
-                        <div className="flex items-center gap-2.5">
+                      <div className="w-full py-3 px-4 rounded-2xl font-mono text-xs border border-slate-200/80 dark:border-white/10 bg-slate-100/70 dark:bg-white/[0.02] text-slate-600 dark:text-slate-400 flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
                           <FiLock className="w-4 h-4 text-amber-500 shrink-0" />
-                          <div>
+                          <span className="truncate">
                             <span className="font-semibold text-slate-800 dark:text-slate-200">
                               Repository:{" "}
                             </span>
-                            <span>Closed Source</span>
-                          </div>
+                            Closed Source
+                          </span>
                         </div>
-                        <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-bold">
+                        <span className="shrink-0 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-bold">
                           Private
                         </span>
                       </div>
